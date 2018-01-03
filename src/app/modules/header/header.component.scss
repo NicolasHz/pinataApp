@@ -1,0 +1,16 @@
+@import 'src/assets/scss/variables';
+
+.logo{
+    max-height:46px;
+    margin: 10% 0;
+    vertical-align: initial;
+}
+.toogle_menu {
+  display: none;
+}
+
+@media all and (max-width: $app_especific_toggle_menu) {
+  .toogle_menu {
+    display: inline;
+  }
+}

@@ -11,28 +11,48 @@
       <a class="waves-effect" routerLink="js">JavaScript</a>
     </mz-navbar-item>
   </mz-navbar-item-container>
-  <a mz-button class="col s1 offset-s10 toogle_menu waves-effect" id="btn-sidenav-demo">
+  <a mz-button class="col s2 offset-s10 toogle_menu waves-effect" id="btn-sidenav-demo">
     <i mz-icon-mdi 
     [align]="'center'"
     [icon]="'menu'">
     </i>
   </a>
-
 </mz-navbar>
+<!-- SIDE NAVBAR  -->
 <mz-sidenav [id]="'sidenav-demo'" [collapseButtonId]="'btn-sidenav-demo'">
   <mz-sidenav-header>
-    Sidenav header
+    <div class="row valign-wrapper account_side_menu">
+      <mz-sidenav-link>
+            <a class="waves-effect">My Account</a>
+      </mz-sidenav-link>
+      <div class="col s2 offset-s2">
+        <img  src="http://materializecss.com/images/yuna.jpg" alt="User_Image" class="circle responsive-img">
+      </div>
+    </div>
   </mz-sidenav-header>
-  <mz-sidenav-subheader>Link Subheader</mz-sidenav-subheader>
-  <mz-sidenav-link>
-    <a>First Link</a>
-  </mz-sidenav-link>
   <mz-sidenav-divider></mz-sidenav-divider>
+  <mz-sidenav-subheader>Menu Options</mz-sidenav-subheader>
+  <mz-sidenav-link>
+    <a class="waves-effect">First Link</a>
+  </mz-sidenav-link>
   <mz-sidenav-link [active]="true">
-    <a>Active Link</a>
+    <a class="waves-effect">Second Link</a>
   </mz-sidenav-link>
-  <mz-sidenav-divider></mz-sidenav-divider>
   <mz-sidenav-link>
-    <a class="waves-effect">Second Link With Waves</a>
+    <a class="waves-effect">Third Link</a>
   </mz-sidenav-link>
 </mz-sidenav>
+
+<div class="card">
+    <div class="card-image waves-effect waves-block waves-light">
+      <img class="activator" src="http://materializecss.com/images/office.jpg">
+    </div>
+    <div class="card-content">
+      <span class="card-title activator grey-text text-darken-4">Card Title<i class="material-icons right">more_vert</i></span>
+      <p><a href="#">This is a link</a></p>
+    </div>
+    <div class="card-reveal">
+      <span class="card-title grey-text text-darken-4">Card Title<i class="material-icons right">close</i></span>
+      <p>Here is some more information about this product that is only revealed once clicked on.</p>
+    </div>
+  </div>

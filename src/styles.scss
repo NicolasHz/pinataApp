@@ -1,9 +1,17 @@
 /* You can add global styles to this file, and also import other style fill*/
-a{
-    text-decoration: none!important;
+@import 'src/assets/scss/variables';
+a {
+  text-decoration: none!important;
 }
+
 nav {
-    background: #2c3e50;
-    background: -webkit-linear-gradient(to right, #2c3e50, #3498db);
-    background: linear-gradient(to right, #2c3e50, #3498db);
-  }
+  background: #2c3e50;
+  background: -webkit-linear-gradient(to right, #2c3e50, #3498db);
+  background: linear-gradient(to right, #2c3e50, #3498db);
+}
+
+.side-nav {
+  background: url("assets/img/cupcake2.jpg") 10% no-repeat;
+  background-size: cover;
+}
+

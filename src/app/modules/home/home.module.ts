@@ -13,7 +13,8 @@ import { LoginComponent } from './../login/login.component';
 import {  MzNavbarModule,
           MzSidenavModule,
           MzIconModule,
-          MzIconMdiModule } from 'ng2-materialize'
+          MzIconMdiModule,
+          MzCardModule  } from 'ng2-materialize'
 
 @NgModule({
   imports: [
@@ -22,7 +23,8 @@ import {  MzNavbarModule,
     MzNavbarModule,
     MzSidenavModule,
     MzIconModule,
-    MzIconMdiModule
+    MzIconMdiModule,
+    MzCardModule
   ],
   schemas: [NO_ERRORS_SCHEMA],
   declarations: [

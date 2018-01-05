@@ -1,5 +1,9 @@
 @import 'src/assets/scss/variables';
 
+a:hover{
+    color:white;
+}
+
 .logo{
     max-height:46px;
     margin: 6px 0;
@@ -8,6 +12,10 @@
 
 .toogle_menu {
   display: none;
+}
+
+.account_side_menu{
+    margin-top: 20px;
 }
 
 @media all and (max-width: $app_especific_toggle_menu) {

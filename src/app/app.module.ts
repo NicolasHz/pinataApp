@@ -11,11 +11,13 @@ import { AngularFirestoreModule } from 'angularfire2/firestore';
 import { AngularFireAuthModule } from 'angularfire2/auth';
 
 import { environment } from '../environments/environment';
+import { CardComponent } from './modules/card/card.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
+    CardComponent,
   ],
   imports: [
     BrowserModule,

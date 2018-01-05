@@ -8,13 +8,15 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { HomeComponent } from './home.component';
 import { HeaderComponent } from '../header/header.component';
 import { LoginComponent } from './../login/login.component';
+import { CardComponent } from '../card/card.component';
 
 // Materialize
 import {  MzNavbarModule,
           MzSidenavModule,
           MzIconModule,
           MzIconMdiModule,
-          MzCardModule  } from 'ng2-materialize'
+          MzCardModule  } from 'ng2-materialize';
+
 
 @NgModule({
   imports: [
@@ -30,7 +32,8 @@ import {  MzNavbarModule,
   declarations: [
     HomeComponent,
     HeaderComponent,
-    LoginComponent
+    LoginComponent,
+    CardComponent
 ]
 })
 export class HomeModule { }

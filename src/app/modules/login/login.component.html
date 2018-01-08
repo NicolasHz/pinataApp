@@ -2,3 +2,21 @@
 <p>
   login works!
 </p>
+
+<div class="container">
+  <div class="row">
+    <button class="btn btn-outline-primary" 
+            style="height: auto;
+                   position: relative;
+                   left: 30%;"
+            type="button"
+            (click)="logUser()" >
+    <img src="./assets/img/glb-no-bg.png" 
+         style="width: 50px; padding: 2px;"> <span> Sign in with your account </span> 
+  </button>
+</div>
+<button type="button" (click)="logOutUser()">LogOut</button>
+
+<p>Nombre: {{ _loginService.user.displayName }} </p>
+<img [src]= "_loginService.user.photoURL" class="circle" style="width: 150px;" >
+</div>

@@ -23,8 +23,8 @@ import { AuthGuardService } from './services/auth-guard.service';
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
-    RoutingModule,
     AngularFireModule.initializeApp(environment.firebase),
+    RoutingModule,
   ],
   providers: [
     LoginService,

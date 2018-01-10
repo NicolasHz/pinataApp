@@ -1,3 +1,4 @@
+import { User } from './../interfaces/user';
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from 'angularfire2/auth';
 import * as firebase from 'firebase/app';
@@ -13,18 +14,23 @@ export class LoginService {
       if (!user) {
         return;
       }
-      console.log('Usuario: ', user);
       this.user = user;
     });
-
   }
 
   login() {
-    this.afAut.auth.signInWithPopup(new firebase.auth.GoogleAuthProvider());
-  }
-  logout() {
-    this.afAut.auth.signOut();
-    console.log(this.user);
+    this.afAut.auth.signInWithPopup(new firebase.auth.GoogleAuthProvider()).catch(
+      error => console.log(error)
+    );
+    console.log('Usuario: ', this.user);
   }
 
+  logout() {
+    this.afAut.auth.signOut().catch(
+      error => console.log(error)
+    );
+    this.user = {};
+
+    console.log(this.user);
+  }
 }

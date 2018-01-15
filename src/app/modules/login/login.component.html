@@ -15,7 +15,7 @@
          style="width: 50px; padding: 2px;"> <span> Sign in with your account </span> 
   </button>
 </div>
-<button type="button" (click)="logOutUser()">LogOut</button>
+<button type="button" (click)="logOutUser()" [routerLink]="['/login']">LogOut</button>
 
 <p>Nombre: {{ _loginService.user.displayName }} </p>
 <img [src]= "_loginService.user.photoURL" class="circle" style="width: 150px;" >

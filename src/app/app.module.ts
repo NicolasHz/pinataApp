@@ -16,9 +16,10 @@ import { environment } from '../environments/environment';
 import { LoginService } from './services/login.service';
 import { AuthGuardService } from './services/auth-guard.service';
 
+
 @NgModule({
   declarations: [
-    AppComponent,
+    AppComponent
   ],
   imports: [
     BrowserModule,

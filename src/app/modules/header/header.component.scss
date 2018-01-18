@@ -1,13 +1,12 @@
 @import 'src/assets/scss/variables';
 
 mz-navbar-item  a {
-  color: white!important;
+  color: $white!important;
 }
 
 .logo{
     max-height:46px;
     margin: 6px 0;
-    vertical-align: initial;
     vertical-align: -webkit-baseline-middle;
 }
 

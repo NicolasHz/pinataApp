@@ -8,6 +8,8 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { HomeComponent } from './home.component';
 import { HeaderComponent } from '../header/header.component';
 import { LoginComponent } from './../login/login.component';
+import { BirthdayComponent } from '../birthday/birthday.component';
+import { EventComponent } from '../event/event.component';
 
 // Materialize
 import {  MzNavbarModule,
@@ -28,7 +30,9 @@ import {  MzNavbarModule,
   declarations: [
     HomeComponent,
     HeaderComponent,
-    LoginComponent
+    LoginComponent,
+    BirthdayComponent,
+    EventComponent
 ]
 })
 export class HomeModule { }

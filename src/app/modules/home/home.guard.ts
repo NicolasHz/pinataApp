@@ -1,21 +1,24 @@
 import { AngularFireAuth } from 'angularfire2/auth';
-import { User } from './../interfaces/user';
+import { User } from './../../interfaces/user';
 import { Injectable } from '@angular/core';
-import { Router,
-         RouterModule,
-         ActivatedRouteSnapshot,
-         RouterStateSnapshot,
-         CanActivate,
-         CanLoad } from '@angular/router';
+import {
+  Router,
+  RouterModule,
+  ActivatedRouteSnapshot,
+  RouterStateSnapshot,
+  CanActivate,
+  CanLoad
+} from '@angular/router';
 
-import { LoginService } from './login.service';
+import { LoginService } from '../../services/login.service';
 import { Observable } from 'rxjs/Observable';
 
 @Injectable()
-export class AuthGuardService implements CanActivate {
+export class HomeGuard implements CanActivate {
+
 
   constructor(private _loginService: LoginService,
-              private router: Router) { }
+    private router: Router) { }
 
   canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> {
 

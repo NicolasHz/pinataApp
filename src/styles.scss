@@ -1,6 +1,15 @@
 /* You can add global styles to this file, and also import other style fill*/
-html, body {
+@font-face { font-family: "Strawberry-Blossom"; src: url("./assets/fonts/strawberry_blossom/strawberry_blossom.ttf"); }
 
+@font-face { font-family: "Proxima-Nova-Normal"; src: url("./assets/fonts/proxima_nova/Proxima_Nova.ttf"); }
+@font-face { font-family: "Proxima-Nova-Regular"; src: url("./assets/fonts/proxima_nova/Proxima_Nova-Regular.ttf"); }
+@font-face { font-family: "Proxima-Nova-Bold"; src: url("./assets/fonts/proxima_nova/Proxima_Nova-Bold.ttf"); }
+@font-face { font-family: "Proxima-Nova-Thin"; src: url("./assets/fonts/proxima_nova/Proxima_Nova-Thin.ttf"); }
+
+html, body {
+    * {
+        font-family: "Proxima-Nova-Regular";
+    }
 }
 a{
     text-decoration: none!important;

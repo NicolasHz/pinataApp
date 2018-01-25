@@ -1,0 +1,46 @@
+@import 'src/assets/scss/variables';
+
+.login {
+    background: url("../../../assets/img/8759391612_8ef35db62c_h.jpg") no-repeat;
+    background-size: cover;
+    width: 100vw;
+    height: 100vh;
+    position: absolute;
+    top:0;
+    z-index: -1;
+    &__container {
+        margin: 7% 22% 0 22%;
+        color: white;
+        display: flex;
+        align-items: center;
+        flex-flow: column wrap;
+        text-align: center;
+    }
+}
+
+.btn {
+  width: 45%;
+  box-shadow: none;
+  background: none;
+  border-radius: 20px;
+  &__in {
+    border: 1px solid $success_green;
+    -webkit-tap-highlight-color: $success_green;
+    position:relative;
+    cursor: pointer;
+    display:inline-block;
+    overflow:hidden;
+    -webkit-user-select:none;
+    -moz-user-select:none;
+    -ms-user-select:none;
+    user-select:none;
+    vertical-align:middle;
+    z-index:1;
+    -webkit-transition:.3s ease-out;
+    transition:.3s ease-out;
+
+  }
+  &__out {
+    border: 1px solid $danger_red;
+  }
+}

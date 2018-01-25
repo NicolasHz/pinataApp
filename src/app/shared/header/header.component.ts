@@ -1,3 +1,5 @@
+import { Router } from '@angular/router';
+import { LoginService } from './../../services/login.service';
 import { Component, OnInit } from '@angular/core';
 
 @Component({
@@ -7,9 +9,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HeaderComponent implements OnInit {
 
-  constructor() { }
+  constructor(private _loginService: LoginService,
+              public route: Router) { }
 
   ngOnInit() {
+  }
+
+  logOutUser() {
+    this._loginService.logout();
+    this.route.navigate(['login']);
   }
 
 }

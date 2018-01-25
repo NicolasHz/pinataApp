@@ -21,26 +21,16 @@
 .btn {
   width: 45%;
   box-shadow: none;
-  background: none;
+  background: $success_green_bg ;
   border-radius: 20px;
+  font-weight: 900;
+  font-size: 1.1em;
   &__in {
-    border: 1px solid $success_green;
+    border: 3px solid $success_green;
     -webkit-tap-highlight-color: $success_green;
-    position:relative;
-    cursor: pointer;
-    display:inline-block;
-    overflow:hidden;
-    -webkit-user-select:none;
-    -moz-user-select:none;
-    -ms-user-select:none;
-    user-select:none;
-    vertical-align:middle;
-    z-index:1;
-    -webkit-transition:.3s ease-out;
-    transition:.3s ease-out;
 
   }
   &__out {
-    border: 1px solid $danger_red;
+    border: 5px solid $danger_red;
   }
 }

@@ -1,10 +1,11 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-
+import { BirthdayRoutingModule } from './birthday-routing.module';
 
 // Components
 import { HeaderComponent } from '../../shared/header/header.component';
+import { BirthdayComponent } from './birthday.component';
 
 // Materialize
 import {  MzNavbarModule,
@@ -18,11 +19,12 @@ import {  MzNavbarModule,
     MzNavbarModule,
     MzSidenavModule,
     MzIconModule,
-    MzIconMdiModule
+    MzIconMdiModule,
+    BirthdayRoutingModule
   ],
   schemas: [NO_ERRORS_SCHEMA],
   declarations: [
-    HeaderComponent
-]
+    BirthdayComponent
+  ]
 })
 export class BirthdayModule { }

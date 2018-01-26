@@ -2,13 +2,13 @@
   <a class="brand-logo col s2 offset-s2"><img class="responsive-img logo" src="../../assets/img/glb-no-bg.png" alt=""></a>
   <mz-navbar-item-container [align]="'right'" class="col s4 offset-s6">
     <mz-navbar-item>
-      <a [routerLink]="['home']" class="waves-effect">Birthdays</a>
+      <a [routerLink]="['/birthdays']" class="waves-effect">Birthdays</a>
     </mz-navbar-item>
     <mz-navbar-item>
-      <a class="waves-effect">Events</a>
+      <a [routerLink]="['/events']" class="waves-effect">Events</a>
     </mz-navbar-item>
     <mz-navbar-item>
-      <a class="waves-effect">My Account</a>
+      <a [routerLink]="['/my-account']" class="waves-effect">My Account</a>
     </mz-navbar-item>
     <mz-navbar-item>
       <a class="waves-effect" (click)="logOutUser()">Logout</a>

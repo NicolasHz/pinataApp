@@ -14,14 +14,13 @@ import { environment } from '../environments/environment';
 
 // Services
 import { LoginService } from './services/login.service';
-import { AuthGuardService } from './services/auth-guard.service';
+import { AuthGuardService } from './services/auth-guard';
 import { NotFoundComponent } from './modules/not-found/not-found.component';
 
 
 @NgModule({
   declarations: [
-    AppComponent,
-    NotFoundComponent
+    AppComponent
   ],
   imports: [
     BrowserModule,

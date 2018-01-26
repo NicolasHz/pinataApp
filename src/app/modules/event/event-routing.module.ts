@@ -1,10 +1,9 @@
 import { ModuleWithProviders, NgModule  } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { HomeComponent } from './home.component';
-import { LoginComponent } from './../login/login.component';
+import { EventComponent } from './event.component';
 
 const routes: Routes = [
-  { path: 'home',  component: HomeComponent}
+  { path: '',  component: EventComponent}
 ];
 
 @NgModule({
@@ -17,4 +16,4 @@ const routes: Routes = [
     ]
   })
 
-  export class HomeRoutingModule { }
+  export class EventRoutingModule { }

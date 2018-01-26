@@ -28,14 +28,17 @@
   </mz-sidenav-header>
   <mz-sidenav-subheader>Link Subheader</mz-sidenav-subheader>
   <mz-sidenav-link>
-    <a class="waves-effect">First Link</a>
+    <a [routerLink]="['/birthdays']" class="waves-effect">Birthdays</a>
   </mz-sidenav-link>
   <mz-sidenav-divider></mz-sidenav-divider>
   <mz-sidenav-link [active]="true">
-    <a class="waves-effect">Active Link</a>
+    <a [routerLink]="['/events']" class="waves-effect">Events</a>
   </mz-sidenav-link>
   <mz-sidenav-divider></mz-sidenav-divider>
   <mz-sidenav-link>
-    <a class="waves-effect">Second Link With Waves</a>
+    <a [routerLink]="['/my-account']" class="waves-effect">My Account</a>
+  </mz-sidenav-link>
+  <mz-sidenav-link>
+    <a class="waves-effect" (click)="logOutUser()">Logout</a>
   </mz-sidenav-link>
 </mz-sidenav>

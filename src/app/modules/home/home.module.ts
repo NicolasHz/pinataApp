@@ -6,27 +6,17 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 
 // Components
 import { HomeComponent } from './home.component';
-import { HeaderComponent } from '../../shared/header/header.component';
-
-// Materialize
-import {  MzNavbarModule,
-          MzSidenavModule,
-          MzIconModule,
-          MzIconMdiModule } from 'ng2-materialize';
+import { SharedModule } from '../../shared/shared.module';
 
 @NgModule({
   imports: [
     CommonModule,
-    MzNavbarModule,
-    MzSidenavModule,
-    MzIconModule,
-    MzIconMdiModule,
+    SharedModule,
     HomeRoutingModule,
   ],
   schemas: [NO_ERRORS_SCHEMA],
   declarations: [
-    HomeComponent,
-    HeaderComponent
+    HomeComponent
 ]
 })
 export class HomeModule { }

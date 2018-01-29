@@ -4,33 +4,99 @@
     background: url("../../../assets/img/8759391612_8ef35db62c_h.jpg") no-repeat;
     background-size: cover;
     width: 100vw;
-    height: 100vh;
+    height: 101vh;
     position: absolute;
     top:0;
     z-index: -1;
     &__container {
-        margin: 7% 22% 0 22%;
+        margin: 7% 22% 25% 22%;
         color: white;
         display: flex;
         align-items: center;
         flex-flow: column wrap;
         text-align: center;
     }
+    &__welcome {
+      color: $light_orange;
+      font-size: 1.2em;
+      font-weight: 900;
+      display: flex;
+      align-items: center;
+      flex-flow: column wrap;
+      text-align: center;
+      h1 {
+          font-family: $strawberry_font;
+          font-size: 5.2em;
+          background-image: -webkit-linear-gradient(130deg,  #F44336, #fc6262); /* For Chrome and Safari */
+          background-image:    -moz-linear-gradient(130deg,  #F44336, #fc6262); /* For old Fx (3.6 to 15) */
+          background-image:     -ms-linear-gradient(130deg,  #F44336, #fc6262); /* For pre-releases of IE 10*/
+          background-image:      -o-linear-gradient(130deg,  #F44336, #fc6262); /* For old Opera (11.1 to 12.0) */
+          background-image:         linear-gradient(130deg,  #F44336, #fc6262); /* Standard syntax; must be last */
+          color:transparent;
+          -webkit-background-clip: text;
+          background-clip: text;
+      }
+    }
+    &__btn {
+      width: 45%;
+      box-shadow: none;
+      background: $success_green_bg ;
+      border-radius: 20px;
+      font-weight: 900;
+      font-size: 1.5em;
+      margin-top: 10%;
+      text-align: center;
+      color: $light_orange;
+      border: 3px solid $success_green;
+      -webkit-tap-highlight-color: $success_green;
+    }
 }
 
-.btn {
-  width: 45%;
-  box-shadow: none;
-  background: $success_green_bg ;
-  border-radius: 20px;
-  font-weight: 900;
-  font-size: 1.1em;
-  &__in {
-    border: 3px solid $success_green;
-    -webkit-tap-highlight-color: $success_green;
+.phrase {
+    background: url("../../../assets/img/Youth.png");
+    background-size: cover;
+    background-attachment: fixed;
+    width: 100vw;
+    height: 50vh;
+    &__text {
+      position: relative;
+      top: 35%;
+      text-align: center;
+        font-family: $strawberry_font;
+        font-size: 10em;
+        background-image: -webkit-linear-gradient(130deg,  #F44336, #fc6262); /* For Chrome and Safari */
+        background-image:    -moz-linear-gradient(130deg,  #F44336, #fc6262); /* For old Fx (3.6 to 15) */
+        background-image:     -ms-linear-gradient(130deg,  #F44336, #fc6262); /* For pre-releases of IE 10*/
+        background-image:      -o-linear-gradient(130deg,  #F44336, #fc6262); /* For old Opera (11.1 to 12.0) */
+        background-image:         linear-gradient(130deg,  #F44336, #fc6262); /* Standard syntax; must be last */
+        color:transparent;
+        -webkit-background-clip: text;
+        background-clip: text;
+    }
+}
 
-  }
-  &__out {
-    border: 5px solid $danger_red;
+.birthdays {
+    background: url("../../../assets/img/party-e1463431286678.jpg");
+    background-size: cover;
+    width: 100vw;
+    height: 101vh;
+    position: absolute;
+}
+
+@media screen and (max-width: $app_tablet) {
+  .login {
+    &__btn {
+      text-align: center;
+      width: 20%;
+      &__text {
+        display: none;
+      }
+      &__icon {
+        margin-left: -7px;
+      }
+    }
   }
 }
+
+
+

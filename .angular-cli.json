@@ -19,12 +19,16 @@
       "testTsconfig": "tsconfig.spec.json",
       "prefix": "app",
       "styles": [
+        "../node_modules/bootstrap/dist/css/bootstrap.min.css",
         "../node_modules/materialize-css/dist/css/materialize.min.css",
         "../node_modules/mdi/css/materialdesignicons.min.css" ,
         "./styles.scss"
       ],
       "scripts": [
+        "../node_modules/dist/js/bootstrap.min.js",
         "../node_modules/jquery/dist/jquery.min.js",
+        "../node_modules/tether/dist/js/tether.js",
+        "../node_modules/popper.js/dist/popper.min.js",
         "../node_modules/materialize-css/dist/js/materialize.min.js"
       ],
       "environmentSource": "environments/environment.ts",

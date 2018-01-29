@@ -1,32 +1,37 @@
+  <div class="login">
+    <div class="login__container">
+      <div class="login__welcome">
+        <img src="../../assets/img/cake-boy.png" class="responsive-img" alt="Cake-boy" width="250px">
+        <h1>Welcome to Piñata!!</h1>
+        <p>The quick brown fox jumps over the lazy dog, The quick brown fox jumps over the lazy dog
+          The quick brown fox jumps over the lazy dog. The quick brown fox jumps over the lazy dog.
+        </p>
+      </div>
 
-<div class="login">
-  <div class="login__container">
-    <!-- <button class="btn btn-outline-primary"
-            style="height: auto;
-                   position: relative;
-                   left: 30%;"
-            type="button"
-            (click)="logUser()" >
-    <img src="./assets/img/glb-no-bg.png"
-         style="width: 50px; padding: 2px;"> <span> Sign in with your account </span>
-  </button> -->
+      <button type="button"
+      class="btn btn-large waves-effect waves-green login__btn"
+      (click)="logUser()">
+      <i class="material-icons left login__btn__icon">subdirectory_arrow_right</i> <span class="login__btn__text" > Login </span> </button>
 
-  <button type="button"
-          class="btn btn-large waves-effect waves-green btn__in"
-          (click)="logUser()">
-          <i class="material-icons left">subdirectory_arrow_right</i>Login</button>
+      <hr>
 
-  <hr>
+    </div>
+    <!-- <div class="user_info">
+      <p>Nombre: {{ _loginService.user.displayName }} </p>
+      <img [src]= "_loginService.user.photoURL"
+      class="circle"
+      style="width: 150px;" >
+    </div> -->
 
-  <!-- <button type="button"
-          class="btn btn-large waves-effect waves-red btn__out"
-          (click)="logOutUser()"><i class="material-icons left">subdirectory_arrow_left</i>Logout</button> -->
+    <div class="phrase">
+      <h1 class="phrase__text">Motivational phrase</h1>
+    </div>
 
+    <div class="birthdays">
+
+
+
+    </div>
   </div>
-  <!-- <div class="user_info">
-    <p>Nombre: {{ _loginService.user.displayName }} </p>
-    <img [src]= "_loginService.user.photoURL"
-          class="circle"
-          style="width: 150px;" >
-  </div> -->
-</div>
+
+

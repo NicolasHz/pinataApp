@@ -1,12 +1,23 @@
+// Fonts
+
 $strawberry_font: "Strawberry-Blossom";
 $proxima-normal_font: "Proxima-Nova-Normal";
 $proxima-regular_font: "Proxima-Nova-Regular";
 $proxima-bold_font: "Proxima-Nova-Bold";
 $proxima-thin_font: "Proxima-Nova-Thin";
 
+// Sizes
+
 $app_especific_toggle_menu: 992px;
+$app_mobile: 320px;
+$app_tablet: 768px;
+
+// Colors
 
 $white: white;
 $success_green: rgb(92,184,92);
 $success_green_bg: rgba(92, 184, 92, 0.5);
 $danger_red: rgb(217,83,79);
+$orange: #FF6F00;
+$light_orange: #FFCC80;
+$grey: #E0E0E0;

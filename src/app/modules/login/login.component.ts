@@ -8,7 +8,7 @@ import { LoginService } from './../../services/login.service';
 })
 export class LoginComponent {
 
-  constructor( private _loginService: LoginService) { }
+  constructor( private _loginService: LoginService ) { }
 
   logUser() {
     console.log('Has ingresado!');

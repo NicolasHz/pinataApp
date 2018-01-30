@@ -1,20 +1,21 @@
   <div class="login">
     <div class="login__container">
       <div class="login__welcome">
-        <img src="../../assets/img/cake-boy.png" class="responsive-img" alt="Cake-boy" width="250px">
-        <h1>Welcome to Piñata!!</h1>
-        <p>The quick brown fox jumps over the lazy dog, The quick brown fox jumps over the lazy dog
-          The quick brown fox jumps over the lazy dog. The quick brown fox jumps over the lazy dog.
-        </p>
+        <div class="login__wrapper">
+          <img src="../../assets/img/cake-boy.png" class="responsive-img" alt="Cake-boy" width="250px">
+          <h1>Welcome to Piñata!!</h1>
+          <p>The quick brown fox jumps over the lazy dog, The quick brown fox jumps over the lazy dog
+            The quick brown fox jumps over the lazy dog. The quick brown fox jumps over the lazy dog.
+          </p>
+          <button
+             type="button"
+             class="btn btn-large waves-effect waves-green login__btn"
+             (click)="logUser()">
+          <i class="material-icons left login__btn__icon">subdirectory_arrow_right</i>
+          <span class="login__btn__text" > Login </span>
+          </button>
+        </div>
       </div>
-
-      <button type="button"
-      class="btn btn-large waves-effect waves-green login__btn"
-      (click)="logUser()">
-      <i class="material-icons left login__btn__icon">subdirectory_arrow_right</i> <span class="login__btn__text" > Login </span> </button>
-
-      <hr>
-
     </div>
     <!-- <div class="user_info">
       <p>Nombre: {{ _loginService.user.displayName }} </p>
@@ -28,10 +29,111 @@
     </div>
 
     <div class="birthdays">
-
-
-
+        <h1>Welcome to Piñata!!</h1>
+        <!-- Replace with ngFor. Sample cards. -->
+        <div class="row birthdays__card">
+            <div class="col s12 m3">
+              <div class="card">
+                <div class="card-image">
+                  <img src="../../../assets/img/ezgif.com-gif-maker.gif">
+                  <span class="card-title">Card Title</span>
+                </div>
+                <div class="card-content">
+                  <p>I am a very simple card. I am good at containing small bits of information.
+                  I am convenient because I require little markup to use effectively.</p>
+                </div>
+                <div class="card-action">
+                  <a href="#">This is a link</a>
+                </div>
+              </div>
+            </div>
+            <div class="col s12 m3">
+                <div class="card">
+                  <div class="card-image">
+                    <img src="../../../assets/img/ezgif.com-gif-maker.gif">
+                    <span class="card-title">Card Title</span>
+                  </div>
+                  <div class="card-content">
+                    <p>I am a very simple card. I am good at containing small bits of information.
+                    I am convenient because I require little markup to use effectively.</p>
+                  </div>
+                  <div class="card-action">
+                    <a href="#">This is a link</a>
+                  </div>
+                </div>
+              </div>
+              <div class="col s12 m3">
+                  <div class="card">
+                    <div class="card-image">
+                      <img src="../../../assets/img/ezgif.com-gif-maker.gif">
+                      <span class="card-title">Card Title</span>
+                    </div>
+                    <div class="card-content">
+                      <p>I am a very simple card. I am good at containing small bits of information.
+                      I am convenient because I require little markup to use effectively.</p>
+                    </div>
+                    <div class="card-action">
+                      <a href="#">This is a link</a>
+                    </div>
+                  </div>
+                </div>
+          </div>
     </div>
+
+    <!-- <div class="phrase">
+        <h1 class="phrase__text">Motivational phrase</h1>
+      </div>
+
+      <div class="events">
+          <h1>Welcome to Piñata!!</h1>
+          <div class="row events__card">
+              <div class="col s12 m3">
+                <div class="card">
+                  <div class="card-image">
+                    <img src="../../../assets/img/ezgif.com-gif-maker.gif">
+                    <span class="card-title">Card Title</span>
+                  </div>
+                  <div class="card-content">
+                    <p>I am a very simple card. I am good at containing small bits of information.
+                    I am convenient because I require little markup to use effectively.</p>
+                  </div>
+                  <div class="card-action">
+                    <a href="#">This is a link</a>
+                  </div>
+                </div>
+              </div>
+              <div class="col s12 m3">
+                  <div class="card">
+                    <div class="card-image">
+                      <img src="../../../assets/img/ezgif.com-gif-maker.gif">
+                      <span class="card-title">Card Title</span>
+                    </div>
+                    <div class="card-content">
+                      <p>I am a very simple card. I am good at containing small bits of information.
+                      I am convenient because I require little markup to use effectively.</p>
+                    </div>
+                    <div class="card-action">
+                      <a href="#">This is a link</a>
+                    </div>
+                  </div>
+                </div>
+                <div class="col s12 m3">
+                    <div class="card">
+                      <div class="card-image">
+                        <img src="../../../assets/img/ezgif.com-gif-maker.gif">
+                        <span class="card-title">Card Title</span>
+                      </div>
+                      <div class="card-content">
+                        <p>I am a very simple card. I am good at containing small bits of information.
+                        I am convenient because I require little markup to use effectively.</p>
+                      </div>
+                      <div class="card-action">
+                        <a href="#">This is a link</a>
+                      </div>
+                    </div>
+                  </div>
+            </div>
+      </div> -->
   </div>
 
 

@@ -12,6 +12,7 @@ import {  MzNavbarModule,
           MzIconModule,
           MzIconMdiModule } from 'ng2-materialize';
 import { RouterModule } from '@angular/router';
+import { CardComponent } from './card/card.component';
 
 @NgModule({
   imports: [
@@ -24,7 +25,8 @@ import { RouterModule } from '@angular/router';
   ],
   schemas: [NO_ERRORS_SCHEMA],
   declarations: [
-      HeaderComponent
+      HeaderComponent,
+      CardComponent
   ],
   exports: [
       HeaderComponent

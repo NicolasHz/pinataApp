@@ -15,6 +15,10 @@ const appRoutes: Routes = [
     pathMatch: 'full'
   },
   {
+    path: 'login',
+    loadChildren: 'app/modules/login/login.module#LoginModule',
+  },
+  {
     path: 'home',
     loadChildren: 'app/modules/home/home.module#HomeModule',
     canActivate: [AuthGuardService]
@@ -35,10 +39,6 @@ const appRoutes: Routes = [
     canActivate: [AuthGuardService]
   },
   {
-    path: 'login',
-    component: LoginComponent
-  },
-  {
     path: '**',
     redirectTo: '/not-found'
   },
@@ -53,7 +53,6 @@ const appRoutes: Routes = [
     RouterModule.forRoot(appRoutes)
   ],
   declarations: [
-    LoginComponent,
     NotFoundComponent
   ],
   exports: [

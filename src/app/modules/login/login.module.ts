@@ -2,24 +2,20 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 
+import { SharedModule } from '../../shared/shared.module';
+import { LoginRoutingModule } from './login-routing.module';
 
-// Components
-
-// Materialize
-import {  MzNavbarModule,
-          MzSidenavModule,
-          MzIconModule,
-          MzIconMdiModule } from 'ng2-materialize';
+import { LoginComponent } from './login.component';
 
 @NgModule({
   imports: [
     CommonModule,
-    MzNavbarModule,
-    MzSidenavModule,
-    MzIconModule,
-    MzIconMdiModule
+    SharedModule,
+    LoginRoutingModule
   ],
   schemas: [NO_ERRORS_SCHEMA],
-  declarations: []
+  declarations: [
+    LoginComponent
+  ]
 })
 export class LoginModule { }

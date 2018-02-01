@@ -7,7 +7,7 @@ import * as firebase from 'firebase/app';
 @Injectable()
 export class LoginService {
 
-  public user: any = {}; // Crear interfaz de usuario y pasarle el tipo a la variable
+  public user: User;
 
   constructor(public afAut: AngularFireAuth,
               public route: Router) {
@@ -16,8 +16,12 @@ export class LoginService {
       if (!user) {
         return;
       }
-      this.user = user;
-      console.log(user);
+      this.user = {
+        fullName: user.displayName,
+        profilePicUrl: user.photoURL,
+        uId: user.uid
+      };
+      console.log(user, this.user);
       this.route.navigate(['home']);
     });
   }
@@ -32,7 +36,11 @@ export class LoginService {
     this.afAut.auth.signOut().catch(
       error => console.log(error)
     );
-    this.user = {};
+    this.user = {
+      fullName: '',
+      profilePicUrl: '',
+      uId: ''
+    };
 
     console.log(this.user);
   }

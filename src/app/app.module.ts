@@ -17,10 +17,9 @@ import { LoginService } from './services/login.service';
 import { AuthGuardService } from './services/auth-guard';
 import { NotFoundComponent } from './modules/not-found/not-found.component';
 
-
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
   ],
   imports: [
     BrowserModule,

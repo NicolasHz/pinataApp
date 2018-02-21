@@ -1,7 +1,7 @@
 export interface User {
     fullName: string;
-    birthday: Date;
+    // birthday: Date;
     profilePicUrl: string;
-    isBuyer: boolean;
+    // isBuyer: boolean;
     uId: string;
 }

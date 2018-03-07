@@ -29,7 +29,8 @@ import { CardComponent } from './card/card.component';
       CardComponent
   ],
   exports: [
-      HeaderComponent
+      HeaderComponent,
+      CardComponent
   ]
 })
 export class SharedModule { }

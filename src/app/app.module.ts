@@ -2,6 +2,7 @@ import { RoutingModule } from './app-routing.module';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
 
 import { AppComponent } from './app.component';
 
@@ -26,11 +27,14 @@ import { NotFoundComponent } from './modules/not-found/not-found.component';
     BrowserAnimationsModule,
     AngularFireModule.initializeApp(environment.firebase),
     RoutingModule,
+    HttpClientModule
   ],
   providers: [
     LoginService,
     AngularFireAuth,
-    AuthGuardService
+    AuthGuardService,
+    HttpClient
+
   ],
   bootstrap: [AppComponent]
 })

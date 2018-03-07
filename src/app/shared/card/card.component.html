@@ -1,3 +1,16 @@
-<p>
-  card works!
-</p>
+<div class="row birthdays__card" >
+  <div class="col s12 m3" *ngFor="let event of eventData">
+    <div class="card">
+      <div class="card-image">
+        <img [src]="event.image" alt="Card Img">
+        <span class="card-title">{{event.title}}</span>
+      </div>
+      <div class="card-content">
+        <p>{{event.description}}</p>
+      </div>
+      <div class="card-action">
+        <a href="#">Best</a>
+      </div>
+    </div>
+  </div>
+</div>

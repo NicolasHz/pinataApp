@@ -4,6 +4,8 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { EventRoutingModule } from './event-routing.module';
 import { SharedModule } from '../../shared/shared.module';
 
+// Services
+import { EventsService } from '../../services/events.service';
 // Components
 import { EventComponent } from './event.component';
 
@@ -16,6 +18,9 @@ import { EventComponent } from './event.component';
   schemas: [NO_ERRORS_SCHEMA],
   declarations: [
     EventComponent
-]
+  ],
+  providers: [
+    EventsService
+  ]
 })
 export class EventModule { }

@@ -1,14 +1,7 @@
 @import 'src/assets/scss/variables';
 
 .home {
-    // background: linear-gradient(0deg, #FFEBEE, #EF5350) !important;
-    // background: linear-gradient(0deg, #1a2a6c, #EF5350) !important;
-    background: $pinata_background !important;
-    background-size: cover;
-    width: 100vw;
-    position: absolute;
-    top:0;
-    z-index: -1;
+    @extend %general-background;
     &__welcome {
         margin: 7% 22% 0 22%;
         color: white;

@@ -33,7 +33,15 @@ $pinata_background: linear-gradient(360deg, #ffd86f, #fc6262);
     background-size: cover;
     width: 100%;
     // height: 100%;
-    position: absolute;
+    // position: absolute;
     top:0;
     z-index: -1;
+}
+%main-element {
+    padding: 7% 22% 0 22%;
+    color: $white;
+    display: flex;
+    align-items: center;
+    flex-flow: column wrap;
+    text-align: center;
 }

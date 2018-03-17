@@ -7,5 +7,17 @@
                 The quick brown fox jumps over the lazy dog. The quick brown fox jumps over the lazy dog.
             </p>
     </div>
-    <app-card [eventData]="events"></app-card>
+    <div [ngClass]="[eventsReady ? '' : 'hide']">
+        <app-card [eventData]="events" (showActualImage)="showImage()"></app-card>
+        <app-event-form></app-event-form>
+    </div>
+    <div class="section" *ngIf="!eventsReady">
+        <div class="row">
+                <mz-spinner
+                class="col s12 m12 l12 spinner"
+                [color]="'blue'"
+                [size]="'big'">
+                </mz-spinner>
+        </div>
+    </div>
 </div>

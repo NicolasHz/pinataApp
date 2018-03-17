@@ -3,12 +3,7 @@
 .event {
     @extend %general-background;
     &__welcome {
-        margin: 13% 22% 0 22%;
-        color: $white;
-        display: flex;
-        align-items: center;
-        flex-flow: column wrap;
-        text-align: center;
+        @extend %main-element;
         h1 {
             font-family: $strawberry_font;
             font-size: 5.2em;
@@ -22,4 +17,11 @@
             background-clip: text;
         }
     }
+    .spinner {
+        text-align: center;
+    }
+    .hide {
+        display: none;
+    }
 }
+

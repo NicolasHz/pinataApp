@@ -1,6 +1,6 @@
 import { User } from './user';
 
-export interface Event {
+export interface Evento {
     id: string;
     title: string;
     allDay?: boolean;
@@ -19,7 +19,7 @@ export interface Event {
     image?: string;
 }
 
-export const eventInitialState: Event = {
+export const eventInitialState: Evento = {
     id: null,
     title: null,
     allDay: null,

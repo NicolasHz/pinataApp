@@ -8,4 +8,13 @@
                 </p>
         </div>
         <div id='calendar'></div>
+        <div class="section" *ngIf="!birthdayReady">
+        <div class="row">
+                <mz-spinner
+                class="col s12 m12 l12 spinner"
+                [color]="'blue'"
+                [size]="'big'">
+                </mz-spinner>
+        </div>
+        </div>
 </div>

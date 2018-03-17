@@ -1,4 +1,4 @@
-import { Event, eventInitialState } from '../../interfaces/evento';
+import { Evento, eventInitialState } from '../../interfaces/evento';
 import { Component, OnInit } from '@angular/core';
 import { EventsService } from '../../services/events.service';
 
@@ -8,8 +8,8 @@ import { EventsService } from '../../services/events.service';
   styleUrls: ['./event.component.scss']
 })
 export class EventComponent implements OnInit {
-  public events: Array<Event> = [eventInitialState];
-
+  public events: Array<Evento> = [eventInitialState];
+  public eventsReady = false;
   constructor(private event: EventsService) { }
 
   ngOnInit() {
@@ -17,8 +17,11 @@ export class EventComponent implements OnInit {
     .subscribe(response => {
       this.events = Object.keys(response)
       .map(personNamedIndex => response[personNamedIndex]);
-      console.log(this.events)
     });
+  }
+
+  showImage() {
+    this.eventsReady = true;
   }
 
 }

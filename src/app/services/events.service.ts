@@ -1,3 +1,4 @@
+import { Evento } from './../interfaces/evento';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import 'fullcalendar';
@@ -6,13 +7,16 @@ import 'fullcalendar-scheduler';
 declare let $: any;
 @Injectable()
 export class EventsService {
-
-  constructor(private http: HttpClient) { }
   API_PATH = 'https://miseventos-ebcef.firebaseio.com/';
+  constructor(private http: HttpClient) { }
 
   getEvents(eventsType: string) {
     return this.http.get(`${this.API_PATH}${eventsType}.json`)
     .map(response => response);
+  }
+
+  addEvent(event: Evento) {
+
   }
 
   createCalendar(eventType) {

@@ -1,0 +1,106 @@
+<button 
+  class="addEvent wow slideInRight" 
+  data-wow-duration="1.8s" 
+  mz-button
+  mz-tooltip 
+  [float]="true" 
+  (click)="Modal.open()"
+  [tooltip]="'Create Event'"
+  [position]="'left'"
+  [delay]="800">
+    <i mz-icon 
+    [align]="'center'"
+    [icon]="'add'">
+    </i>
+</button>
+<mz-modal #Modal [fixedFooter]="true"  [options]="modalOptions" novalidate>
+  <mz-modal-header>
+    Create your event!!
+  </mz-modal-header>
+    <mz-modal-content>
+      <form [formGroup]="userForm" (ngSubmit)="onSubmit()" >
+        <div class="section">
+          <div class="row">
+              <h6 class="col s12">Starts</h6>
+              <mz-datepicker-container class="col s12 m6">
+                  <i mz-icon-mdi mz-input-prefix
+                  [icon]="'calendar-range'">
+                  </i>
+                  <input mz-datepicker
+                    mz-validation
+                    required
+                    id="datepicker-startTime"
+                    formControlName="eventStartTime"
+                    type="text"
+                    [errorMessageResource]="errorMessageResources.startDate"
+                    [options]="{ formatSubmit: 'yyyy-mm-dd' }"
+                    [label]="'Events starts'" />
+              </mz-datepicker-container>
+              <mz-timepicker-container class="col s12 m6">
+                  <i mz-icon-mdi mz-input-prefix
+                    [icon]="'clock'">
+                  </i>
+                  <input mz-timepicker
+                    mz-validation 
+                    required
+                    formControlName="eventStartHour"
+                    [errorMessageResource]="errorMessageResources.startHour"
+                    [label]="'Starts at'"
+                    id="timepicker-startTime"
+                    placeholder="Select a start time"
+                    type="text">
+                </mz-timepicker-container>
+          </div>
+          <div class="row">
+              <h6 class="col s12">Ends</h6>
+              <mz-datepicker-container class="col s12 m6">
+                  <i mz-icon-mdi mz-input-prefix
+                  [icon]="'calendar-range'">
+                  </i>
+                  <input mz-datepicker
+                    mz-validation
+                    required
+                    id="datepicker-endTime"
+                    formControlName="eventEndTime"
+                    type="text"
+                    [errorMessageResource]="errorMessageResources.endDate"
+                    [options]="{ formatSubmit: 'yyyy-mm-dd' }"
+                    [label]="'Event ends'" />
+                </mz-datepicker-container>
+                <mz-timepicker-container class="col s12 m6">
+                    <i mz-icon-mdi mz-input-prefix
+                      [icon]="'clock'">
+                    </i>
+                    <input mz-timepicker
+                      mz-validation 
+                      required
+                      formControlName="eventEndHour"
+                      [errorMessageResource]="errorMessageResources.endHour"
+                      [label]="'Ends at'"
+                      id="timepicker-endTime"
+                      placeholder="Select an end time"
+                      type="text">
+                  </mz-timepicker-container>
+          </div>
+          <div class="row">
+              <h6 class="col s12">Description</h6>
+              <mz-textarea-container class="col s12">
+                <textarea mz-textarea
+                  mz-validation 
+                  required
+                  id="textarea-description"
+                  formControlName="description"
+                  [errorMessageResource]="errorMessageResources.description"
+                  [label]="'Event description'"
+                  [length]="255">
+                </textarea>
+              </mz-textarea-container>
+          </div>
+        </div>
+      </form>
+  </mz-modal-content>
+  <mz-modal-footer>
+      <button mz-button mz-modal-close (click)="clear()" type="button">Cancel</button>
+      <button mz-button mz-modal-close [disabled]="!userForm.valid" type="submit">Submit</button>
+  </mz-modal-footer>
+</mz-modal>

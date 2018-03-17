@@ -5,9 +5,10 @@ mz-navbar-item  a {
 }
 
 .logo{
-    max-height:46px;
-    margin: 6px 0;
-    vertical-align: -webkit-baseline-middle;
+  display: flex;
+  max-height:46px;
+  margin: 6px 0;
+  vertical-align: -webkit-baseline-middle;
 }
 
 .toogle_menu {
@@ -16,7 +17,10 @@ mz-navbar-item  a {
 
 @media all and (max-width: $app_especific_toggle_menu) {
   .toogle_menu {
-    display: inline;
+    display: block!important;
+    margin-top: 10px;
+    padding: 0;
+    color:white;
   }
 }
 .active{

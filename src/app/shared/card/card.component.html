@@ -1,8 +1,8 @@
 <div class="row birthdays__card" >
   <div class="col s12 m3" *ngFor="let event of eventData">
-    <div class="card">
+    <div class="card wow fadeIn" data-wow-duration="1s">
       <div class="card-image">
-        <img [src]="event.image" alt="Card Img">
+        <img [src]="event.image" (load)="showImage()" alt="Card Img">
         <span class="card-title">{{event.title}}</span>
       </div>
       <div class="card-content">

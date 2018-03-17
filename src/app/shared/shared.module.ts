@@ -13,15 +13,13 @@ import {  MzNavbarModule,
           MzIconMdiModule } from 'ng2-materialize';
 import { RouterModule } from '@angular/router';
 import { CardComponent } from './card/card.component';
+import { MaterialModule } from './material.module';
 
 @NgModule({
   imports: [
     CommonModule,
     RouterModule,
-    MzNavbarModule,
-    MzSidenavModule,
-    MzIconModule,
-    MzIconMdiModule
+    MaterialModule
   ],
   schemas: [NO_ERRORS_SCHEMA],
   declarations: [
@@ -30,7 +28,8 @@ import { CardComponent } from './card/card.component';
   ],
   exports: [
       HeaderComponent,
-      CardComponent
+      CardComponent,
+      MaterialModule
   ]
 })
 export class SharedModule { }

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 import { EventsService } from '../../services/events.service';
-import { Event } from '../../interfaces/evento';
+import { Evento } from '../../interfaces/evento';
 
 @Component({
   selector: 'app-birthday',
@@ -9,8 +9,8 @@ import { Event } from '../../interfaces/evento';
   styleUrls: ['./birthday.component.scss']
 })
 export class BirthdayComponent implements OnInit {
-  private birthdays: Array<Event>;
-
+  public birthdays: Array<Event>;
+  public birthdayReady = false;
   constructor(private event: EventsService) { }
 
   ngOnInit() {
@@ -18,8 +18,8 @@ export class BirthdayComponent implements OnInit {
     .subscribe(response => {
       this.birthdays = Object.keys(response)
       .map(personNamedIndex => response[personNamedIndex]);
-      console.log(this.birthdays)
       this.event.createCalendar(this.birthdays);
+      this.birthdayReady = true;
     });
   }
 

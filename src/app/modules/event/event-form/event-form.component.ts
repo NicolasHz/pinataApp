@@ -30,6 +30,8 @@ export class EventFormComponent implements OnInit {
     },
     description: {
       required: 'You need a description for this event.',
+      minlength: 'Min lenght 25 characters',
+      maxlength: 'Description cannot be more than 255 characters long.'
     },
   };
 

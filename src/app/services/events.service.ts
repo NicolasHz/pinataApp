@@ -15,8 +15,9 @@ export class EventsService {
     .map(response => response);
   }
 
-  addEvent(event: Evento) {
-
+  addEvent(event: Evento, eventsType: string) {
+    return this.http.post(`${this.API_PATH}${eventsType}.json`, event)
+    .map((response => response));
   }
 
   createCalendar(eventType) {

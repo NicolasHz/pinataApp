@@ -13,6 +13,9 @@ import { AbstractControl,
 export class EventFormComponent implements OnInit {
 
   errorMessageResources = {
+    title: {
+      required: 'Title is required.',
+    },
     startDate: {
       required: 'Start date is required.',
     },
@@ -52,6 +55,7 @@ export class EventFormComponent implements OnInit {
 
   buildForm() {
     this.userForm = this.formBuilder.group({
+      title: [null, Validators.required],
       eventStartTime: [null, Validators.required],
       eventEndTime: [null, Validators.required],
       description: [null,

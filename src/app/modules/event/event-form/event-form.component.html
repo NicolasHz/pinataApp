@@ -21,6 +21,17 @@
       <form [formGroup]="userForm" (ngSubmit)="onSubmit()" >
         <div class="section">
           <div class="row">
+              <h6>Personnal information</h6>
+            <mz-input-container class="col s12 m12 l12">
+              <input mz-input mz-validation required
+                id="input-title"
+                formControlName="title"
+                type="text"
+                [errorMessageResource]="errorMessageResources.title"
+                [label]="'Title'" />
+            </mz-input-container>
+            </div>
+          <div class="row">
               <h6 class="col s12">Starts</h6>
               <mz-datepicker-container class="col s12 m6">
                   <i mz-icon-mdi mz-input-prefix

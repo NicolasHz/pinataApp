@@ -11,6 +11,10 @@ mz-navbar-item  a {
   transition: max-height 300ms linear;
 }
 
+.waves-effect {
+  transition:unset;
+}
+
 .toogle_menu {
   display: none;
 }

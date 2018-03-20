@@ -38,7 +38,8 @@
       }
     }
     &__wrapper {
-      margin: 7% 22% 5% 22%;
+      margin: 2% 22% 5% 22%;
+      height: 500px;      
     }
     &__btn {
       width: 45%;
@@ -47,7 +48,7 @@
       border-radius: 20px;
       font-weight: 900;
       font-size: 1.5em;
-      margin-top: 10%;
+      margin-top: 5%;
       text-align: center;
       color: $light_orange;
       border: 3px solid $success_green;

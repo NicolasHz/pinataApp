@@ -1,16 +1,24 @@
-<div class="row birthdays__card" >
-  <div class="col s12 m3" *ngFor="let event of eventData">
+  <div class="col s12 m3 l3" >
     <div class="card wow fadeIn" data-wow-duration="1s">
       <div class="card-image">
-        <img [src]="event.image" (load)="showImage()" alt="Card Img">
-        <span class="card-title">{{event.title}}</span>
+        <img class="wow fadeIn" data-wow-duration="1s" [ngClass]="[imageReady ? '' : 'hidden']" (load)="showImage()" [src]="eventData.image" alt="Card Img">
+        <img [src]="partyImg" alt="" *ngIf="!imageReady">
+        <!-- <div class="section spinner" *ngIf="!imageReady">
+          <div class="row">
+            <mz-spinner
+            class="col s12 m12 l12"
+            [color]="'blue'"
+            [size]="'big'">
+            </mz-spinner>
+          </div>
+        </div> -->
+        <span class="card-title">{{eventData.title}}</span>
       </div>
       <div class="card-content">
-        <p>{{event.description}}</p>
+        <p>{{eventData.description}}</p>
       </div>
       <div class="card-action">
         <a href="#">Best</a>
       </div>
     </div>
   </div>
-</div>

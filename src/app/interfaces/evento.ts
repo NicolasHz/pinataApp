@@ -35,5 +35,5 @@ export const eventInitialState: Evento = {
     participants: [],
     place: null,
     description: null,
-    image: null
+    image: '../../assets/img/party2.gif'
 };

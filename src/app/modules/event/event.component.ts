@@ -17,11 +17,7 @@ export class EventComponent implements OnInit {
     .subscribe(response => {
       this.events = Object.keys(response)
       .map(personNamedIndex => response[personNamedIndex]);
+      this.eventsReady = true;
     });
   }
-
-  showImage() {
-    this.eventsReady = true;
-  }
-
 }

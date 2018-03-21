@@ -4,4 +4,5 @@ export interface User {
     profilePicUrl: string;
     // isBuyer: boolean;
     uId: string;
+    preferences?: Array<string>;
 }

@@ -10,10 +10,12 @@ import { HeaderComponent } from './header/header.component';
 import {  MzNavbarModule,
           MzSidenavModule,
           MzIconModule,
-          MzIconMdiModule } from 'ng2-materialize';
+          MzIconMdiModule,
+          MzInjectionService} from 'ng2-materialize';
 import { RouterModule } from '@angular/router';
 import { CardComponent } from './card/card.component';
 import { MaterialModule } from './material.module';
+import { EventsService } from '../services/events.service';
 
 @NgModule({
   imports: [
@@ -30,6 +32,10 @@ import { MaterialModule } from './material.module';
       HeaderComponent,
       CardComponent,
       MaterialModule
+  ],
+  providers: [
+    EventsService,
+    MzInjectionService
   ]
 })
 export class SharedModule { }

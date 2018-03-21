@@ -6,8 +6,6 @@ import { EventRoutingModule } from './event-routing.module';
 import { SharedModule } from '../../shared/shared.module';
 import { MzValidationModule } from 'ng2-materialize';
 
-// Services
-import { EventsService } from '../../services/events.service';
 // Components
 import { EventComponent } from './event.component';
 import { EventFormComponent } from './event-form/event-form.component';
@@ -26,7 +24,6 @@ import { EventFormComponent } from './event-form/event-form.component';
     EventFormComponent
   ],
   providers: [
-    EventsService,
     FormBuilder,
   ]
 })

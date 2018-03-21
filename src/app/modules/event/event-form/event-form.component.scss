@@ -5,6 +5,13 @@
     bottom:20px;
     right: 20px;
 }
+mz-modal {
+ /deep/ .modal {
+    max-height: 90%;
+    height: 90%;
+    }
+}
+
 @media all and (max-width: $app_especific_toggle_menu) {
     .addEvent {
         width: 60px;

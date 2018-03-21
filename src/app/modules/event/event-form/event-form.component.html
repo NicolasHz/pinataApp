@@ -21,7 +21,6 @@
       <form [formGroup]="userForm" (ngSubmit)="onSubmit()" >
         <div class="section">
           <div class="row">
-              <h6>Personnal information</h6>
             <mz-input-container class="col s12 m12 l12">
               <input mz-input mz-validation required
                 id="input-title"
@@ -111,7 +110,7 @@
       </form>
   </mz-modal-content>
   <mz-modal-footer>
-      <button mz-button mz-modal-close class="red" (click)="clear()" type="button">Cancel</button>
-      <button mz-button mz-modal-close [disabled]="!userForm.valid" type="submit">Submit</button>
+      <button mz-button mz-modal-close class="red" (click)="clear()" (click)="showToast('Event canceled!', 'black')" type="button">Cancel</button>
+      <button mz-button mz-modal-close [disabled]="!userForm.valid" (click)="showToast('Event submited!', 'green')" type="submit">Submit</button>
   </mz-modal-footer>
 </mz-modal>

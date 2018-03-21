@@ -1,0 +1,30 @@
+<mz-modal [fixedFooter]="true">
+  <mz-modal-header>
+    {{calEvent.title}}
+  </mz-modal-header>
+  <mz-modal-content>
+    <div class="row">
+      <div class="birth-data col s12 m6 l6">
+        <img class="responsive-img" [src]="calEvent.image" alt="">
+        <h5>{{calEvent.start | date:'mediumDate' | slice:0:6}}</h5>
+        </div>
+      <div class="col s12 m6 l6">
+        <h5 class="">Preferencias:</h5>
+        <div *ngFor="let preferenceItem of calEvent.preferences" >
+            <p>
+              <i mz-icon
+              [align]="'left'"
+              [icon]="'person'"
+              [size]="'1.3rem'">
+              </i>
+              {{preferenceItem}}
+            </p>
+        </div>
+      </div>
+    </div>
+  </mz-modal-content>
+  <mz-modal-footer>
+    <button mz-button [flat]="true" mz-modal-close>Close</button>
+    <!-- <button mz-button [flat]="true" mz-modal-close>Agree</button> -->
+  </mz-modal-footer>
+</mz-modal>

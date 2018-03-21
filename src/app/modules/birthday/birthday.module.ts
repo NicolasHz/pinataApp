@@ -6,7 +6,7 @@ import { SharedModule } from '../../shared/shared.module';
 
 // Components
 import { BirthdayComponent } from './birthday.component';
-import { EventsService } from '../../services/events.service';
+import { BirthdayModalComponent } from './birthday-modal/birthday-modal.component';
 
 @NgModule({
   imports: [
@@ -16,10 +16,12 @@ import { EventsService } from '../../services/events.service';
   ],
   schemas: [NO_ERRORS_SCHEMA],
   declarations: [
-    BirthdayComponent
+    BirthdayComponent,
+    BirthdayModalComponent
   ],
-  providers: [
-    EventsService
+  providers: [ ],
+  entryComponents: [
+    BirthdayModalComponent
   ]
 })
 export class BirthdayModule { }

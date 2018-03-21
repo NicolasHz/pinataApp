@@ -22,6 +22,12 @@
     width: 70vw;
     margin: 0 auto;
 }
+@media all and (max-width: $app_especific_toggle_menu) {
+    #calendar {
+        width: 90vw;
+        margin: 0 auto;
+    }
+}
 .spinner{
     text-align: center;
 }

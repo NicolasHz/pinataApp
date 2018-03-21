@@ -4,6 +4,7 @@ import { AbstractControl,
     FormBuilder,
     FormGroup,
     Validators } from '@angular/forms';
+import { MzToastService } from 'ng2-materialize';
 
 @Component({
   selector: 'app-event-form',
@@ -41,14 +42,15 @@ export class EventFormComponent implements OnInit {
     inDuration: 300, // Transition in duration
     outDuration: 200, // Transition out duration
     startingTop: '100%', // Starting top style attribute
-    endingTop: '10%', // Ending top style attribute
+    endingTop: '0%', // Ending top style attribute
   };
 
   submitted = false;
   userForm: FormGroup;
 
   constructor(
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private toastService: MzToastService
   ) { }
 
   ngOnInit() {
@@ -79,5 +81,9 @@ export class EventFormComponent implements OnInit {
   onSubmit() {
     this.submitted = true;
     // this.user = Object.assign({}, this.userForm.value);
+  }
+
+  showToast(message: string, color: string) {
+    this.toastService.show(message, 4000, color );
   }
 }

@@ -3,9 +3,9 @@
     {{calEvent.title}}
   </mz-modal-header>
   <mz-modal-content>
-    <div class="row">
+    <div class="row" [ngClass]="[imageReady ? '' : 'hidden']">
       <div class="birth-data col s12 m6 l6">
-        <img class="responsive-img" [src]="calEvent.image" alt="">
+        <img class="responsive-img" [src]="calEvent.image"  (load)="showImage()" alt="">
         <h5>{{calEvent.start | date:'mediumDate' | slice:0:6}}</h5>
         </div>
       <div class="col s12 m6 l6">
@@ -22,9 +22,18 @@
         </div>
       </div>
     </div>
+    <div class="section spinner" *ngIf="!imageReady">
+      <div class="row">
+        <mz-spinner
+        class="col s12 m12 l12"
+        [color]="'blue'"
+        [size]="'big'">
+        </mz-spinner>
+      </div>
+    </div>
   </mz-modal-content>
   <mz-modal-footer>
-    <button mz-button [flat]="true" mz-modal-close>Close</button>
+    <button mz-button  mz-modal-close>Close</button>
     <!-- <button mz-button [flat]="true" mz-modal-close>Agree</button> -->
   </mz-modal-footer>
 </mz-modal>

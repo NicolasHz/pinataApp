@@ -7,7 +7,7 @@ import { MzBaseModal, MzModalComponent } from 'ng2-materialize';
   styleUrls: ['./birthday-modal.component.scss']
 })
 export class BirthdayModalComponent extends MzBaseModal implements OnInit {
-
+  imageReady = false;
   @Input() calEvent;
   constructor() {super(); }
 
@@ -15,5 +15,7 @@ export class BirthdayModalComponent extends MzBaseModal implements OnInit {
 console.log(this.calEvent.preferences);
 
   }
-
+  showImage() {
+    this.imageReady = true;
+  }
 }

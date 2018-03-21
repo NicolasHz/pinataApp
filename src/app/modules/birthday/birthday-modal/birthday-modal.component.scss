@@ -1,3 +1,15 @@
 .birth-data {
     text-align: center;
 }
+.hidden {
+    display: hidden;
+}
+.spinner {
+    text-align: center;
+}
+mz-spinner {
+    /deep/ .big {
+        width: 10rem;
+        height: 10rem;
+    }
+}

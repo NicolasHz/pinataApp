@@ -2,6 +2,7 @@
 
 .birthday {
     @extend %general-background;
+    padding: 0 0 20px 0;
     &__welcome {
         @extend %main-element;
         h1 {

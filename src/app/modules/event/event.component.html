@@ -8,7 +8,7 @@
             </p>
     </div>
     <div [ngClass]="[eventsReady ? '' : 'hide']">
-        <div class="row">
+        <div class="row event__cards">
             <app-card class="wow fadeIn" data-wow-duration="1.5s" *ngFor="let event of events" [eventData]="event" ></app-card>
         </div>
         <app-event-form></app-event-form>

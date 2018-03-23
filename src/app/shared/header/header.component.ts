@@ -21,13 +21,13 @@ export class HeaderComponent implements OnInit {
 
   @HostListener('window:scroll', [])
   onWindowScroll() {
-     let isChrome = navigator.userAgent.indexOf('Chrome/') > -1;
-     let isExplorer = navigator.userAgent.indexOf('Trident/') > -1;
+     const isChrome = navigator.userAgent.indexOf('Chrome/') > -1;
+     const isExplorer = navigator.userAgent.indexOf('Trident/') > -1;
      const bodyTop = this.doc.body.scrollTop;
      const toTop = this.doc.documentElement.scrollTop;
 
      if (isChrome || isExplorer) {
-      if(toTop > 50) {
+      if (toTop > 50) {
         this.scrolled = true;
       } else if (this.scrolled && toTop < 5) {
         this.scrolled = false;

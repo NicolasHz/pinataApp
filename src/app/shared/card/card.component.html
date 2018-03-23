@@ -1,9 +1,9 @@
-  <div class="col s12 m3 l3" >
-    <div class="card wow fadeIn" data-wow-duration="1s">
+  <div class="col s12 m4 l3" >
+    <div class="card wow flipInX" data-wow-duration="1.4s">
       <div class="card-image">
-        <img class="wow fadeIn" data-wow-duration="1s" [ngClass]="[imageReady ? '' : 'hidden']" (load)="showImage()" [src]="eventData.image" alt="Card Img">
-        <img [src]="partyImg" alt="" *ngIf="!imageReady">
-        <!-- <div class="section spinner" *ngIf="!imageReady">
+        <img class="wow fadeIn" data-wow-duration="1s" [ngClass]="[actualImgReady ? '' : 'hidden']" (load)="showImage()" [src]="eventData.image" alt="Card Img">
+        <img [src]="preLoaderImg" alt="" *ngIf="!actualImgReady">
+        <!-- <div class="section spinner" *ngIf="!actualImgReady">
           <div class="row">
             <mz-spinner
             class="col s12 m12 l12"
@@ -17,8 +17,22 @@
       <div class="card-content">
         <p>{{eventData.description}}</p>
       </div>
-      <div class="card-action">
-        <a href="#">Best</a>
+      <div class="card-action row">
+          <p class="col card-action__participants"
+          mz-tooltip 
+          [tooltip]="'Participants'"
+          [position]="'left'"
+          [delay]="800">
+            <i mz-icon-mdi
+            [align]="'left'"
+            [icon]="'account-multiple-outline'"
+            [size]="'24px'">
+            </i>
+            {{participants}}
+          </p>
+        <button *ngIf="!joined" mz-button class="green col s4 m5 l4 right wow flipInX" data-wow-duration="1.5s" (click)="joinEvent()" (click)="showToast()" type="button">Join!</button>
+        <button *ngIf="joined" mz-button class="red col s4 m5 l4 right wow flipInX" data-wow-duration="1.5s" (click)="leaveEvent()" (click)="showToast()" type="button">Leave!</button>
+        <!-- <button mz-button type="submit">Submit</button>   -->
       </div>
     </div>
   </div>

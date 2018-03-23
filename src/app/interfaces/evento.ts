@@ -15,7 +15,7 @@ export interface Evento {
     creatorId?: string;
     participants?: User [];
     place?: string;
-    description?: string;
+    description: string;
     image?: string;
 }
 

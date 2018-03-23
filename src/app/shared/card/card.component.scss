@@ -7,3 +7,10 @@
 .card-image {
     background: #663399;
 }
+.card-action {
+    &__participants {
+        line-height: 20px;
+        margin:5px 0;
+        font-size: 18px;
+    }
+}

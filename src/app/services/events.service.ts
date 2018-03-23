@@ -20,9 +20,16 @@ export class EventsService {
     .map(response => response);
   }
 
-  addEvent(event: Evento, eventsType: string) {
-    return this.http.post(`${this.API_PATH}${eventsType}.json`, event)
-    .map((response => response));
+  addEvent(eventsType: string, event: Evento) {
+    console.log(eventsType, event);
+  }
+
+  updateEvent() {
+    alert('not implemented');
+  }
+
+  deleteEvent() {
+    alert('not implemented');
   }
 
   createCalendar(eventType) {
@@ -34,9 +41,9 @@ export class EventsService {
       left: 'month,agendaWeek,agendaDay'
     },
     themeSystem: 'bootstrap3',
-    selectable: true,
-    selectHelper: true,
-    editable: true,
+    selectable: false,
+    selectHelper: false,
+    editable: false,
     eventLimit: true,
     events: eventType,
     eventClick: (calEvent, jsEvent, view) => {

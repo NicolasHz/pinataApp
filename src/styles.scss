@@ -29,6 +29,11 @@ nav {
     background: linear-gradient(130deg,#ffd86f,#fc6262)!important;
 }
 
+// Calendar styles
 .fc-day-grid-container {
     height: 100%!important;
+}
+
+.fc-content {
+    cursor: pointer;
 }

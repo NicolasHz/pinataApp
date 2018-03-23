@@ -12,7 +12,6 @@ export class BirthdayModalComponent extends MzBaseModal implements OnInit {
   constructor() {super(); }
 
   ngOnInit() {
-console.log(this.calEvent.preferences);
 
   }
   showImage() {

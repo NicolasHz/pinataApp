@@ -1,3 +1,4 @@
+import { Evento } from './../../../interfaces/evento';
 import { Component, OnInit, Renderer } from '@angular/core';
 import { AbstractControl,
     FormArray,
@@ -5,6 +6,7 @@ import { AbstractControl,
     FormGroup,
     Validators } from '@angular/forms';
 import { MzToastService } from 'ng2-materialize';
+import { EventsService } from '../../../services/events.service';
 
 @Component({
   selector: 'app-event-form',
@@ -50,7 +52,8 @@ export class EventFormComponent implements OnInit {
 
   constructor(
     private formBuilder: FormBuilder,
-    private toastService: MzToastService
+    private toastService: MzToastService,
+    private eventService: EventsService
   ) { }
 
   ngOnInit() {

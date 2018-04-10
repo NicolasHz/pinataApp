@@ -9,7 +9,7 @@ import { AppComponent } from './app.component';
 // Firebase
 import { AngularFireModule } from 'angularfire2';
 import { AngularFirestoreModule } from 'angularfire2/firestore';
-import { AngularFireAuthModule, AngularFireAuth } from 'angularfire2/auth';
+import { AngularFireAuth } from 'angularfire2/auth';
 
 import { environment } from '../environments/environment';
 
@@ -26,6 +26,7 @@ import { NotFoundComponent } from './modules/not-found/not-found.component';
     BrowserModule,
     BrowserAnimationsModule,
     AngularFireModule.initializeApp(environment.firebase),
+    AngularFirestoreModule,
     RoutingModule,
     HttpClientModule
   ],

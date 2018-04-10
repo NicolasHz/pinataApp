@@ -46,10 +46,19 @@ export class EventFormComponent implements OnInit {
     startingTop: '100%', // Starting top style attribute
     endingTop: '0%', // Ending top style attribute
   };
-
+  public timepickerOptions: Pickadate.TimeOptions = {
+    default: 'now', // Set default time: 'now', '1:30AM', '16:30'
+    fromnow: 0,       // set default time to * milliseconds from now (using with default = 'now')
+    twelvehour: false, // Use AM/PM or 24-hour format
+    donetext: 'OK', // text for done-button
+    cleartext: 'Clear', // text for clear-button
+    canceltext: 'Cancel', // Text for cancel-button
+    autoclose: true, // automatic close timepicker
+    ampmclickable: false, // make AM PM clickable
+  };
+  private event: Evento;
   submitted = false;
-  userForm: FormGroup;
-
+  eventForm: FormGroup;
   constructor(
     private formBuilder: FormBuilder,
     private toastService: MzToastService,
@@ -61,11 +70,12 @@ export class EventFormComponent implements OnInit {
   }
 
   buildForm() {
-    this.userForm = this.formBuilder.group({
+    this.eventForm = this.formBuilder.group({
       title: [null, Validators.required],
-      eventStartTime: [null, Validators.required],
-      eventEndTime: [null, Validators.required],
-      description: [null,
+      start: [null, Validators.required],
+      end: [null, Validators.required],
+      description: [
+        null,
         [
           Validators.required,
           Validators.maxLength(255),
@@ -76,13 +86,34 @@ export class EventFormComponent implements OnInit {
       eventEndHour: [null, Validators.required]
     });
   }
+  // buildForm() {
+  //   this.eventForm = this.formBuilder.group({
+  //     title: [null, Validators.required],
+  //     start: [null, Validators.required],
+  //     end: [null, Validators.required],
+  //     description: [
+  //       null,
+  //       [
+  //         Validators.required,
+  //         Validators.maxLength(255),
+  //         Validators.minLength(20)
+  //       ]
+  //     ],
+  //     eventStartHour: [null, Validators.required],
+  //     eventEndHour: [null, Validators.required]
+  //   });
+  // }
 
   clear() {
-    this.userForm.reset();
+    this.eventForm.reset();
   }
 
-  onSubmit() {
+  submitForm() {
     this.submitted = true;
+    const model = <Evento>this.eventForm.value;
+    console.log(model)
+    // this.eventService.addEvent('events', this.eventForm.value);
+    // this.clear();
     // this.user = Object.assign({}, this.userForm.value);
   }
 

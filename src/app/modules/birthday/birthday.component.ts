@@ -9,7 +9,7 @@ import { Evento } from '../../interfaces/evento';
   styleUrls: ['./birthday.component.scss']
 })
 export class BirthdayComponent implements OnInit {
-  public birthdays: Array<Event>;
+  public birthdays: Array<Evento>;
   public birthdayReady = false;
   constructor(private event: EventsService) { }
 
@@ -17,7 +17,7 @@ export class BirthdayComponent implements OnInit {
     this.event.getEvents('birthdays')
     .subscribe(response => {
       this.birthdays = Object.keys(response)
-      .map(personNamedIndex => response[personNamedIndex]);
+      .map(index => response[index]);
       this.event.createCalendar(this.birthdays);
       this.birthdayReady = true;
     });

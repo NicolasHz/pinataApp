@@ -17,7 +17,7 @@ export class EventComponent implements OnInit {
     .subscribe(response => {
       this.events = Object.keys(response)
       .map(index => response[index]);
-      console.log(this.events[0])
+      console.log(this.events[0]);
       this.eventsReady = true;
     });
   }

@@ -36,7 +36,6 @@ export class EventsService {
   // }
 
   addEvent(eventsType: string, event: Evento) {
-    console.log(eventsType, event);
     this.db.collection(eventsType).add(event);
   }
 

@@ -18,7 +18,7 @@
     Create your event!!
   </mz-modal-header>
     <mz-modal-content>
-      <form [formGroup]="eventForm" (ngSubmit)="onSubmit()" >
+      <form [formGroup]="eventForm" >
         <div class="section">
           <div class="row">
             <mz-input-container class="col s12 m12 l12">
@@ -30,7 +30,7 @@
                 [label]="'Title'" />
             </mz-input-container>
             </div>
-          <div class="row">
+          <div class="row" formGroupName="start">
               <h6 class="col s12">Starts</h6>
               <mz-datepicker-container class="col s12 m6">
                   <i mz-icon-mdi mz-input-prefix
@@ -40,10 +40,10 @@
                     mz-validation
                     required
                     id="datepicker-startTime"
-                    formControlName="start"
+                    formControlName="eventStartDay"
                     type="text"
                     [errorMessageResource]="errorMessageResources.startDate"
-                    [options]="{ formatSubmit: 'yyyy-mm-dd' }"
+                    [options]="startDatepickerOptions"
                     [label]="'Events starts'" />
               </mz-datepicker-container>
               <mz-timepicker-container class="col s12 m6">
@@ -62,7 +62,10 @@
                     type="text">
                 </mz-timepicker-container>
           </div>
-          <div class="row">
+          <div class="row wow fadeIn" 
+            data-wow-duration="1s"
+            formGroupName="end"
+            *ngIf="endDateAvalible">
               <h6 class="col s12">Ends</h6>
               <mz-datepicker-container class="col s12 m6">
                   <i mz-icon-mdi mz-input-prefix
@@ -72,10 +75,10 @@
                     mz-validation
                     required
                     id="datepicker-endTime"
-                    formControlName="end"
+                    formControlName="eventEndDay"
                     type="text"
                     [errorMessageResource]="errorMessageResources.endDate"
-                    [options]="{ formatSubmit: 'yyyy-mm-dd' }"
+                    [options]="endDatepickerOptions"
                     [label]="'Event ends'" />
                 </mz-datepicker-container>
                 <mz-timepicker-container class="col s12 m6">
@@ -95,7 +98,6 @@
                   </mz-timepicker-container>
           </div>
           <div class="row">
-              <h6 class="col s12">Description</h6>
               <mz-textarea-container class="col s12">
                 <textarea mz-textarea
                   mz-validation 
@@ -107,6 +109,15 @@
                   [length]="255">
                 </textarea>
               </mz-textarea-container>
+          </div>
+          <div class="row">
+            <mz-input-container class="col s12 m12 l12">
+              <input mz-input mz-validation
+                id="input-image"
+                formControlName="image"
+                type="text"
+                [label]="'Paste your image URL'" />
+          </mz-input-container>
           </div>
         </div>
       </form>

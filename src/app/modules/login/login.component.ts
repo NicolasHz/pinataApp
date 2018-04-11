@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { LoginService } from './../../services/login.service';
+import { UserService } from './../../services/user.service';
 
 @Component({
   selector: 'app-login',
@@ -8,15 +8,9 @@ import { LoginService } from './../../services/login.service';
 })
 export class LoginComponent {
 
-  constructor( private _loginService: LoginService ) { }
+  constructor( private userService: UserService ) { }
 
   logUser() {
-    console.log('Has ingresado!');
-    this._loginService.login();
-
-  }
-
-  logOutUser() {
-    this._loginService.logout();
+    this.userService.login();
   }
 }

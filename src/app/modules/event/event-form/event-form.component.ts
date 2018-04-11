@@ -1,4 +1,3 @@
-import { Evento } from './../../../interfaces/evento';
 import { Component, OnInit } from '@angular/core';
 import { AbstractControl,
     FormBuilder,
@@ -10,7 +9,10 @@ import { TIME_PICKER_OPTIONS,
     MODAL_OPTIONS,
     START_DATE_PICKER_OPTIONS,
     END_DATE_PICKER_OPTIONS } from '../../../shared/options/date-time-pickers';
+    import { User } from './../../../interfaces/user';
+import { Evento } from './../../../interfaces/evento';
 import * as moment from 'moment';
+import { UserService } from '../../../services/user.service';
 @Component({
   selector: 'app-event-form',
   templateUrl: './event-form.component.html',
@@ -46,19 +48,20 @@ export class EventFormComponent implements OnInit {
   public endDatepickerOptions = END_DATE_PICKER_OPTIONS;
   public endDateAvalible = false;
   private event: Evento;
-  submitted = false;
+  private user: User;
   eventForm: FormGroup;
-
   constructor(
     private formBuilder: FormBuilder,
     private toastService: MzToastService,
-    private eventService: EventsService
+    private eventService: EventsService,
+    private userService: UserService
   ) { }
 
   ngOnInit() {
     this.startDatepickerOptions.onOpen = () => this.endDateAvalible = false;
     this.startDatepickerOptions.onClose = () => this.setAvalibleDays();
     this.buildForm();
+    this.user = this.userService.getUser();
   }
 
   buildForm() {
@@ -89,7 +92,6 @@ export class EventFormComponent implements OnInit {
   }
 
   submitForm() {
-    this.submitted = true;
     const formattedStart = moment(this.eventForm.value.start.eventStartDay + 'T' + this.eventForm.value.start.eventStartHour).format();
     const formattedEnd = moment(this.eventForm.value.end.eventEndDay + 'T' + this.eventForm.value.end.eventEndHour).format();
     this.event = <Evento>{
@@ -98,6 +100,7 @@ export class EventFormComponent implements OnInit {
       end: formattedEnd,
       description: this.eventForm.value.description,
       image: '',
+      creator: this.user.uId
     };
     this.eventService.addEvent('events', this.event);
     this.clear();

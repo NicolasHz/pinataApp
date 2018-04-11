@@ -12,7 +12,6 @@ import { RouterModule } from '@angular/router';
 import { CardComponent } from './card/card.component';
 import { MaterialModule } from './material.module';
 import { EventsService } from '../services/events.service';
-import { UserService } from '../services/user.service';
 
 @NgModule({
   imports: [
@@ -32,7 +31,6 @@ import { UserService } from '../services/user.service';
   ],
   providers: [
     EventsService,
-    UserService,
     MzInjectionService
   ]
 })

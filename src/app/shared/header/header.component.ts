@@ -1,5 +1,5 @@
 import { Router } from '@angular/router';
-import { LoginService } from './../../services/login.service';
+import { UserService } from './../../services/user.service';
 import { Component, OnInit, HostListener, Inject } from '@angular/core';
 import { DOCUMENT } from '@angular/platform-browser';
 
@@ -12,7 +12,7 @@ export class HeaderComponent implements OnInit {
   public scrolled = false;
 
   constructor(
-    private _loginService: LoginService,
+    private userService: UserService,
     public route: Router,
     @Inject(DOCUMENT) private doc: Document) { }
 
@@ -42,7 +42,7 @@ export class HeaderComponent implements OnInit {
   }
 
   logOutUser() {
-    this._loginService.logout();
+    this.userService.logout();
     this.route.navigate(['login']);
   }
 }

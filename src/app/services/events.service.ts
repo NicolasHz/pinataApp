@@ -30,21 +30,39 @@ export class EventsService {
       });
     });
   }
-  // getEvents(eventsType: string) {
-  //   return this.http.get(`${this.API_PATH}${eventsType}.json`)
-  //   .map(response => response);
-  // }
 
   addEvent(eventsType: string, event: Evento) {
-    this.db.collection(eventsType).add(event);
+    this.db.collection(eventsType)
+    .add(event)
+    .then(function() {
+      console.log('Document successfully written!');
+    })
+    .catch(function(error) {
+      console.error('Error writing document: ', error);
+    });
   }
 
-  updateEvent() {
-    alert('not implemented');
+  updateEvent(eventsType: string, event: Evento) {
+    this.db.collection(eventsType)
+    .doc(event.id)
+    .set(event)
+    .then(function() {
+      console.log('Document successfully written!');
+    })
+    .catch(function(error) {
+      console.error('Error writing document: ', error);
+    });
   }
 
-  deleteEvent() {
-    alert('not implemented');
+  deleteEvent(eventsType: string, event: Evento) {
+    this.db.collection(eventsType)
+    .doc(event.id)
+    .delete()
+    .then(function() {
+      console.log('Document successfully deleted!');
+  }).catch(function(error) {
+      console.error('Error removing document: ', error);
+  });
   }
 
   createCalendar(eventType) {

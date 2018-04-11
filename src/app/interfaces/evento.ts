@@ -17,6 +17,7 @@ export interface Evento {
     place?: string;
     description: string;
     image?: string;
+    creator: string;
 }
 
 export const eventInitialState: Evento = {
@@ -35,5 +36,6 @@ export const eventInitialState: Evento = {
     participants: [],
     place: null,
     description: null,
-    image: '../../assets/img/party2.gif'
+    image: '../../assets/img/party2.gif',
+    creator: null
 };

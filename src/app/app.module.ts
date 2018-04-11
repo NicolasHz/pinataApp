@@ -14,7 +14,7 @@ import { AngularFireAuth } from 'angularfire2/auth';
 import { environment } from '../environments/environment';
 
 // Services
-import { LoginService } from './services/login.service';
+import { UserService } from './services/user.service';
 import { AuthGuardService } from './services/auth-guard';
 import { NotFoundComponent } from './modules/not-found/not-found.component';
 
@@ -31,11 +31,10 @@ import { NotFoundComponent } from './modules/not-found/not-found.component';
     HttpClientModule
   ],
   providers: [
-    LoginService,
+    UserService,
     AngularFireAuth,
     AuthGuardService,
     HttpClient
-
   ],
   bootstrap: [AppComponent]
 })

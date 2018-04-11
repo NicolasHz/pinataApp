@@ -1,4 +1,4 @@
-import { LoginService } from './../../services/login.service';
+import { UserService } from './../../services/user.service';
 import { Component, OnInit } from '@angular/core';
 
 @Component({
@@ -9,7 +9,7 @@ import { Component, OnInit } from '@angular/core';
 export class HomeComponent implements OnInit {
 
   name: string;
-  constructor( private _loginService: LoginService ) { }
+  constructor( private _loginService: UserService ) { }
 
   ngOnInit() {
     this.name = this._loginService.afAut.auth.currentUser.displayName;

@@ -1,9 +1,10 @@
 import { User } from './../../interfaces/user';
 import { Evento, eventInitialState } from './../../interfaces/evento';
 import { Component, OnInit, Input} from '@angular/core';
-import { MzToastService } from 'ng2-materialize';
+import { MzToastService, MzModalService } from 'ng2-materialize';
 import { EventsService } from '../../services/events.service';
 import { UserService } from '../../services/user.service';
+import { EventFormComponent } from '../../modules/event/event-form/event-form.component';
 
 @Component({
   selector: 'app-card',
@@ -14,6 +15,7 @@ export class CardComponent implements OnInit {
   @Input() eventData = eventInitialState;
   actualImgReady = false;
   preLoaderImg: string;
+  eventAuthor = false;
   participants;
   user: User;
   joined = false; // test porpouses only, needs to be setted from User database
@@ -25,11 +27,14 @@ export class CardComponent implements OnInit {
   constructor(
     private toastService: MzToastService,
     private eventService: EventsService,
-    private userService: UserService) { }
+    private userService: UserService,
+    private modalService: MzModalService) { }
 
   ngOnInit() {
     this.preLoaderImg = this.imgSource[Math.floor(Math.random() * this.imgSource.length)];
     this.user = this.userService.getUser();
+    console.log( this.eventData.creator, this.user.uId)
+    this.eventAuthor = this.eventData.creator === this.user.uId ? true : false;
     if (this.eventData.participants) {
       this.participants = this.eventData.participants.length;
       if (this.findUser()) {
@@ -68,10 +73,10 @@ export class CardComponent implements OnInit {
   }
 
   editEvent() {
-
+    this.modalService.open(EventFormComponent);
   }
 
   deleteEvent() {
-    
+
   }
 }

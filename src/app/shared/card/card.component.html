@@ -1,58 +1,49 @@
-  <div class="col s12 m4 l3" >
-    <div class="card wow flipInX" data-wow-duration="1.4s">
-      <div class="card-image">
-        <div class="buttons">
-            <button
-            (click)="editEvent()"
-            mz-button
-            mz-tooltip
-            [tooltip]="'Edit'"
-            [position]="'top'"
-            [float]="true"
-            [delay]="500"
-            class="green buttons__delete wow fadeIn" 
-            data-wow-duration="0.8s" 
-            type="button">
+<div class="col s12 m4 l3" >
+  <div class="card wow flipInX" data-wow-duration="1.4s">
+    <div class="card-image">
+      <div class="buttons" *ngIf="eventAuthor">
+        <button
+          (click)="editEvent()"
+          mz-button
+          mz-tooltip
+          [tooltip]="'Edit'"
+          [position]="'top'"
+          [float]="true"
+          [delay]="500"
+          class="green buttons__delete wow fadeIn" 
+          data-wow-duration="0.8s" 
+          type="button">
             <i mz-icon 
             [align]="'center'"
             [icon]="'mode_edit'">
             </i>
-          </button>
-          <button 
-          (click)="deleteEvent()"
-          mz-button
-          mz-tooltip
-          [tooltip]="'Delete'"
-          [position]="'top'"
-          [delay]="500"
-          [float]="true"
-          class="red buttons__delete wow fadeIn" 
-          data-wow-duration="0.8s" 
-          type="button">
+      </button>
+      <button 
+        (click)="deleteEvent()"
+        mz-button
+        mz-tooltip
+        [tooltip]="'Delete'"
+        [position]="'top'"
+        [delay]="500"
+        [float]="true"
+        class="red buttons__delete wow fadeIn" 
+        data-wow-duration="0.8s" 
+        type="button">
           <i mz-icon 
           [align]="'center'"
           [icon]="'delete_forever'">
           </i>
-        </button>
-        </div>
-        <img class="wow fadeIn" data-wow-duration="1s" [ngClass]="[actualImgReady ? '' : 'hidden']" (load)="showImage()" [src]="eventData.image" alt="Card Img">
-        <img [src]="preLoaderImg" alt="" *ngIf="!actualImgReady">
-        <!-- <div class="section spinner" *ngIf="!actualImgReady">
-          <div class="row">
-            <mz-spinner
-            class="col s12 m12 l12"
-            [color]="'blue'"
-            [size]="'big'">
-            </mz-spinner>
-          </div>
-        </div> -->
-        <span class="card-title">{{eventData.title}}</span>
+      </button>
       </div>
-      <div class="card-content">
-        <p>{{eventData.description}}</p>
-      </div>
-      <div class="card-action row">
-          <p class="col card-action__participants"
+      <img class="wow fadeIn" data-wow-duration="1s" [ngClass]="[actualImgReady ? '' : 'hidden']" (load)="showImage()" [src]="eventData.image" alt="Card Img">
+      <img [src]="preLoaderImg" alt="" *ngIf="!actualImgReady">
+      <span class="card-title">{{eventData.title}}</span>
+    </div>
+    <div class="card-content">
+      <p>{{eventData.description}}</p>
+    </div>
+    <div class="card-action row">
+        <p class="col card-action__participants"
           mz-tooltip 
           [tooltip]="'Participants'"
           [position]="'left'"
@@ -63,10 +54,9 @@
             [size]="'24px'">
             </i>
             {{participants}}
-          </p>
-        <button *ngIf="!joined" mz-button class="green col s4 m5 l4 right wow flipInX" data-wow-duration="1.5s" (click)="joinEvent()" (click)="showToast()" type="button">Join!</button>
-        <button *ngIf="joined" mz-button class="red col s4 m5 l4 right wow flipInX" data-wow-duration="1.5s" (click)="leaveEvent()" (click)="showToast()" type="button">Leave!</button>
-        <!-- <button mz-button type="submit">Submit</button>   -->
-      </div>
+        </p>
+      <button *ngIf="!joined" mz-button class="green col s4 m5 l4 right wow flipInX" data-wow-duration="1.5s" (click)="joinEvent()" (click)="showToast()" type="button">Join!</button>
+      <button *ngIf="joined" mz-button class="red col s4 m5 l4 right wow flipInX" data-wow-duration="1.5s" (click)="leaveEvent()" (click)="showToast()" type="button">Leave!</button>
     </div>
   </div>
+</div>

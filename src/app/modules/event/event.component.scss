@@ -26,5 +26,11 @@
     .hide {
         display: none;
     }
+    .addEvent {
+        position:fixed;
+        bottom:20px;
+        right: 20px;
+    }
+    button:focus {outline:0;}
 }
 

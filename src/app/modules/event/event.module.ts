@@ -25,6 +25,9 @@ import { EventFormComponent } from './event-form/event-form.component';
   ],
   providers: [
     FormBuilder
+  ],
+  entryComponents: [
+    EventFormComponent
   ]
 })
 export class EventModule { }

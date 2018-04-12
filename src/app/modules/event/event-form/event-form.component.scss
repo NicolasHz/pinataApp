@@ -1,11 +1,6 @@
 
 @import 'src/assets/scss/variables';
-.addEvent {
-    position:fixed;
-    bottom:20px;
-    right: 20px;
-}
-button:focus {outline:0;}
+
 mz-modal {
  /deep/ .modal {
     max-height: 90%;

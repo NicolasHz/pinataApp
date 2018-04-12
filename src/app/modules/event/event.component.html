@@ -11,8 +11,22 @@
         <div class="row event__cards">
             <app-card *ngFor="let event of events" [eventData]="event" ></app-card>
         </div>
-        <app-event-form></app-event-form>
     </div>
+    <button 
+        class="addEvent wow slideInRight" 
+        data-wow-duration="1.8s" 
+        mz-button
+        mz-tooltip 
+        [float]="true" 
+        (click)="openEventForm()"
+        [tooltip]="'Create Event'"
+        [position]="'left'"
+        [delay]="800">
+            <i mz-icon 
+            [align]="'center'"
+            [icon]="'add'">
+            </i>
+    </button>
     <div class="section" *ngIf="!eventsReady">
         <div class="row">
             <mz-spinner

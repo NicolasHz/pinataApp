@@ -1,6 +1,8 @@
 import { Evento, eventInitialState } from '../../interfaces/evento';
 import { Component, OnInit } from '@angular/core';
 import { EventsService } from '../../services/events.service';
+import { EventFormComponent } from './event-form/event-form.component';
+import { MzModalService } from 'ng2-materialize';
 
 @Component({
   selector: 'app-event',
@@ -10,7 +12,7 @@ import { EventsService } from '../../services/events.service';
 export class EventComponent implements OnInit {
   public events: Array<Evento>;
   public eventsReady = false;
-  constructor(private event: EventsService) { }
+  constructor(private event: EventsService, private modalService: MzModalService) { }
 
   ngOnInit() {
     this.event.getEvents('events')
@@ -19,5 +21,8 @@ export class EventComponent implements OnInit {
       .map(index => response[index]);
       this.eventsReady = true;
     });
+  }
+  openEventForm() {
+    this.modalService.open(EventFormComponent);
   }
 }

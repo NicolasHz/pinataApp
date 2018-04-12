@@ -1,18 +1,3 @@
-<button 
-  class="addEvent wow slideInRight" 
-  data-wow-duration="1.8s" 
-  mz-button
-  mz-tooltip 
-  [float]="true" 
-  (click)="Modal.open()"
-  [tooltip]="'Create Event'"
-  [position]="'left'"
-  [delay]="800">
-    <i mz-icon 
-    [align]="'center'"
-    [icon]="'add'">
-    </i>
-</button>
 <mz-modal #Modal [fixedFooter]="true"  [options]="modalOptions" novalidate>
   <mz-modal-header>
     Create your event!!

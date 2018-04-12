@@ -3,7 +3,7 @@ import { AbstractControl,
     FormBuilder,
     FormGroup,
     Validators } from '@angular/forms';
-import { MzToastService } from 'ng2-materialize';
+import { MzToastService, MzBaseModal, MzModalComponent } from 'ng2-materialize';
 import { EventsService } from '../../../services/events.service';
 import { TIME_PICKER_OPTIONS,
     MODAL_OPTIONS,
@@ -18,7 +18,7 @@ import { UserService } from '../../../services/user.service';
   templateUrl: './event-form.component.html',
   styleUrls: ['./event-form.component.scss']
 })
-export class EventFormComponent implements OnInit {
+export class EventFormComponent extends MzBaseModal implements OnInit {
 
   errorMessageResources = {
     title: {
@@ -55,7 +55,7 @@ export class EventFormComponent implements OnInit {
     private toastService: MzToastService,
     private eventService: EventsService,
     private userService: UserService
-  ) { }
+  ) { super(); }
 
   ngOnInit() {
     this.startDatepickerOptions.onOpen = () => this.endDateAvalible = false;

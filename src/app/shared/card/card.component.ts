@@ -66,4 +66,12 @@ export class CardComponent implements OnInit {
     this.eventData.participants.splice(index);
     this.eventService.updateEvent('events', this.eventData);
   }
+
+  editEvent() {
+
+  }
+
+  deleteEvent() {
+    
+  }
 }

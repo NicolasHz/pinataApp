@@ -14,3 +14,16 @@
         font-size: 18px;
     }
 }
+.buttons {
+    position: absolute;
+    right: 0px;
+    &__edit {
+        position: relative;
+        margin: 5px 2px;
+    }
+    &__delete {
+        position: relative;
+        margin: 5px 2px;
+    }
+    button:focus {outline:0;}
+}

@@ -1,6 +1,40 @@
   <div class="col s12 m4 l3" >
     <div class="card wow flipInX" data-wow-duration="1.4s">
       <div class="card-image">
+        <div class="buttons">
+            <button
+            (click)="editEvent()"
+            mz-button
+            mz-tooltip
+            [tooltip]="'Edit'"
+            [position]="'top'"
+            [float]="true"
+            [delay]="500"
+            class="green buttons__delete wow fadeIn" 
+            data-wow-duration="0.8s" 
+            type="button">
+            <i mz-icon 
+            [align]="'center'"
+            [icon]="'mode_edit'">
+            </i>
+          </button>
+          <button 
+          (click)="deleteEvent()"
+          mz-button
+          mz-tooltip
+          [tooltip]="'Delete'"
+          [position]="'top'"
+          [delay]="500"
+          [float]="true"
+          class="red buttons__delete wow fadeIn" 
+          data-wow-duration="0.8s" 
+          type="button">
+          <i mz-icon 
+          [align]="'center'"
+          [icon]="'delete_forever'">
+          </i>
+        </button>
+        </div>
         <img class="wow fadeIn" data-wow-duration="1s" [ngClass]="[actualImgReady ? '' : 'hidden']" (load)="showImage()" [src]="eventData.image" alt="Card Img">
         <img [src]="preLoaderImg" alt="" *ngIf="!actualImgReady">
         <!-- <div class="section spinner" *ngIf="!actualImgReady">

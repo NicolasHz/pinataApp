@@ -25,14 +25,14 @@ $grey: #E0E0E0;
 
 
 // Backgrounds 
-
+// $pinata_background: linear-gradient(130deg, #fc5a5a, #3d1bfa);
 $pinata_background: linear-gradient(360deg, #ffd86f, #fc6262);
 
 %general-background {
     background: $pinata_background !important;
     background-size: cover;
     width: 100%;
-    // height: 100%;
+    min-height: 100vh;
     // position: absolute;
     top:0;
     z-index: -1;

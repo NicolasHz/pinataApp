@@ -1,6 +1,9 @@
 <mz-modal #Modal [fixedFooter]="true"  [options]="modalOptions" novalidate>
-  <mz-modal-header>
+  <mz-modal-header *ngIf="!editingEvent">
     Create your event!!
+  </mz-modal-header>
+  <mz-modal-header *ngIf="editingEvent">
+    Update your event!
   </mz-modal-header>
     <mz-modal-content>
       <form [formGroup]="eventForm" >

@@ -1,4 +1,3 @@
-import { Evento } from './../../interfaces/evento';
 import { Component, OnInit, Input } from '@angular/core';
 import { MzBaseModal, MzModalComponent } from 'ng2-materialize';
 import { Subject } from 'rxjs/Subject';
@@ -10,8 +9,8 @@ import { ModalService } from '../../services/modal.service';
   styleUrls: ['./confirm-modal.component.scss']
 })
 export class ConfirmModalComponent extends MzBaseModal implements OnInit {
-  @Input() eventData: Evento;
-  @Input() buttonText: Evento;
+  @Input() eventData;
+  @Input() buttonText;
   constructor(private modalService: ModalService ) { super(); }
 
   ngOnInit() { }

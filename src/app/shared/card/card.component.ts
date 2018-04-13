@@ -14,7 +14,7 @@ import { Subject } from 'rxjs/Subject';
   templateUrl: './card.component.html',
   styleUrls: ['./card.component.scss']
 })
-export class CardComponent implements OnInit, OnDestroy {
+export class CardComponent implements OnInit {
   @Input() eventData = eventInitialState;
   private actualImgReady = false;
   private optionsOpened = false;
@@ -79,7 +79,8 @@ export class CardComponent implements OnInit, OnDestroy {
 
   editEvent() {
     const eventData = this.eventData;
-    this.mzModalService.open(EventFormComponent, {eventData});
+    const editingEvent = true;
+    this.mzModalService.open(EventFormComponent, {eventData, editingEvent});
   }
 
   deleteEvent() {
@@ -102,11 +103,5 @@ export class CardComponent implements OnInit, OnDestroy {
   toggleEdit() {
     this.optionsOpened = !this.optionsOpened;
     setTimeout(() => this.optionsOpened = !this.optionsOpened, 8000);
-  }
-
-  ngOnDestroy() {
-    if (this.modalResponse) {
-      this.modalResponse.unsubscribe();
-    }
   }
 }

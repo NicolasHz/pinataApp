@@ -27,11 +27,34 @@ export const END_DATE_PICKER_OPTIONS: Pickadate.DateOptions = {
   formatSubmit: 'yyyy-mm-dd',   // Return value format (used to set/get value)
 };
 
-  export const MODAL_OPTIONS: Materialize.ModalOptions = {
-    dismissible: true, // Modal can be dismissed by clicking outside of the modal
-    opacity: .2, // Opacity of modal background
-    inDuration: 300, // Transition in duration
-    outDuration: 200, // Transition out duration
-    startingTop: '100%', // Starting top style attribute
-    endingTop: '0%', // Ending top style attribute
-  };
+export const MODAL_OPTIONS: Materialize.ModalOptions = {
+  dismissible: true, // Modal can be dismissed by clicking outside of the modal
+  opacity: .2, // Opacity of modal background
+  inDuration: 300, // Transition in duration
+  outDuration: 200, // Transition out duration
+  startingTop: '100%', // Starting top style attribute
+  endingTop: '0%', // Ending top style attribute
+};
+
+export const ERROR_MESSAGES_RESOURCES = {
+  title: {
+    required: 'Title is required.',
+  },
+  startDate: {
+    required: 'Start date is required.',
+  },
+  endDate: {
+    required: 'Start date is required.',
+  },
+  startHour: {
+    required: 'Start hour is required.',
+  },
+  endHour: {
+    required: 'Start hour is required.',
+  },
+  description: {
+    required: 'You need a description for this event.',
+    minlength: 'Min lenght 20 characters',
+    maxlength: 'Description cannot be more than 255 characters long.'
+  },
+};

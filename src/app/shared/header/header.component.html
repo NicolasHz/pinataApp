@@ -8,11 +8,14 @@
       <a [routerLink]="['/events']" routerLinkActive="active" class="waves-effect">Events</a>
     </mz-navbar-item>
     <mz-navbar-item>
-      <a [routerLink]="['/my-account']" routerLinkActive="active" class="waves-effect">My Account</a>
+      <a [routerLink]="['/my-account']" routerLinkActive="active" class="waves-effect">
+        <img [src]="user.profilePicUrl" class="responsive-img avatar" alt="User Image">
+        <span>{{userName}}</span>
+      </a>
     </mz-navbar-item>
-    <mz-navbar-item>
+    <!-- <mz-navbar-item>
       <a class="waves-effect" (click)="logOutUser()">Logout</a>
-    </mz-navbar-item>
+    </mz-navbar-item> -->
   </mz-navbar-item-container>
   <a mz-button class="col s1 offset-s10 toogle_menu waves-effect transparent"  [flat]="true" id="btn-sidenav-demo">
     <i mz-icon-mdi 
@@ -34,11 +37,14 @@
     <a [routerLink]="['/events']" routerLinkActive="active" class="waves-effect">Events</a>
   </mz-sidenav-link>
   <mz-sidenav-link>
-    <a [routerLink]="['/my-account']" routerLinkActive="active" class="waves-effect">My Account</a>
+    <a [routerLink]="['/my-account']" routerLinkActive="active" class="waves-effect">
+      <img [src]="user.profilePicUrl" class="responsive-img avatar" alt="User Image">
+      <span>{{user.fullName}}</span>
+    </a>
   </mz-sidenav-link>
   <mz-sidenav-divider></mz-sidenav-divider>
-  <mz-sidenav-link>
+  <!-- <mz-sidenav-link>
     <a class="waves-effect" (click)="logOutUser()">Logout</a>
-  </mz-sidenav-link>
+  </mz-sidenav-link> -->
   <mz-sidenav-divider></mz-sidenav-divider>
 </mz-sidenav>

@@ -12,6 +12,8 @@ import { RouterModule } from '@angular/router';
 import { CardComponent } from './card/card.component';
 import { MaterialModule } from './material.module';
 import { EventsService } from '../services/events.service';
+import { ConfirmModalComponent } from './confirm-modal/confirm-modal.component';
+import { ModalService } from '../services/modal.service';
 
 @NgModule({
   imports: [
@@ -22,7 +24,8 @@ import { EventsService } from '../services/events.service';
   schemas: [NO_ERRORS_SCHEMA],
   declarations: [
       HeaderComponent,
-      CardComponent
+      CardComponent,
+      ConfirmModalComponent
   ],
   exports: [
       HeaderComponent,
@@ -31,7 +34,8 @@ import { EventsService } from '../services/events.service';
   ],
   providers: [
     EventsService,
-    MzInjectionService
+    MzInjectionService,
+    ModalService
   ]
 })
 export class SharedModule { }

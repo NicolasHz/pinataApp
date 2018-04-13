@@ -1,25 +1,30 @@
 import { User } from './../../interfaces/user';
 import { Evento, eventInitialState } from './../../interfaces/evento';
-import { Component, OnInit, Input} from '@angular/core';
+import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { MzToastService, MzModalService } from 'ng2-materialize';
 import { EventsService } from '../../services/events.service';
 import { UserService } from '../../services/user.service';
 import { EventFormComponent } from '../../modules/event/event-form/event-form.component';
+import { ConfirmModalComponent } from './../confirm-modal/confirm-modal.component';
+import { ModalService } from '../../services/modal.service';
+import { Subject } from 'rxjs/Subject';
 
 @Component({
   selector: 'app-card',
   templateUrl: './card.component.html',
   styleUrls: ['./card.component.scss']
 })
-export class CardComponent implements OnInit {
+export class CardComponent implements OnInit, OnDestroy {
   @Input() eventData = eventInitialState;
-  actualImgReady = false;
-  preLoaderImg: string;
-  eventAuthor = false;
-  participants;
-  user: User;
-  joined = false; // test porpouses only, needs to be setted from User database
-  imgSource = [
+  private actualImgReady = false;
+  private optionsOpened = false;
+  private eventAuthor = false;
+  private preLoaderImg: string;
+  private participants;
+  private modalResponse: Subject<boolean>;
+  private user: User;
+  private joined = false; // test porpouses only, needs to be setted from User database
+  private imgSource = [
     '../../assets/img/party.gif',
     '../../assets/img/party0.gif',
     '../../assets/img/party1.gif',
@@ -28,12 +33,12 @@ export class CardComponent implements OnInit {
     private toastService: MzToastService,
     private eventService: EventsService,
     private userService: UserService,
-    private modalService: MzModalService) { }
+    private mzModalService: MzModalService,
+    private modalService: ModalService) { }
 
   ngOnInit() {
     this.preLoaderImg = this.imgSource[Math.floor(Math.random() * this.imgSource.length)];
     this.user = this.userService.getUser();
-    console.log( this.eventData.creator, this.user.uId)
     this.eventAuthor = this.eventData.creator === this.user.uId ? true : false;
     if (this.eventData.participants) {
       this.participants = this.eventData.participants.length;
@@ -73,10 +78,35 @@ export class CardComponent implements OnInit {
   }
 
   editEvent() {
-    this.modalService.open(EventFormComponent);
+    const eventData = this.eventData;
+    this.mzModalService.open(EventFormComponent, {eventData});
   }
 
   deleteEvent() {
+    const eventData = this.eventData;
+    const buttonText = {
+      confirm: 'Delete',
+      cancel: 'Cancel'
+    };
+    this.modalResponse = this.modalService.openModal(ConfirmModalComponent, {eventData, buttonText});
+    this.modalResponse.subscribe(response => {
+      if (response) {
+        this.eventService.deleteEvent('events', this.eventData);
+          this.toastService.show('Event Deleted!', 4000, 'green' );
+      }else {
+          this.toastService.show('Canceled', 4000, 'red' );
+      }
+    });
+  }
 
+  toggleEdit() {
+    this.optionsOpened = !this.optionsOpened;
+    setTimeout(() => this.optionsOpened = !this.optionsOpened, 8000);
+  }
+
+  ngOnDestroy() {
+    if (this.modalResponse) {
+      this.modalResponse.unsubscribe();
+    }
   }
 }

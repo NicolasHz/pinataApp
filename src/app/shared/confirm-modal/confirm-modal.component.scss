@@ -1,0 +1,18 @@
+mz-modal{
+    /deep/.modal.modal-fixed-footer{
+        height: 30%;
+        width: 30%;
+        border-radius: 10px;
+    }
+    /deep/.modal-footer {
+        background: white;
+        border: 0px !important;
+        box-shadow: none;
+        text-align: center;
+    }
+    /deep/.modal-content {
+        border: 0;
+        box-shadow: none;
+        text-align: center;
+    }
+}

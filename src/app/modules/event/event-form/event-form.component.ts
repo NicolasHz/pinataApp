@@ -99,8 +99,9 @@ export class EventFormComponent extends MzBaseModal implements OnInit {
       start: formattedStart,
       end: formattedEnd,
       description: this.eventForm.value.description,
-      image: '',
-      creator: this.user.uId
+      image: this.eventForm.value.image,
+      creator: this.user.uId,
+      participants: []
     };
     this.eventService.addEvent('events', this.event);
     this.clear();

@@ -34,10 +34,10 @@ export class EventsService {
   addEvent(eventsType: string, event: Evento) {
     this.db.collection(eventsType)
     .add(event)
-    .then(function() {
+    .then(() => {
       console.log('Document successfully written!');
     })
-    .catch(function(error) {
+    .catch((error) => {
       console.error('Error writing document: ', error);
     });
   }
@@ -46,10 +46,10 @@ export class EventsService {
     this.db.collection(eventsType)
     .doc(event.id)
     .set(event)
-    .then(function() {
+    .then(() => {
       console.log('Document successfully written!');
     })
-    .catch(function(error) {
+    .catch((error) => {
       console.error('Error writing document: ', error);
     });
   }
@@ -58,9 +58,9 @@ export class EventsService {
     this.db.collection(eventsType)
     .doc(event.id)
     .delete()
-    .then(function() {
+    .then(() => {
       console.log('Document successfully deleted!');
-  }).catch(function(error) {
+  }).catch((error) => {
       console.error('Error removing document: ', error);
   });
   }

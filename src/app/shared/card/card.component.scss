@@ -10,7 +10,7 @@
 .card-action {
     &__participants {
         line-height: 20px;
-        margin:5px 0;
+        margin: 5px 0;
         font-size: 18px;
     }
 }
@@ -24,6 +24,9 @@
     &__delete {
         position: relative;
         margin: 5px 2px;
+    }
+    &__open {
+        margin: 5px
     }
     button:focus {outline:0;}
 }

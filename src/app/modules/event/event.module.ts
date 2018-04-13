@@ -9,6 +9,7 @@ import { MzValidationModule } from 'ng2-materialize';
 // Components
 import { EventComponent } from './event.component';
 import { EventFormComponent } from './event-form/event-form.component';
+import { ConfirmModalComponent } from '../../shared/confirm-modal/confirm-modal.component';
 
 @NgModule({
   imports: [
@@ -27,7 +28,8 @@ import { EventFormComponent } from './event-form/event-form.component';
     FormBuilder
   ],
   entryComponents: [
-    EventFormComponent
+    EventFormComponent,
+    ConfirmModalComponent
   ]
 })
 export class EventModule { }

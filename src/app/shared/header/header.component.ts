@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { UserService } from './../../services/user.service';
 import { Component, OnInit, HostListener, Inject } from '@angular/core';
 import { DOCUMENT } from '@angular/platform-browser';
+import { UtilsService } from '../../services/utils.service';
 
 @Component({
   selector: 'app-header',
@@ -16,7 +17,8 @@ export class HeaderComponent implements OnInit {
   constructor(
     private userService: UserService,
     public route: Router,
-    @Inject(DOCUMENT) private doc: Document) { }
+    @Inject(DOCUMENT) private doc: Document,
+    private util: UtilsService) { }
 
   ngOnInit() {
     this.user = this.userService.getUser();
@@ -25,24 +27,7 @@ export class HeaderComponent implements OnInit {
 
   @HostListener('window:scroll', [])
   onWindowScroll() {
-     const isChrome = navigator.userAgent.indexOf('Chrome/') > -1;
-     const isExplorer = navigator.userAgent.indexOf('Trident/') > -1;
-     const bodyTop = this.doc.body.scrollTop;
-     const toTop = this.doc.documentElement.scrollTop;
-
-     if (isChrome || isExplorer) {
-      if (toTop > 50) {
-        this.scrolled = true;
-      } else if (this.scrolled && toTop < 5) {
-        this.scrolled = false;
-      }
-     } else {
-      if ( bodyTop > 50 ) {
-        this.scrolled = true;
-      }else if (this.scrolled && bodyTop < 5) {
-        this.scrolled = false;
-     }
-    }
+    this.scrolled = this.util.scrolled(this.doc);
   }
 
   logOutUser() {

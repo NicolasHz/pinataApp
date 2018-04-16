@@ -5,15 +5,18 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 
 // Components
 import { HeaderComponent } from './header/header.component';
+import { CardComponent } from './card/card.component';
+import { ConfirmModalComponent } from './confirm-modal/confirm-modal.component';
 
 // Materialize
-import { MzInjectionService} from 'ng2-materialize';
 import { RouterModule } from '@angular/router';
-import { CardComponent } from './card/card.component';
 import { MaterialModule } from './material.module';
+
+// Services
+import { MzInjectionService} from 'ng2-materialize';
 import { EventsService } from '../services/events.service';
-import { ConfirmModalComponent } from './confirm-modal/confirm-modal.component';
 import { ModalService } from '../services/modal.service';
+import { UtilsService } from '../services/utils.service';
 
 @NgModule({
   imports: [
@@ -35,7 +38,8 @@ import { ModalService } from '../services/modal.service';
   providers: [
     EventsService,
     MzInjectionService,
-    ModalService
+    ModalService,
+    UtilsService
   ]
 })
 export class SharedModule { }

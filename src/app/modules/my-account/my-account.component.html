@@ -1,4 +1,14 @@
 <app-header></app-header>
-<div class="my-account">
-
+<div class="my-account" [ngClass]="[scrolled ? 'scrolled' : '']">
+  <mz-tab [fixedTabWidth]="'true'" [onShow]="callbackFunction()" [responsiveThreshold]="'true'" [swipeable]="'true'">
+    <mz-tab-item [active]="'true'" [label]="'Profile'" >
+      <div class="profile"></div>
+    </mz-tab-item>
+    <mz-tab-item [label]="'Birthdays List'" >
+        <div class="birthdays-list"></div>
+    </mz-tab-item>
+    <mz-tab-item [label]="'Configuration'" >
+        <div class="configuration"></div>
+    </mz-tab-item>
+  </mz-tab>
 </div>

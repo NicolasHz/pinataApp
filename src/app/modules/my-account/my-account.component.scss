@@ -1,5 +1,40 @@
 @import 'src/assets/scss/variables';
 
 .my-account {
-  @extend %general-background;
+  @extend %general_background;
+  padding-top: 65px;
+  transition: all 300ms linear;
+  mz-tab-item {
+    /deep/.tabs-content {
+      min-height: calc(100vh - 65px);
+    }
+    /deep/.carousel-item {
+      width: 100%;
+      height: 100%;
+    }
+  }
+
+  mz-tab {
+    /deep/.tabs {
+      position: fixed;
+      z-index: 900; 
+    }
+
+    .profile {
+      @extend %full_width_heigth;
+      background: linear-gradient(160deg, #feac5e, #c779d0, #4bc0c8); // previsional colors
+    }
+    .birthdays-list {
+      @extend %full_width_heigth;
+      background: linear-gradient(160deg, #03001e, #7303c0, #ec38bc, #fdeff9);// previsional colors
+    }
+    .configuration {
+      @extend %full_width_heigth;
+      background: linear-gradient(260deg, #0099f7, #f11712);// previsional colors
+    }
+  }
+}
+
+.scrolled {
+  padding-top: 44px;
 }

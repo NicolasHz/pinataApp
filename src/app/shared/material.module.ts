@@ -19,7 +19,8 @@ import {
     MzTooltipModule,
     MzSpinnerModule,
     MzToastModule,
-    MzProgressModule
+    MzProgressModule,
+    MzTabModule
 } from 'ng2-materialize';
 
 @NgModule({
@@ -42,7 +43,8 @@ import {
         MzTooltipModule,
         MzSpinnerModule,
         MzToastModule,
-        MzProgressModule
+        MzProgressModule,
+        MzTabModule
     ],
     exports: [
         MzInputModule,
@@ -63,7 +65,8 @@ import {
         MzTooltipModule,
         MzSpinnerModule,
         MzToastModule,
-        MzProgressModule
+        MzProgressModule,
+        MzTabModule
     ]
 })
 export class MaterialModule { }

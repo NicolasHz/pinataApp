@@ -25,4 +25,7 @@ export class EventComponent implements OnInit {
   openEventForm() {
     this.modalService.open(EventFormComponent);
   }
+
+  // Card Interaction
+
 }

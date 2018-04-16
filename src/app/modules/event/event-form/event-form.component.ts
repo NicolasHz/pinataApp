@@ -28,11 +28,11 @@ export class EventFormComponent extends MzBaseModal implements OnInit {
 
   @Input() editingEvent = false;
   @Input() eventData: Evento;
-  private modalOptions = MODAL_OPTIONS;
-  private timepickerOptions = TIME_PICKER_OPTIONS;
-  private startDatepickerOptions = START_DATE_PICKER_OPTIONS;
-  private endDatepickerOptions = END_DATE_PICKER_OPTIONS;
-  private errorMessageResources = ERROR_MESSAGES_RESOURCES;
+  public modalOptions = MODAL_OPTIONS;
+  public timepickerOptions = TIME_PICKER_OPTIONS;
+  public startDatepickerOptions = START_DATE_PICKER_OPTIONS;
+  public endDatepickerOptions = END_DATE_PICKER_OPTIONS;
+  public errorMessageResources = ERROR_MESSAGES_RESOURCES;
   public endDateAvalible = false;
   private event: Evento;
   private user: User;

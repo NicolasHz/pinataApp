@@ -33,7 +33,8 @@ import { UtilsService } from '../services/utils.service';
   exports: [
       HeaderComponent,
       CardComponent,
-      MaterialModule
+      MaterialModule,
+      ConfirmModalComponent
   ],
   providers: [
     EventsService,

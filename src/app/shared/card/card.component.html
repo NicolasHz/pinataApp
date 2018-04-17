@@ -1,6 +1,21 @@
-<div class="col s12 m4 l3" >
-  <div class="card wow flipInX" data-wow-duration="1.4s">
+<div class="col s12 m4 l3">
+  <div class="card wow flipInX"
+    data-wow-duration="1.4s"
+    mz-tooltip 
+    [tooltip]="'Creator: ' + eventData.creator.fullName"
+    [position]="'top'"
+    [delay]="800">
     <div class="card-image">
+      <div class="event-time">
+        <h6>
+          <i 
+          class="calendar-icon"
+          mz-icon 
+          [align]="'center'"
+          [icon]="'date_range'"
+          [size]="'tiny'">
+          </i>{{eventData.start | date:'short'}}</h6>
+      </div>
       <div class="buttons" *ngIf="eventAuthor">
         <div *ngIf="!optionsOpened">
           <button
@@ -75,8 +90,8 @@
             </i>
             {{participants}}
         </p>
-      <button *ngIf="!joined" mz-button class="green col s4 m5 l4 right wow flipInX" data-wow-duration="1.5s" (click)="joinEvent()" (click)="showToast()" type="button">Join!</button>
-      <button *ngIf="joined" mz-button class="red col s4 m5 l4 right wow flipInX" data-wow-duration="1.5s" (click)="leaveEvent()" (click)="showToast()" type="button">Leave!</button>
+      <button *ngIf="!joined" mz-button class="green col s4 m5 l4 right wow flipInX" data-wow-duration="1.5s" (click)="joinEvent()" type="button">Join!</button>
+      <button *ngIf="joined" mz-button class="red col s4 m5 l4 right wow flipInX" data-wow-duration="1.5s" (click)="leaveEvent()" type="button">Leave!</button>
     </div>
   </div>
 </div>

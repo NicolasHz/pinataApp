@@ -100,11 +100,14 @@
           </div>
           <div class="row">
             <mz-input-container class="col s12 m12 l12">
-              <input mz-input mz-validation
+              <input mz-input
+                mz-validation
                 id="input-image"
                 formControlName="image"
                 type="text"
-                [label]="'Paste your image URL'" />
+                [label]="'Paste your image URL'"
+                [errorMessageResource]="errorMessageResources.image"
+                [length]="350"/>
           </mz-input-container>
           </div>
         </div>

@@ -12,12 +12,11 @@ export interface Evento {
     overlap?: boolean;
     color?: string;
     textColor?: string;
-    creatorId?: string;
+    creator: User;
     participants?: User [];
     place?: string;
     description: string;
     image?: string;
-    creator: string;
 }
 
 export const eventInitialState: Evento = {
@@ -32,10 +31,9 @@ export const eventInitialState: Evento = {
     overlap: null,
     color: null,
     textColor: null,
-    creatorId: null,
+    creator: null,
     participants: [],
     place: null,
     description: null,
     image: '../../assets/img/party2.gif',
-    creator: null
 };

@@ -57,4 +57,7 @@ export const ERROR_MESSAGES_RESOURCES = {
     minlength: 'Min lenght 20 characters',
     maxlength: 'Description cannot be more than 255 characters long.'
   },
+  image: {
+    maxlength: 'This URL cannot be more than 350 characters long.'
+  },
 };

@@ -74,7 +74,10 @@ export class EventFormComponent extends MzBaseModal implements OnInit {
           Validators.minLength(20)
         ]
       ],
-      image: [null],
+      image: [
+        null,
+        [Validators.maxLength(350)]
+      ],
     });
   }
 
@@ -102,7 +105,9 @@ export class EventFormComponent extends MzBaseModal implements OnInit {
           Validators.minLength(20)
         ]
       ],
-      image: [this.eventData.image],
+      image: [this.eventData.image,
+        [Validators.maxLength(350)]
+      ],
     });
   }
 
@@ -121,7 +126,7 @@ export class EventFormComponent extends MzBaseModal implements OnInit {
         end: formattedEnd,
         description: this.eventForm.value.description,
         image: this.eventForm.value.image,
-        creator: this.user.uId,
+        creator: this.user,
         participants: this.eventData.participants
       };
       this.eventService.updateEvent('events', this.event);
@@ -133,7 +138,7 @@ export class EventFormComponent extends MzBaseModal implements OnInit {
         end: formattedEnd,
         description: this.eventForm.value.description,
         image: this.eventForm.value.image,
-        creator: this.user.uId,
+        creator: this.user,
         participants: []
       };
       this.eventService.addEvent('events', this.event);

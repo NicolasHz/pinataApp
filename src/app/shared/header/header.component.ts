@@ -12,8 +12,8 @@ import { UtilsService } from '../../services/utils.service';
 })
 export class HeaderComponent implements OnInit {
   public scrolled = false;
-  private user: User;
-  private userName;
+  public user: User;
+  public userName;
   constructor(
     private userService: UserService,
     public route: Router,

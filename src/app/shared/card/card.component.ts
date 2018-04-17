@@ -2,9 +2,22 @@ import { Evento, eventInitialState } from './../../interfaces/evento';
 import { Component, OnInit, Input, OnDestroy, Output, EventEmitter } from '@angular/core';
 import { EventsService } from '../../services/events.service';
 import { UtilsService } from '../../services/utils.service';
+import { trigger, style, state, animate, transition } from '@angular/animations';
 
 @Component({
   selector: 'app-card',
+  animations: [
+    trigger('flyInOut', [
+      state('in', style({opacity: 1, zIndex: 1200})),
+      transition('void => *', [
+        style({opacity: 1, zIndex: 1200}),
+        animate(200)
+      ]),
+      transition('* => void', [
+        animate(200, style({opacity: 0, zIndex: 1200}))
+      ])
+    ])
+  ],
   templateUrl: './card.component.html',
   styleUrls: ['./card.component.scss']
 })
@@ -21,6 +34,7 @@ export class CardComponent implements OnInit {
   public preLoaderImg: string;
   public participants = 0;
   public joined = false; // test porpouses only, needs to be setted from User database
+  public showEventTime = false;
   private imgSource = [
     '../../assets/img/party.gif',
     '../../assets/img/party0.gif',
@@ -38,6 +52,10 @@ export class CardComponent implements OnInit {
     if (this.util.findUser(this.eventData)) {
       this.joined = true;
     }
+  }
+
+  toggleClass() {
+    this.showEventTime = !this.showEventTime;
   }
 
   showImage() {

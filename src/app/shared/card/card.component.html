@@ -1,12 +1,14 @@
 <div class="col s12 m4 l3">
   <div class="card wow flipInX"
+    (mouseover)="toggleClass($event)"
+    (mouseout)="toggleClass($event)"
     data-wow-duration="1.4s"
     mz-tooltip 
     [tooltip]="'Creator: ' + eventData.creator.fullName"
     [position]="'top'"
     [delay]="800">
     <div class="card-image">
-      <div class="event-time">
+      <div class="event-time" [ngClass]="[showEventTime ? 'show' : '']">
         <h6>
           <i 
           class="calendar-icon"
@@ -17,7 +19,7 @@
           </i>{{eventData.start | date:'short'}}</h6>
       </div>
       <div class="buttons" *ngIf="eventAuthor">
-        <div *ngIf="!optionsOpened">
+        <div *ngIf="!optionsOpened" [@flyInOut]>
           <button
           (click)="toggleEdit()"
           mz-button
@@ -35,7 +37,7 @@
             </i>
           </button>
         </div>
-        <div *ngIf="optionsOpened">
+        <div *ngIf="optionsOpened" [@flyInOut]>
           <button 
             (click)="deleteEvent()"
             mz-button

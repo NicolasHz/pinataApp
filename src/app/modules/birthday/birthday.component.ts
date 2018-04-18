@@ -22,6 +22,4 @@ export class BirthdayComponent implements OnInit {
       this.birthdayReady = true;
     });
   }
-
-
 }

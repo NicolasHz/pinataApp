@@ -6,7 +6,9 @@
   transition: all 300ms linear;
   mz-tab-item {
     /deep/.tabs-content {
-      min-height: calc(100vh - 65px);
+      max-height: calc(100vh - 113px);
+      min-height: calc(100vh - 113px);
+      margin-top: 48px;
     }
     /deep/.carousel-item {
       width: 100%;
@@ -19,18 +21,9 @@
       position: fixed;
       z-index: 900; 
     }
-
-    .profile {
-      @extend %full_width_heigth;
-      background: linear-gradient(160deg, #feac5e, #c779d0, #4bc0c8); // previsional colors
-    }
     .birthdays-list {
       @extend %full_width_heigth;
       background: linear-gradient(160deg, #03001e, #7303c0, #ec38bc, #fdeff9);// previsional colors
-    }
-    .configuration {
-      @extend %full_width_heigth;
-      background: linear-gradient(260deg, #0099f7, #f11712);// previsional colors
     }
   }
 }

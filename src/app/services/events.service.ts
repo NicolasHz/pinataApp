@@ -10,7 +10,6 @@ import { AngularFirestore } from 'angularfire2/firestore';
 declare let $: any;
 @Injectable()
 export class EventsService {
-  API_PATH = 'https://miseventos-ebcef.firebaseio.com/';
   constructor(
     private http: HttpClient,
     private modalService: MzModalService,

@@ -6,6 +6,8 @@ import { SharedModule } from '../../shared/shared.module';
 
 // Components
 import { MyAccountComponent } from './my-account.component';
+import { ProfileComponent } from './profile/profile.component';
+import { MyEventsComponent } from './my-events/my-events.component';
 
 @NgModule({
   imports: [
@@ -15,7 +17,9 @@ import { MyAccountComponent } from './my-account.component';
   ],
   schemas: [NO_ERRORS_SCHEMA],
   declarations: [
-    MyAccountComponent
+    MyAccountComponent,
+    ProfileComponent,
+    MyEventsComponent
 ]
 })
 export class MyAccountModule { }

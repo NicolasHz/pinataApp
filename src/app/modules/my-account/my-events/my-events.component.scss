@@ -1,0 +1,5 @@
+@import 'src/assets/scss/variables';
+.my-events {
+    @extend %full_width_heigth;
+    background: linear-gradient(260deg, #0099f7, #f11712);// previsional colors
+  }

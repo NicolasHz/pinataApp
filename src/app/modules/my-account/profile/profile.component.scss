@@ -1,0 +1,5 @@
+@import 'src/assets/scss/variables';
+.profile {
+    @extend %full_width_heigth;
+    background: linear-gradient(160deg, #feac5e, #c779d0, #4bc0c8); // previsional colors
+  }

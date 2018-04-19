@@ -11,15 +11,16 @@ import { Evento } from '../../interfaces/evento';
 export class BirthdayComponent implements OnInit {
   public birthdays: Array<Evento>;
   public birthdayReady = false;
-  constructor(private event: EventsService) { }
+  constructor(private eventService: EventsService) { }
 
   ngOnInit() {
-    this.event.getEvents('birthdays')
+    this.eventService.getEvents('birthdays')
     .subscribe(response => {
       this.birthdays = Object.keys(response)
       .map(index => response[index]);
-      this.event.createCalendar(this.birthdays);
+      this.eventService.createCalendar(this.birthdays);
       this.birthdayReady = true;
     });
+  this.eventService.deleteCalendarEvent("p5vrqbb2rlne36n65kdjmoc4mg_20180429T160000Z");
   }
 }

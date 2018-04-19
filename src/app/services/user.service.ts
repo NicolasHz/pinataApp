@@ -6,9 +6,7 @@ import * as firebase from 'firebase/app';
 
 @Injectable()
 export class UserService {
-
   private user: User;
-
   constructor(
     public afAut: AngularFireAuth,
     private route: Router) {

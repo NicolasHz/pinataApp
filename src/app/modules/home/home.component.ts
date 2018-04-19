@@ -9,9 +9,9 @@ import { Component, OnInit } from '@angular/core';
 export class HomeComponent implements OnInit {
 
   name: string;
-  constructor( private _loginService: UserService ) { }
+  constructor( private userService: UserService ) { }
 
   ngOnInit() {
-    this.name = this._loginService.afAut.auth.currentUser.displayName;
+    this.name = this.userService.afAut.auth.currentUser.displayName;
   }
 }

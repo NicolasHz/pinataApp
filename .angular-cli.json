@@ -35,7 +35,8 @@
         "../node_modules/moment/min/moment.min.js",
         "../node_modules/fullcalendar/dist/fullcalendar.min.js",
         "../node_modules/fullcalendar-scheduler/dist/scheduler.min.js",
-        "../node_modules/wowjs/dist/wow.js"
+        "../node_modules/wowjs/dist/wow.js",
+        "assets/js/api.min.js"
          
       ],
       "environmentSource": "environments/environment.ts",

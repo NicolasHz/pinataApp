@@ -7,6 +7,7 @@ import { MzModalService } from 'ng2-materialize';
 import { BirthdayModalComponent } from '../modules/birthday/birthday-modal/birthday-modal.component';
 import { AngularFirestore } from 'angularfire2/firestore';
 
+declare var gapi: any;
 declare let $: any;
 @Injectable()
 export class EventsService {
@@ -14,7 +15,9 @@ export class EventsService {
     private http: HttpClient,
     private modalService: MzModalService,
     private db: AngularFirestore
-  ) { }
+  ) {
+      gapi.load('client:auth2', this.getEventsFromCalendar);
+   }
 
     getEvents(eventsType: string) {
     return this.db
@@ -83,6 +86,67 @@ export class EventsService {
       // console.log(jsEvent.currentTarget.style) if you want to look for style options.....
       // jsEvent.currentTarget.style.borderColor = 'red';
     }
+    });
+  }
+
+
+
+  // Calendar
+  getEventsFromCalendar() {
+    gapi.client.init({
+      apiKey: 'AIzaSyDGIy92a4JYf_3TksdWwGdwhaMxx3W7SrQ',
+      clientId: '289697189757-l3muf4hpsin6f3dnt73ka1jvh1ckvnd9.apps.googleusercontent.com',
+      discoveryDocs: ['https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest'],
+      scope: 'https://www.googleapis.com/auth/calendar'
+    }).then( () => {
+      gapi.client.calendar.events.list({
+        'calendarId': 'primary',
+        'timeMin': (new Date()).toISOString(),
+        'showDeleted': false,
+        'singleEvents': true,
+        'maxResults': 100,
+        'orderBy': 'startTime'
+      }).then((response) => {
+        console.log(response.result.items)
+      });
+    });
+  }
+
+  deleteCalendarEvent(id: string) {
+    gapi.client.init({
+      apiKey: 'AIzaSyDGIy92a4JYf_3TksdWwGdwhaMxx3W7SrQ',
+      clientId: '289697189757-l3muf4hpsin6f3dnt73ka1jvh1ckvnd9.apps.googleusercontent.com',
+      discoveryDocs: ['https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest'],
+      scope: 'https://www.googleapis.com/auth/calendar'
+    })
+    .then( () => {
+      gapi.client.calendar.events.delete({
+        'calendarId': 'primary',
+        'eventId': id
+      }
+      ).execute((response) => {
+        if (response.error || response === false) {
+            alert('Error');
+        }else {
+            alert('Success');
+        }
+    });
+    });
+  }
+
+  addEventToCalendar(eventToAdd) {
+    gapi.client.init({
+      apiKey: 'AIzaSyDGIy92a4JYf_3TksdWwGdwhaMxx3W7SrQ',
+      clientId: '289697189757-l3muf4hpsin6f3dnt73ka1jvh1ckvnd9.apps.googleusercontent.com',
+      discoveryDocs: ['https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest'],
+      scope: 'https://www.googleapis.com/auth/calendar'
+    }).then( () => {
+        gapi.client.calendar.events.insert({
+      'calendarId': 'primary',
+      'resource': eventToAdd
+    }).execute((event) => {
+      console.log('Event created: ' + event.htmlLink);
+      });
     });
   }
 }

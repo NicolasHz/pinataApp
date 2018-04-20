@@ -3,7 +3,7 @@ import { User } from './../interfaces/user';
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from 'angularfire2/auth';
 import * as firebase from 'firebase/app';
-
+declare var gapi: any;
 @Injectable()
 export class UserService {
   private user: User;
@@ -23,6 +23,7 @@ export class UserService {
       };
       this.route.navigate(['home']);
     });
+    gapi.load('client:auth2', this.initClient);
   }
 
   login() {
@@ -44,5 +45,15 @@ export class UserService {
   }
   getUser() {
     return this.user;
+  }
+
+  // Calendar interaction
+  initClient(): Promise<[{}]> {
+    return gapi.client.init({
+      apiKey: 'AIzaSyDGIy92a4JYf_3TksdWwGdwhaMxx3W7SrQ',
+      clientId: '289697189757-l3muf4hpsin6f3dnt73ka1jvh1ckvnd9.apps.googleusercontent.com',
+      discoveryDocs: ['https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest'],
+      scope: 'https://www.googleapis.com/auth/calendar'
+    });
   }
 }

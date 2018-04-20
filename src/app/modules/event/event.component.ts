@@ -72,7 +72,7 @@ export class EventComponent implements OnInit {
           ]
       }
     };
-    this.eventService.addEventToCalendar(calendarEvent).then((r) => console.log(r));
+    this.eventService.addEventToCalendar(calendarEvent);
   }
 
   leaveEvent(eventData: Evento) {

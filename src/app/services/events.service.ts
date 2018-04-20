@@ -17,13 +17,10 @@ export class EventsService {
     private modalService: MzModalService,
     private db: AngularFirestore
   ) {
-      gapi.load('client:auth2', this.initClient);
-      setTimeout(() => {
-       this.updateCalendarArr()
-      }, 3000);
+      this.updateCalendarArr();
    }
 
-    getEvents(eventsType: string) {
+  getEvents(eventsType: string) {
     return this.db
     .collection(eventsType)
     .snapshotChanges()
@@ -66,9 +63,9 @@ export class EventsService {
     .delete()
     .then(() => {
       console.log('Document successfully deleted!');
-  }).catch((error) => {
-      console.error('Error removing document: ', error);
-  });
+    }).catch((error) => {
+        console.error('Error removing document: ', error);
+    });
   }
 
   createCalendar(eventType) {
@@ -123,25 +120,26 @@ export class EventsService {
   }
 
   deleteCalendarEvent(id: string) {
-    this.initClient().then( () => {
+    this.initClient()
+    .then( () => {
       gapi.client.calendar.events.delete({
         'calendarId': 'primary',
         'eventId': id
-      }
-      ).execute((response) => {
+      })
+      .execute((response) => {
         if (response.error || response === false) {
           console.log('Error at delete calendar Event');
         }else {
           this.updateCalendarArr();
           console.log('Success at delete calendar Event');
         }
-    });
+      });
     });
   }
 
-  addEventToCalendar(eventToAdd: CalendarEventI): Promise<[{}]> {
-    return this.initClient().then( () => {
-      return gapi.client.calendar.events.insert({
+  addEventToCalendar(eventToAdd: CalendarEventI) {
+    this.initClient().then( () => {
+      gapi.client.calendar.events.insert({
         'calendarId': 'primary',
         'resource': eventToAdd
       }).execute((event) => {

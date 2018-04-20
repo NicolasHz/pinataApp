@@ -16,6 +16,7 @@ export class UserService {
         return;
       }
       this.user = {
+        email: 'nose',
         fullName: user.displayName,
         profilePicUrl: user.photoURL,
         uId: user.uid
@@ -35,6 +36,7 @@ export class UserService {
       error => console.log(error)
     );
     this.user = {
+      email: '',
       fullName: '',
       profilePicUrl: '',
       uId: ''

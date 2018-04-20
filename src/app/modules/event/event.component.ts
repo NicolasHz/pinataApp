@@ -72,7 +72,7 @@ export class EventComponent implements OnInit {
           ]
       }
     };
-    this.eventService.addEventToCalendar(calendarEvent);
+    this.eventService.addEventToCalendar(calendarEvent).then((r) => console.log(r));
   }
 
   leaveEvent(eventData: Evento) {
@@ -82,7 +82,7 @@ export class EventComponent implements OnInit {
     if (!this.util.findUser(eventData)) {
       this.toastService.show('Event leaved!', 4000, 'red');
     }
-    console.log(this.util.findCalendarEvent(eventData, this.eventService.calendarEvents));
+    this.eventService.deleteCalendarEvent(this.util.findCalendarEvent(eventData, this.eventService.calendarEvents).id);
   }
 
   editEvent(eventData: Evento) {

@@ -19,7 +19,7 @@ export class EventsService {
   ) {
       gapi.load('client:auth2', this.initClient);
       setTimeout(() => {
-        this.getEventsFromCalendar().then((response) => this.calendarEvents = response);
+       this.updateCalendarArr()
       }, 3000);
    }
 
@@ -103,6 +103,10 @@ export class EventsService {
     });
   }
 
+  updateCalendarArr() {
+    this.getEventsFromCalendar().then((response) => this.calendarEvents = response);
+  }
+
   getEventsFromCalendar(): Promise<[{}]> {
      return this.initClient().then(() => {
       return gapi.client.calendar.events.list({
@@ -126,9 +130,10 @@ export class EventsService {
       }
       ).execute((response) => {
         if (response.error || response === false) {
-            console.log('Error at delete calendar Event');
+          console.log('Error at delete calendar Event');
         }else {
-            console.log('Success at delete calendar Event');
+          this.updateCalendarArr();
+          console.log('Success at delete calendar Event');
         }
     });
     });
@@ -137,10 +142,11 @@ export class EventsService {
   addEventToCalendar(eventToAdd: CalendarEventI): Promise<[{}]> {
     return this.initClient().then( () => {
       return gapi.client.calendar.events.insert({
-      'calendarId': 'primary',
-      'resource': eventToAdd
-    }).execute((event) => {
-        return event.htmlLink;
+        'calendarId': 'primary',
+        'resource': eventToAdd
+      }).execute((event) => {
+        this.updateCalendarArr();
+        return event;
       });
     });
   }

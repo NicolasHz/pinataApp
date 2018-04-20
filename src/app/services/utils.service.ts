@@ -42,14 +42,14 @@ export class UtilsService {
 
   findCalendarEvent(eventData: Evento, calendarEvent: CalendarEventI[]) { // fixMe
     return calendarEvent
-    .find( calendarObject =>  {
-        if (calendarObject.start.dateTime === eventData.start
-          && calendarObject.end.dateTime === eventData.end
-          && calendarObject.description === eventData.description) {
-          return true;
-        }else {
-          return false;
-        }
-    });
+      .find( calendarObject =>  {
+          if (calendarObject.start.dateTime === eventData.start
+            && calendarObject.end.dateTime === eventData.end
+            && calendarObject.description === eventData.description) {
+            return true;
+          }else {
+            return false;
+          }
+      });
   }
 }

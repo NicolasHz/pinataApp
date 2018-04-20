@@ -54,6 +54,6 @@ export class UserService {
       clientId: '289697189757-l3muf4hpsin6f3dnt73ka1jvh1ckvnd9.apps.googleusercontent.com',
       discoveryDocs: ['https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest'],
       scope: 'https://www.googleapis.com/auth/calendar'
-    });
+    }).then(() => gapi.auth2.getAuthInstance());
   }
 }

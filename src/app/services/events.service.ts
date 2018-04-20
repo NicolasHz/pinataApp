@@ -108,10 +108,10 @@ export class EventsService {
      return this.initClient().then(() => {
       return gapi.client.calendar.events.list({
         'calendarId': 'primary',
-        'timeMin': (new Date()).toISOString(),
+        'timeMin': (new Date(new Date().setMonth(new Date().getMonth() - 2))).toISOString(),
         'showDeleted': false,
         'singleEvents': true,
-        'maxResults': 100,
+        'maxResults': 300,
         'orderBy': 'startTime'
       }).then((response) => {
         return response.result.items;

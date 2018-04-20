@@ -21,6 +21,6 @@ export class BirthdayComponent implements OnInit {
       this.eventService.createCalendar(this.birthdays);
       this.birthdayReady = true;
     });
-  this.eventService.deleteCalendarEvent("p5vrqbb2rlne36n65kdjmoc4mg_20180429T160000Z");
+    this.eventService.getEventsFromCalendar().then((r) => console.log(r));
   }
 }

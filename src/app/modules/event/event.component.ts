@@ -48,6 +48,31 @@ export class EventComponent implements OnInit {
     if (this.util.findUser(eventData)) {
       this.toastService.show('Joined to event!', 4000, 'green');
     }
+    const calendarEvent = {
+      summary: eventData.title,
+      location: eventData.place,
+      description: eventData.description,
+      start: {
+          dateTime: eventData.start,
+          timeZone: 'America/Los_Angeles'
+      },
+      end: {
+          dateTime: eventData.end,
+          timeZone: 'America/Los_Angeles'
+      },
+      recurrence: [
+        'RRULE:FREQ=DAILY;COUNT=1'
+      ],
+      attendees: [{email: 'nicolasholzman@hotmail.com'}],
+      reminders: {
+          useDefault: false,
+          overrides: [
+            {method: 'email', minutes: 24 * 60},
+            {method: 'popup', minutes: 10}
+          ]
+      }
+    };
+    this.eventService.addEventToCalendar(calendarEvent);
   }
 
   leaveEvent(eventData: Evento) {
@@ -57,6 +82,7 @@ export class EventComponent implements OnInit {
     if (!this.util.findUser(eventData)) {
       this.toastService.show('Event leaved!', 4000, 'red');
     }
+    console.log(this.util.findCalendarEvent(eventData, this.eventService.calendarEvents));
   }
 
   editEvent(eventData: Evento) {

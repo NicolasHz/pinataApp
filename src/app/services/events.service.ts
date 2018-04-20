@@ -1,22 +1,26 @@
 import { Evento } from './../interfaces/evento';
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 import 'fullcalendar';
 import 'fullcalendar-scheduler';
 import { MzModalService } from 'ng2-materialize';
 import { BirthdayModalComponent } from '../modules/birthday/birthday-modal/birthday-modal.component';
 import { AngularFirestore } from 'angularfire2/firestore';
+import { CalendarEventI } from './../interfaces/calendar-event';
 
 declare var gapi: any;
 declare let $: any;
 @Injectable()
 export class EventsService {
+  public calendarEvents: any[];
+
   constructor(
-    private http: HttpClient,
     private modalService: MzModalService,
     private db: AngularFirestore
   ) {
-      gapi.load('client:auth2', this.getEventsFromCalendar);
+      gapi.load('client:auth2', this.initClient);
+      setTimeout(() => {
+        this.getEventsFromCalendar().then((response) => this.calendarEvents = response);
+      }, 3000);
    }
 
     getEvents(eventsType: string) {
@@ -89,17 +93,19 @@ export class EventsService {
     });
   }
 
-
-
-  // Calendar
-  getEventsFromCalendar() {
-    gapi.client.init({
+  // Calendar interaction
+  initClient(): Promise<[{}]> {
+    return gapi.client.init({
       apiKey: 'AIzaSyDGIy92a4JYf_3TksdWwGdwhaMxx3W7SrQ',
       clientId: '289697189757-l3muf4hpsin6f3dnt73ka1jvh1ckvnd9.apps.googleusercontent.com',
       discoveryDocs: ['https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest'],
       scope: 'https://www.googleapis.com/auth/calendar'
-    }).then( () => {
-      gapi.client.calendar.events.list({
+    });
+  }
+
+  getEventsFromCalendar(): Promise<[{}]> {
+     return this.initClient().then(() => {
+      return gapi.client.calendar.events.list({
         'calendarId': 'primary',
         'timeMin': (new Date()).toISOString(),
         'showDeleted': false,
@@ -107,45 +113,34 @@ export class EventsService {
         'maxResults': 100,
         'orderBy': 'startTime'
       }).then((response) => {
-        console.log(response.result.items)
+        return response.result.items;
       });
     });
   }
 
   deleteCalendarEvent(id: string) {
-    gapi.client.init({
-      apiKey: 'AIzaSyDGIy92a4JYf_3TksdWwGdwhaMxx3W7SrQ',
-      clientId: '289697189757-l3muf4hpsin6f3dnt73ka1jvh1ckvnd9.apps.googleusercontent.com',
-      discoveryDocs: ['https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest'],
-      scope: 'https://www.googleapis.com/auth/calendar'
-    })
-    .then( () => {
+    this.initClient().then( () => {
       gapi.client.calendar.events.delete({
         'calendarId': 'primary',
         'eventId': id
       }
       ).execute((response) => {
         if (response.error || response === false) {
-            alert('Error');
+            console.log('Error at delete calendar Event');
         }else {
-            alert('Success');
+            console.log('Success at delete calendar Event');
         }
     });
     });
   }
 
-  addEventToCalendar(eventToAdd) {
-    gapi.client.init({
-      apiKey: 'AIzaSyDGIy92a4JYf_3TksdWwGdwhaMxx3W7SrQ',
-      clientId: '289697189757-l3muf4hpsin6f3dnt73ka1jvh1ckvnd9.apps.googleusercontent.com',
-      discoveryDocs: ['https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest'],
-      scope: 'https://www.googleapis.com/auth/calendar'
-    }).then( () => {
-        gapi.client.calendar.events.insert({
+  addEventToCalendar(eventToAdd: CalendarEventI): Promise<[{}]> {
+    return this.initClient().then( () => {
+      return gapi.client.calendar.events.insert({
       'calendarId': 'primary',
       'resource': eventToAdd
     }).execute((event) => {
-      console.log('Event created: ' + event.htmlLink);
+        return event.htmlLink;
       });
     });
   }

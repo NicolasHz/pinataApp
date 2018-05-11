@@ -12,7 +12,7 @@ export class LoginComponent {
 
   logUser() {
     this.userService.login().then((allow) => {
-        this.allow = false;
+        this.allow = allow;
     });
   }
 }

@@ -1,10 +1,10 @@
-import { Evento, eventInitialState } from '../../interfaces/evento';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { EventsService } from '../../services/events.service';
 import { EventFormComponent } from './event-form/event-form.component';
 import { MzModalService, MzToastService } from 'ng2-materialize';
 import { UtilsService } from '../../services/utils.service';
 import { User } from '../../interfaces/user';
+import { Evento, eventInitialState } from '../../interfaces/evento';
 import { UserService } from '../../services/user.service';
 import { ConfirmModalComponent } from '../../shared/confirm-modal/confirm-modal.component';
 
@@ -44,10 +44,6 @@ export class EventComponent implements OnInit {
 
   joinEvent(eventData: Evento) {
     eventData.participants.push(this.user);
-    this.eventService.updateEvent('events', eventData);
-    if (this.util.findUser(eventData)) {
-      this.toastService.show('Joined to event!', 4000, 'green');
-    }
     const calendarEvent = {
       summary: eventData.title,
       location: eventData.place,
@@ -72,7 +68,15 @@ export class EventComponent implements OnInit {
           ]
       }
     };
-    this.eventService.addEventToCalendar(calendarEvent);
+    this.eventService.addEventToCalendar(calendarEvent)
+    .then((success) => {
+      if (success) {
+        this.eventService.updateEvent('events', eventData);
+        if (this.util.findUser(eventData)) {
+          this.toastService.show('Joined to event!', 4000, 'green');
+        }
+      }
+    });
   }
 
   leaveEvent(eventData: Evento) {

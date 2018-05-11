@@ -7,10 +7,12 @@ import { UserService } from './../../services/user.service';
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent {
-
+  allow = true;
   constructor( private userService: UserService ) { }
 
   logUser() {
-    this.userService.login();
+    this.userService.login().then((allow) => {
+        this.allow = false;
+    });
   }
 }

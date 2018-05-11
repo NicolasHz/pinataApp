@@ -6,6 +6,7 @@ import { MzModalService } from 'ng2-materialize';
 import { BirthdayModalComponent } from '../modules/birthday/birthday-modal/birthday-modal.component';
 import { AngularFirestore } from 'angularfire2/firestore';
 import { CalendarEventI } from './../interfaces/calendar-event';
+import { UserService } from './user.service';
 
 declare var gapi: any;
 declare let $: any;
@@ -15,7 +16,8 @@ export class EventsService {
 
   constructor(
     private modalService: MzModalService,
-    private db: AngularFirestore
+    private db: AngularFirestore,
+    private userService: UserService
   ) {
       this.updateCalendarArr();
    }
@@ -90,22 +92,13 @@ export class EventsService {
     });
   }
 
-  // Calendar interaction
-  initClient(): Promise<[{}]> {
-    return gapi.client.init({
-      apiKey: 'AIzaSyDGIy92a4JYf_3TksdWwGdwhaMxx3W7SrQ',
-      clientId: '289697189757-l3muf4hpsin6f3dnt73ka1jvh1ckvnd9.apps.googleusercontent.com',
-      discoveryDocs: ['https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest'],
-      scope: 'https://www.googleapis.com/auth/calendar'
-    });
-  }
 
   updateCalendarArr() {
     this.getEventsFromCalendar().then((response) => this.calendarEvents = response);
   }
 
-  getEventsFromCalendar(): Promise<[{}]> {
-     return this.initClient().then(() => {
+  getEventsFromCalendar(): Promise<any> {
+     return this.userService.getCalendarApi().then(() => {
       return gapi.client.calendar.events.list({
         'calendarId': 'primary',
         'timeMin': (new Date(new Date().setMonth(new Date().getMonth() - 2))).toISOString(),
@@ -119,8 +112,8 @@ export class EventsService {
     });
   }
 
-  deleteCalendarEvent(id: string) {
-    this.initClient()
+  deleteCalendarEvent(id: string): Promise<boolean> {
+    return this.userService.getCalendarApi()
     .then( () => {
       gapi.client.calendar.events.delete({
         'calendarId': 'primary',
@@ -134,11 +127,13 @@ export class EventsService {
           console.log('Success at delete calendar Event');
         }
       });
-    });
+      return true;
+    })
+    .catch(() => false);
   }
 
-  addEventToCalendar(eventToAdd: CalendarEventI) {
-    this.initClient().then( () => {
+  addEventToCalendar(eventToAdd: CalendarEventI): Promise<boolean> {
+    return this.userService.getCalendarApi().then( () => {
       gapi.client.calendar.events.insert({
         'calendarId': 'primary',
         'resource': eventToAdd
@@ -146,6 +141,7 @@ export class EventsService {
         this.updateCalendarArr();
         return event;
       });
-    });
+      return true;
+    }).catch(() => false);
   }
 }

@@ -1,3 +1,4 @@
+import { CommonModule } from '@angular/common';
 import { ModuleWithProviders, NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
@@ -50,6 +51,7 @@ const appRoutes: Routes = [
 
 @NgModule({
   imports: [
+    CommonModule,
     RouterModule.forRoot(appRoutes)
   ],
   declarations: [

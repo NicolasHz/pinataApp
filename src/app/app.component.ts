@@ -7,7 +7,6 @@ declare var WOW: any;
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
-  title = 'app';
 
   ngOnInit() {
     new WOW().init();

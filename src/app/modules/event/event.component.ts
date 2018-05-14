@@ -1,11 +1,11 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { EventsService } from '../../services/events.service';
+import { EventsService } from '../../services/events/events.service';
 import { EventFormComponent } from './event-form/event-form.component';
 import { MzModalService, MzToastService } from 'ng2-materialize';
-import { UtilsService } from '../../services/utils.service';
+import { UtilsService } from '../../services/utils/utils.service';
 import { User } from '../../interfaces/user';
 import { Evento, eventInitialState } from '../../interfaces/evento';
-import { UserService } from '../../services/user.service';
+import { UserService } from '../../services/user/user.service';
 import { ConfirmModalComponent } from '../../shared/confirm-modal/confirm-modal.component';
 
 @Component({

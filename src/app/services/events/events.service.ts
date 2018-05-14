@@ -1,12 +1,12 @@
-import { Evento } from './../interfaces/evento';
+import { Evento } from './../../interfaces/evento';
 import { Injectable } from '@angular/core';
 import 'fullcalendar';
 import 'fullcalendar-scheduler';
 import { MzModalService } from 'ng2-materialize';
-import { BirthdayModalComponent } from '../modules/birthday/birthday-modal/birthday-modal.component';
+import { BirthdayModalComponent } from '../../modules/birthday/birthday-modal/birthday-modal.component';
 import { AngularFirestore } from 'angularfire2/firestore';
-import { CalendarEventI } from './../interfaces/calendar-event';
-import { UserService } from './user.service';
+import { CalendarEventI } from './../../interfaces/calendar-event';
+import { UserService } from './../user/user.service';
 
 declare var gapi: any;
 declare let $: any;

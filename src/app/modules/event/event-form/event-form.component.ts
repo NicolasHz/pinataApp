@@ -8,7 +8,7 @@ import {
   MzToastService,
   MzBaseModal,
   MzModalComponent } from 'ng2-materialize';
-import { EventsService } from '../../../services/events.service';
+import { EventsService } from '../../../services/events/events.service';
 import {
   TIME_PICKER_OPTIONS,
   MODAL_OPTIONS,
@@ -18,7 +18,7 @@ import {
 import { User } from './../../../interfaces/user';
 import { Evento } from './../../../interfaces/evento';
 import * as moment from 'moment';
-import { UserService } from '../../../services/user.service';
+import { UserService } from '../../../services/user/user.service';
 @Component({
   selector: 'app-event-form',
   templateUrl: './event-form.component.html',

@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import { User } from '../interfaces/user';
-import { Evento } from './../interfaces/evento';
-import { UserService } from './user.service';
-import { CalendarEventI } from './../interfaces/calendar-event';
+import { User } from '../../interfaces/user';
+import { Evento } from './../../interfaces/evento';
+import { UserService } from './../user/user.service';
+import { CalendarEventI } from './../../interfaces/calendar-event';
 
 @Injectable()
 export class UtilsService {

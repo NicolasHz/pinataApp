@@ -3,7 +3,7 @@ import { ModuleWithProviders, NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
 // Guards
-import { AuthGuardService } from './services/auth-guard';
+import { AuthGuardService } from './services/auth-guard/auth-guard';
 
 // Components
 import { LoginComponent } from './modules/login/login.component';

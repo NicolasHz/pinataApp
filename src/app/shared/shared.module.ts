@@ -14,9 +14,9 @@ import { MaterialModule } from './material.module';
 
 // Services
 import { MzInjectionService} from 'ng2-materialize';
-import { EventsService } from '../services/events.service';
-import { ModalService } from '../services/modal.service';
-import { UtilsService } from '../services/utils.service';
+import { EventsService } from '../services/events/events.service';
+import { ModalService } from '../services/modal/modal.service';
+import { UtilsService } from '../services/utils/utils.service';
 
 @NgModule({
   imports: [

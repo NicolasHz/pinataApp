@@ -7,16 +7,7 @@ import { trigger, style, state, animate, transition } from '@angular/animations'
 @Component({
   selector: 'app-card',
   animations: [
-    trigger('flyInOut', [
-      state('in', style({opacity: 1, zIndex: 1200})),
-      transition('void => *', [
-        style({opacity: 1, zIndex: 1200}),
-        animate(200)
-      ]),
-      transition('* => void', [
-        animate(200, style({opacity: 0, zIndex: 1200}))
-      ])
-    ])
+    trigger('flyInOut', [])
   ],
   templateUrl: './card.component.html',
   styleUrls: ['./card.component.scss']
@@ -40,6 +31,7 @@ export class CardComponent implements OnInit {
     '../../assets/img/party0.gif',
     '../../assets/img/party1.gif',
     '../../assets/img/party2.gif'];
+  tooltip = '';
 
   constructor(
     private eventService: EventsService,
@@ -52,6 +44,9 @@ export class CardComponent implements OnInit {
     if (this.util.findUser(this.eventData)) {
       this.joined = true;
     }
+    this.eventData.participants.map((res) => {
+      this.tooltip = this.tooltip + `<img src="${res.profilePicUrl}"/>  ` + res.fullName.concat('<br/>');
+    });
   }
 
   toggleClass() {

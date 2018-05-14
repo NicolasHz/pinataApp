@@ -3,6 +3,7 @@ import { User } from '../../interfaces/user';
 import { Evento } from './../../interfaces/evento';
 import { UserService } from './../user/user.service';
 import { CalendarEventI } from './../../interfaces/calendar-event';
+import * as moment from 'moment';
 
 @Injectable()
 export class UtilsService {
@@ -51,5 +52,9 @@ export class UtilsService {
             return false;
           }
       });
+  }
+
+  deleteOldDatesEvents(event) {
+      return event.start >= moment(new Date).format();
   }
 }

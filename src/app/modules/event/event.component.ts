@@ -6,6 +6,7 @@ import { UtilsService } from '../../services/utils/utils.service';
 import { User } from '../../interfaces/user';
 import { Evento, eventInitialState } from '../../interfaces/evento';
 import { UserService } from '../../services/user/user.service';
+import * as moment from 'moment';
 import { ConfirmModalComponent } from '../../shared/confirm-modal/confirm-modal.component';
 
 @Component({
@@ -30,7 +31,8 @@ export class EventComponent implements OnInit {
     this.eventService.getEvents('events')
     .subscribe(response => {
       this.events = Object.keys(response)
-      .map(index => response[index]);
+      .map(index => response[index])
+      .filter((event) => this.util.deleteOldDatesEvents(event));
       this.eventsReady = true;
     });
     this.user = this.userService.getUser();

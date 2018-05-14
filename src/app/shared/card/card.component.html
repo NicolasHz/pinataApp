@@ -72,7 +72,7 @@
           </button>
         </div>
       </div>
-      <img class="wow fadeIn" data-wow-duration="1s" [ngClass]="[actualImgReady ? '' : 'hidden']" (load)="showImage()" [src]="eventData.image" alt="Card Img">
+      <img class="wow fadeIn" data-wow-duration="1s" [ngClass]="[actualImgReady ? '' : 'hidden']" (load)="showImage()" src="{{ eventData?.image }}" alt="Card Img">
       <img [src]="preLoaderImg" alt="" *ngIf="!actualImgReady">
       <span class="card-title">{{eventData.title}}</span>
     </div>
@@ -82,7 +82,8 @@
     <div class="card-action row">
         <p class="col card-action__participants"
           mz-tooltip 
-          [tooltip]="'Participants'"
+          [tooltip]="tooltip"
+          [html]="true"
           [position]="'left'"
           [delay]="800">
             <i mz-icon-mdi

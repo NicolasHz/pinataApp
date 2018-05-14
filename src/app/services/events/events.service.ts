@@ -92,11 +92,6 @@ export class EventsService {
     });
   }
 
-
-  updateCalendarArr() {
-    this.getEventsFromCalendar().then((response) => this.calendarEvents = response);
-  }
-
   getEventsFromCalendar(): Promise<any> {
      return this.userService.getCalendarApi().then(() => {
       return gapi.client.calendar.events.list({
@@ -107,9 +102,16 @@ export class EventsService {
         'maxResults': 300,
         'orderBy': 'startTime'
       }).then((response) => {
+        if (!response) {
+          return;
+        }
         return response.result.items;
-      });
+      }).catch(() => console.log('something wrong at fetching events from calendar'));
     });
+  }
+
+    updateCalendarArr() {
+    this.getEventsFromCalendar().then((response) => this.calendarEvents = response);
   }
 
   deleteCalendarEvent(id: string): Promise<boolean> {

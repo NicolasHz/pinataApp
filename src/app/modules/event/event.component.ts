@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { EventsService } from '../../services/events/events.service';
 import { EventFormComponent } from './event-form/event-form.component';
 import { MzModalService, MzToastService } from 'ng2-materialize';
@@ -14,12 +14,13 @@ import { ConfirmModalComponent } from '../../shared/confirm-modal/confirm-modal.
   templateUrl: './event.component.html',
   styleUrls: ['./event.component.scss']
 })
-export class EventComponent implements OnInit {
+export class EventComponent implements OnInit, AfterViewInit {
   public events: Array<Evento>;
   public eventsReady = false;
   public user: User;
   selectedEvent: Evento = eventInitialState;
   @ViewChild(ConfirmModalComponent) confirmModal: ConfirmModalComponent;
+  @ViewChild('featureDiscovery') firstTimeIn;
   constructor(
     private eventService: EventsService,
     private modalService: MzModalService,
@@ -36,6 +37,12 @@ export class EventComponent implements OnInit {
       this.eventsReady = true;
     });
     this.user = this.userService.getUser();
+  }
+
+  ngAfterViewInit() {
+    if (this.user.isNewUser) {
+      setTimeout(() => this.firstTimeIn.open(), 3000);
+    }
   }
 
   openEventForm() {

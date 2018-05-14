@@ -3,6 +3,7 @@ import { User } from './../../interfaces/user';
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from 'angularfire2/auth';
 import * as firebase from 'firebase/app';
+
 declare var gapi: any;
 @Injectable()
 export class UserService {
@@ -25,7 +26,8 @@ export class UserService {
         email: user.email,
         fullName: user.displayName,
         profilePicUrl: user.photoURL,
-        uId: user.uid
+        uId: user.uid,
+        isNewUser: false
       };
       this.route.navigate(['home']);
     });
@@ -38,6 +40,9 @@ export class UserService {
       const unsubscribe = firebase.auth().onAuthStateChanged((firebaseUser) => {
         const credential = firebase.auth.GoogleAuthProvider
         .credential(googleUser.getAuthResponse().id_token);
+        if (firebaseUser) {
+          this.user.isNewUser = firebaseUser.metadata.creationTime === firebaseUser.metadata.lastSignInTime;
+        }
         // Sign in with credential from the Google user.
         return firebase.auth().signInWithCredential(credential);
       });

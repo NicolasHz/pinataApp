@@ -32,7 +32,7 @@
         [tooltip]="'Create Event'"
         [position]="'left'"
         [delay]="800">
-            <i mz-icon 
+            <i id="createEvent" mz-icon 
                 [align]="'center'"
                 [icon]="'add'">
             </i>
@@ -47,3 +47,7 @@
         </div>
     </div>
 </div>
+<mz-feature-discovery [targetId]="'createEvent'" #featureDiscovery>
+  <h5>Create Events!</h5>
+  <p>Press me to create new events and start sharing it!</p>
+</mz-feature-discovery>

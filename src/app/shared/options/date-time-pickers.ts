@@ -14,8 +14,9 @@ export const START_DATE_PICKER_OPTIONS: Pickadate.DateOptions = {
     today: 'Today', // Today button text
     closeOnClear: false,
     closeOnSelect: true,
+    min: new Date(),
     // format: 'dddd, dd mmm, yyyy', // Visible date format (defaulted to formatSubmit if provided otherwise 'd mmmm, yyyy')
-    formatSubmit: 'yyyy-mm-dd',   // Return value format (used to set/get value)
+    formatSubmit: 'dd-mm-yyyy',   // Return value format (used to set/get value)
   };
 export const END_DATE_PICKER_OPTIONS: Pickadate.DateOptions = {
   clear: 'Clear', // Clear button text
@@ -24,7 +25,7 @@ export const END_DATE_PICKER_OPTIONS: Pickadate.DateOptions = {
   closeOnClear: false,
   closeOnSelect: true,
   // format: 'dddd, dd mmm, yyyy', // Visible date format (defaulted to formatSubmit if provided otherwise 'd mmmm, yyyy')
-  formatSubmit: 'yyyy-mm-dd',   // Return value format (used to set/get value)
+  formatSubmit: 'dd-mm-yyyy',   // Return value format (used to set/get value) yyyy-mm-dd
 };
 
 export const MODAL_OPTIONS: Materialize.ModalOptions = {

@@ -37,6 +37,7 @@ export class EventFormComponent extends MzBaseModal implements OnInit {
   private event: Evento;
   private user: User;
   eventForm: FormGroup;
+
   constructor(
     private formBuilder: FormBuilder,
     private toastService: MzToastService,
@@ -46,7 +47,7 @@ export class EventFormComponent extends MzBaseModal implements OnInit {
 
   ngOnInit() {
     this.startDatepickerOptions.onOpen = () => this.endDateAvalible = false;
-    this.startDatepickerOptions.onClose = () => this.setAvalibleDays();
+    this.startDatepickerOptions.onClose = () => this.setAvalibleEndDays();
     if (this.editingEvent) {
       this.buildEditForm();
     } else {
@@ -83,9 +84,9 @@ export class EventFormComponent extends MzBaseModal implements OnInit {
 
   buildEditForm() {
     this.endDateAvalible = true;
-    const startDay = moment(this.eventData.start).format('YYYY-MM-DD');
+    const startDay = moment(this.eventData.start).format('DD-MM-YYYY');
     const startHour = moment(this.eventData.start).format('HH:mm');
-    const endDay = moment(this.eventData.end).format('YYYY-MM-DD');
+    const endDay = moment(this.eventData.end).format('DD-MM-YYYY');
     const endHour = moment(this.eventData.end).format('HH:mm');
     this.eventForm = this.formBuilder.group({
       title: [this.eventData.title, Validators.required],
@@ -149,11 +150,11 @@ export class EventFormComponent extends MzBaseModal implements OnInit {
   showToast(message: string, color: string) {
     this.toastService.show(message, 4000, color );
   }
-  setAvalibleDays() {
+  setAvalibleEndDays() {
     if (this.eventForm.value.start.eventStartDay) {
       const minDate = this.eventForm.value.start.eventStartDay.split('-').map(Number);
       minDate[1]--; // Discounting a month because of the date picker restriction behavior
-      this.endDatepickerOptions.min = minDate;
+      this.endDatepickerOptions.min = minDate.reverse();
       this.endDateAvalible = true;
     } else {
       this.endDateAvalible = false;

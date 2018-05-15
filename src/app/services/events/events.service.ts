@@ -1,9 +1,5 @@
 import { Evento } from './../../interfaces/evento';
 import { Injectable } from '@angular/core';
-import 'fullcalendar';
-import 'fullcalendar-scheduler';
-import { MzModalService } from 'ng2-materialize';
-import { BirthdayModalComponent } from '../../modules/birthday/birthday-modal/birthday-modal.component';
 import { AngularFirestore } from 'angularfire2/firestore';
 import { CalendarEventI } from './../../interfaces/calendar-event';
 import { UserService } from './../user/user.service';
@@ -15,7 +11,7 @@ export class EventsService {
   public calendarEvents: any[];
 
   constructor(
-    private modalService: MzModalService,
+
     private db: AngularFirestore,
     private userService: UserService
   ) {
@@ -67,28 +63,6 @@ export class EventsService {
       console.log('Document successfully deleted!');
     }).catch((error) => {
         console.error('Error removing document: ', error);
-    });
-  }
-
-  createCalendar(eventType) {
-    $('#calendar').fullCalendar({
-      schedulerLicenseKey: 'GPL-My-Project-Is-Open-Source',
-      header: {
-      right: 'prev,next today',
-      center: 'title',
-      left: 'month,agendaWeek,agendaDay'
-    },
-    themeSystem: 'bootstrap3',
-    selectable: false,
-    selectHelper: false,
-    editable: false,
-    eventLimit: true,
-    events: eventType,
-    eventClick: (calEvent, jsEvent, view) => {
-      this.modalService.open(BirthdayModalComponent, {calEvent, jsEvent, view});
-      // console.log(jsEvent.currentTarget.style) if you want to look for style options.....
-      // jsEvent.currentTarget.style.borderColor = 'red';
-    }
     });
   }
 
@@ -144,6 +118,6 @@ export class EventsService {
         return event;
       });
       return true;
-    }).catch(() => false);
+    }).catch(() =>  false);
   }
 }

@@ -1,13 +1,11 @@
 import { Component, OnInit, Input } from '@angular/core';
 import {
-  AbstractControl,
   FormBuilder,
   FormGroup,
   Validators } from '@angular/forms';
 import {
   MzToastService,
-  MzBaseModal,
-  MzModalComponent } from 'ng2-materialize';
+  MzBaseModal} from 'ng2-materialize';
 import { EventsService } from '../../../services/events/events.service';
 import {
   TIME_PICKER_OPTIONS,
@@ -19,6 +17,7 @@ import { User } from './../../../interfaces/user';
 import { Evento } from './../../../interfaces/evento';
 import * as moment from 'moment';
 import { UserService } from '../../../services/user/user.service';
+
 @Component({
   selector: 'app-event-form',
   templateUrl: './event-form.component.html',

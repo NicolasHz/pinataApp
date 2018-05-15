@@ -6,7 +6,7 @@ export interface CalendarEventI {
     start: CalTimeI;
     end: CalTimeI;
     recurrence: string[];
-    attendees: any[];
+    attendees?: any[];
     reminders: ReminderI;
 }
 

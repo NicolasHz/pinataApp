@@ -51,16 +51,20 @@ export class UserService {
     .catch(() => false);
   }
 
-  logout() {
-    this.afAut.auth.signOut().catch(
-      error => console.log(error)
-    );
-    this.user = {
-      email: '',
-      fullName: '',
-      profilePicUrl: '',
-      uId: ''
-    };
+  logout(): Promise<boolean> {
+    return this.afAut.auth.signOut()
+      .then(() => {
+        this.user = {
+          email: '',
+          fullName: '',
+          profilePicUrl: '',
+          uId: ''
+        };
+        return true;
+      })
+      .catch(
+        error => false
+      );
   }
 
   getUser() {

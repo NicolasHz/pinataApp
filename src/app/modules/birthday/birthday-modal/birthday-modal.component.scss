@@ -16,6 +16,12 @@ mz-spinner {
     }
 }
 mz-modal {
+    button {
+        margin: 1% 4%!important;
+    }
+    .header-title {
+        text-align: center;
+    }
     /deep/.modal-content {
         display: flex;
         flex-direction: column;

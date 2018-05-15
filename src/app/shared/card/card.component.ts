@@ -31,7 +31,7 @@ export class CardComponent implements OnInit {
     '../../assets/img/party0.gif',
     '../../assets/img/party1.gif',
     '../../assets/img/party2.gif'];
-  tooltip = '';
+    participantsTooltip = 'Join and be the first!';
 
   constructor(
     private eventService: EventsService,
@@ -45,8 +45,9 @@ export class CardComponent implements OnInit {
       this.joined = true;
     }
     this.eventData.participants.map((res) => {
-      const avatar = res.profilePicUrl ? res.profilePicUrl : ' ';
-      this.tooltip = this.tooltip + `<img src="${avatar}"/>  ` + res.fullName.concat('<br/>');
+      this.participantsTooltip = '';
+      const avatar = res.profilePicUrl ? res.profilePicUrl : '';
+      this.participantsTooltip = this.participantsTooltip + `<img src="${avatar}"/>  ` + res.fullName.concat('<br/>');
     });
   }
 

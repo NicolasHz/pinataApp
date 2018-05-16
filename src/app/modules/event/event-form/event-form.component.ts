@@ -3,6 +3,7 @@ import {
   FormBuilder,
   FormGroup,
   Validators } from '@angular/forms';
+  import { IsEmptyValidator } from '../../../shared/validators/validators';
 import {
   MzToastService,
   MzBaseModal} from 'ng2-materialize';
@@ -71,7 +72,8 @@ export class EventFormComponent extends MzBaseModal implements OnInit {
         [
           Validators.required,
           Validators.maxLength(255),
-          Validators.minLength(20)
+          Validators.minLength(20),
+          IsEmptyValidator
         ]
       ],
       image: [
@@ -124,7 +126,7 @@ export class EventFormComponent extends MzBaseModal implements OnInit {
         title: this.eventForm.value.title,
         start: formattedStart,
         end: formattedEnd,
-        description: this.eventForm.value.description,
+        description: this.eventForm.value.description.trim(),
         image: this.eventForm.value.image,
         creator: this.user,
         participants: this.eventData.participants

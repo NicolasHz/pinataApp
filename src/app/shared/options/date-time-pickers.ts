@@ -55,8 +55,9 @@ export const ERROR_MESSAGES_RESOURCES = {
   },
   description: {
     required: 'You need a description for this event.',
-    minlength: 'Min lenght 20 characters',
-    maxlength: 'Description cannot be more than 255 characters long.'
+    minlength: 'Min lenght 20 characters.',
+    maxlength: 'Description cannot be more than 255 characters long.',
+    validString: 'Description can\'t be only white-spaces.'
   },
   image: {
     maxlength: 'This URL cannot be more than 350 characters long.'

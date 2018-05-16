@@ -7,6 +7,7 @@
 @font-face { font-family: "Proxima-Nova-Thin"; src: url("./assets/fonts/proxima_nova/Proxima_Nova-Thin.ttf"); }
 
 html, body {
+    height: 100vh;
     * {
         font-family: "Proxima-Nova-Regular";
     }

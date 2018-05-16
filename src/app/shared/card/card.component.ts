@@ -44,11 +44,13 @@ export class CardComponent implements OnInit {
     if (this.util.findUser(this.eventData)) {
       this.joined = true;
     }
-    this.eventData.participants.map((res) => {
+    if (this.eventData.participants.length > 0) {
       this.participantsTooltip = '';
-      const avatar = res.profilePicUrl ? res.profilePicUrl : '';
-      this.participantsTooltip = this.participantsTooltip + `<img src="${avatar}"/>  ` + res.fullName.concat('<br/>');
-    });
+      this.eventData.participants.map((res) => {
+        const avatar = res.profilePicUrl ? res.profilePicUrl : '';
+        this.participantsTooltip = this.participantsTooltip + `<img src="${avatar}"/>  ` + res.fullName.concat('<br/>');
+      });
+    }
   }
 
   toggleClass() {

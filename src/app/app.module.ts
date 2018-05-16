@@ -14,8 +14,8 @@ import { AngularFireAuth } from 'angularfire2/auth';
 import { environment } from '../environments/environment';
 
 // Services
-import { UserService } from './services/user.service';
-import { AuthGuardService } from './services/auth-guard';
+import { UserService } from './services/user/user.service';
+import { AuthGuardService } from './services/auth-guard/auth-guard';
 import { NotFoundComponent } from './modules/not-found/not-found.component';
 
 @NgModule({

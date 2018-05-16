@@ -1,80 +1,25 @@
-  <div class="login">
-    <div class="login__container">
-      <div class="login__welcome">
-        <div class="login__wrapper">
-          <img src="../../assets/img/cake-boy.png" class="responsive-img" alt="Cake-boy" width="250px">
-          <h1>Welcome to Piñata!!</h1>
-          <!-- Display none on mobile -->
-          <p id="welcome-text">The quick brown fox jumps over the lazy dog, The quick brown fox jumps over the lazy dog
-            The quick brown fox jumps over the lazy dog. The quick brown fox jumps over the lazy dog.
-          </p>
-          <button
-             type="button"
-             class="btn btn-large waves-effect waves-green login__btn"
-             (click)="logUser()">
-          <i class="material-icons left login__btn__icon">subdirectory_arrow_right</i>
-          <span class="login__btn__text" > Login </span>
-          </button>
-        </div>
+<div class="login">
+  <div class="login__container">
+    <div class="login__welcome">
+      <div class="login__wrapper">
+        <img src="../../assets/img/cake-boy.png" class="responsive-img" alt="Cake-boy" width="250px">
+        <h1>Welcome to Piñata!!</h1>
+        <!-- Display none on mobile -->
+        <p id="welcome-text">The quick brown fox jumps over the lazy dog, The quick brown fox jumps over the lazy dog
+          The quick brown fox jumps over the lazy dog. The quick brown fox jumps over the lazy dog.
+        </p>
+        <button
+          type="button"
+          class="btn btn-large waves-effect waves-green login__btn"
+          (click)="logUser()"
+          >
+        <i class="material-icons left login__btn__icon">subdirectory_arrow_right</i>
+        <span class="login__btn__text" > Login </span>
+        </button>
+        <p *ngIf="!allow" style="color: #5cb85c">Please let us access you calendar for a better experiencie</p>
       </div>
     </div>
-    <!-- <div class="user_info">
-      <p>Nombre: {{ _loginService.user.displayName }} </p>
-      <img [src]= "_loginService.user.photoURL"
-      class="circle"
-      style="width: 150px;" >
-    </div> -->
-
-    <!-- <div class="phrase">
-      <h1 class="phrase__text">Motivational phrase</h1>
-    </div>
-
-    <div class="birthdays">
-        <h1>Welcome to Piñata!!</h1>
-        <div class="row birthdays__card">
-            <div class="col s12 m3">
-              <div class="card">
-                <div class="card-image">
-                  <img src="../../../assets/img/ezgif.com-gif-maker.gif">
-                  <span class="card-title">Step 1</span>
-                </div>
-                <div class="card-content">
-                  <p>Here you define first step. Add an image (better than this GIF).</p>
-                </div>
-                <div class="card-action">
-                  <a href="#">Best</a>
-                </div>
-              </div>
-            </div>
-            <div class="col s12 m3">
-                <div class="card">
-                  <div class="card-image">
-                    <img src="../../../assets/img/ezgif.com-gif-maker.gif">
-                    <span class="card-title">Step 2</span>
-                  </div>
-                  <div class="card-content">
-                    <p>Here you define... Guessed it, step 2! Add an image.</p>
-                  </div>
-                  <div class="card-action">
-                    <a href="#">GIF</a>
-                  </div>
-                </div>
-              </div>
-              <div class="col s12 m3">
-                  <div class="card">
-                    <div class="card-image">
-                      <img src="../../../assets/img/ezgif.com-gif-maker.gif">
-                      <span class="card-title">Step 3</span>
-                    </div>
-                    <div class="card-content">
-                      <p>Here, of course, step 3. Only if you want, add an image..</p>
-                    </div>
-                    <div class="card-action">
-                      <a href="#">ever</a>
-                    </div>
-                  </div>
-                </div>
-          </div> -->
   </div>
+</div>
 
 

@@ -11,6 +11,7 @@ export const environment = {
     databaseURL: 'https://miseventos-ebcef.firebaseio.com',
     projectId: 'miseventos-ebcef',
     storageBucket: 'miseventos-ebcef.appspot.com',
-    messagingSenderId: '289697189757'
+    messagingSenderId: '289697189757',
+    clientId: '289697189757-l3muf4hpsin6f3dnt73ka1jvh1ckvnd9.apps.googleusercontent.com',
   }
 };

@@ -1,7 +1,9 @@
 import { Injectable } from '@angular/core';
-import { User } from '../interfaces/user';
-import { Evento } from './../interfaces/evento';
-import { UserService } from './user.service';
+import { User } from '../../interfaces/user';
+import { Evento } from './../../interfaces/evento';
+import { UserService } from './../user/user.service';
+import { CalendarEventI } from './../../interfaces/calendar-event';
+import * as moment from 'moment';
 
 @Injectable()
 export class UtilsService {
@@ -37,5 +39,22 @@ export class UtilsService {
 
   findUser(eventData: Evento) {
     return eventData.participants.find( o => o.uId === this.user.uId);
+  }
+
+  findCalendarEvent(eventData: Evento, calendarEvent: CalendarEventI[]) { // fixMe
+    return calendarEvent
+      .find( calendarObject =>  {
+          if (calendarObject.start.dateTime === eventData.start
+            && calendarObject.end.dateTime === eventData.end
+            && calendarObject.description === eventData.description) {
+            return true;
+          }else {
+            return false;
+          }
+      });
+  }
+
+  deleteOldDatesEvents(event) {
+      return event.start >= moment(new Date).format();
   }
 }

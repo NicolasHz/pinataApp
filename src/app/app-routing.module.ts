@@ -1,8 +1,9 @@
+import { CommonModule } from '@angular/common';
 import { ModuleWithProviders, NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
 // Guards
-import { AuthGuardService } from './services/auth-guard';
+import { AuthGuardService } from './services/auth-guard/auth-guard';
 
 // Components
 import { LoginComponent } from './modules/login/login.component';
@@ -50,6 +51,7 @@ const appRoutes: Routes = [
 
 @NgModule({
   imports: [
+    CommonModule,
     RouterModule.forRoot(appRoutes)
   ],
   declarations: [

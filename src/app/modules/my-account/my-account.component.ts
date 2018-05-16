@@ -1,6 +1,6 @@
 import { DOCUMENT } from '@angular/platform-browser';
 import { Component, OnInit, Inject, HostListener } from '@angular/core';
-import { UtilsService } from '../../services/utils.service';
+import { UtilsService } from '../../services/utils/utils.service';
 
 @Component({
   selector: 'app-my-account',

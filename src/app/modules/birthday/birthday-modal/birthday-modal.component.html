@@ -1,9 +1,9 @@
-<mz-modal [fixedFooter]="true">
+<mz-modal [fixedFooter]="true" [options]="modalOptions">
   <mz-modal-header>
     {{calEvent.title}}
   </mz-modal-header>
   <mz-modal-content>
-    <div class="row" [ngClass]="[imageReady ? '' : 'hidden']">
+    <div class="row user-details" [ngClass]="[imageReady ? '' : 'hidden']">
       <div class="birth-data col s12 m6 l6">
         <img class="responsive-img" [src]="calEvent.image"  (load)="showImage()" alt="">
         <h5>{{calEvent.start | date:'mediumDate' | slice:0:6}}</h5>
@@ -11,7 +11,7 @@
       <div class="col s12 m6 l6">
         <h5 class="">Preferences:</h5>
         <div *ngFor="let preferenceItem of calEvent.preferences" >
-            <p>
+            <p class="user-details__preferences">
               <i mz-icon-mdi
               [align]="'left'"
               [icon]="'account-outline'"

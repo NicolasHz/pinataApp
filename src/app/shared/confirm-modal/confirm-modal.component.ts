@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter, ViewChild } from '@angular/core';
 import { Subject } from 'rxjs/Subject';
-import { ModalService } from '../../services/modal.service';
+import { ModalService } from '../../services/modal/modal.service';
 
 @Component({
   selector: 'app-confirm-modal',

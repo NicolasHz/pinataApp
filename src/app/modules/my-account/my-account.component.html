@@ -2,13 +2,13 @@
 <div class="my-account" [ngClass]="[scrolled ? 'scrolled' : '']">
   <mz-tab [fixedTabWidth]="'true'" [onShow]="callbackFunction()" [responsiveThreshold]="'true'" [swipeable]="'true'">
     <mz-tab-item [active]="'true'" [label]="'Profile'" >
-      <div class="profile"></div>
+      <app-profile></app-profile>
     </mz-tab-item>
     <mz-tab-item [label]="'Birthdays List'" >
-        <div class="birthdays-list"></div>
+        <div class="birthdays-list">Component not created yet because IDK what it's going to be here</div>
     </mz-tab-item>
-    <mz-tab-item [label]="'Configuration'" >
-        <div class="configuration"></div>
+    <mz-tab-item [label]="'My Events'" >
+        <app-my-events></app-my-events>
     </mz-tab-item>
   </mz-tab>
 </div>

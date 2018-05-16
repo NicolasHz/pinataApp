@@ -26,12 +26,7 @@
       text-align: center;
       h1 {
           font-family: $strawberry_font;
-          font-size: 5.2em;
-          background-image: -webkit-linear-gradient(130deg,  #F44336, #fc6262); /* For Chrome and Safari */
-          background-image:    -moz-linear-gradient(130deg,  #F44336, #fc6262); /* For old Fx (3.6 to 15) */
-          background-image:     -ms-linear-gradient(130deg,  #F44336, #fc6262); /* For pre-releases of IE 10*/
-          background-image:      -o-linear-gradient(130deg,  #F44336, #fc6262); /* For old Opera (11.1 to 12.0) */
-          background-image:         linear-gradient(130deg,  #F44336, #fc6262); /* Standard syntax; must be last */
+          background-image:linear-gradient(130deg,  #F44336, #fc6262); /* Standard syntax; must be last */
           color:transparent;
           -webkit-background-clip: text;
           background-clip: text;
@@ -56,55 +51,6 @@
     }
 }
 
-.phrase {
-    background: url("../../../assets/img/ezgif.com-gif-maker.gif");
-    background-size: cover;
-    background-attachment: fixed;
-    background-position-x: center;
-    width: 100vw;
-    height: 50vh;
-    position: relative;
-    &__text {
-      position: relative;
-      top: 35%;
-      text-align: center;
-      margin: 0px;
-      font-family: $strawberry_font;
-      font-size: 10em;
-      background-image: -webkit-linear-gradient(130deg,  #F44336, #fc6262); /* For Chrome and Safari */
-      background-image:    -moz-linear-gradient(130deg,  #F44336, #fc6262); /* For old Fx (3.6 to 15) */
-      background-image:     -ms-linear-gradient(130deg,  #F44336, #fc6262); /* For pre-releases of IE 10*/
-      background-image:      -o-linear-gradient(130deg,  #F44336, #fc6262); /* For old Opera (11.1 to 12.0) */
-      background-image:         linear-gradient(130deg,  #F44336, #fc6262); /* Standard syntax; must be last */
-      color:transparent;
-      -webkit-background-clip: text;
-      background-clip: text;
-    }
-}
-
-.birthdays {
-    background: url("../../../assets/img/party-e1463431286678.jpg");
-    background-size: cover;
-    width: 100vw;
-    height: 100vh;
-    position: absolute;
-    h1 {
-      text-align: center;
-      font-family: $strawberry_font;
-      font-size: 5.2em;
-      background-image: -webkit-linear-gradient(130deg,  #F44336, #fc6262); /* For Chrome and Safari */
-      background-image:    -moz-linear-gradient(130deg,  #F44336, #fc6262); /* For old Fx (3.6 to 15) */
-      background-image:     -ms-linear-gradient(130deg,  #F44336, #fc6262); /* For pre-releases of IE 10*/
-      background-image:      -o-linear-gradient(130deg,  #F44336, #fc6262); /* For old Opera (11.1 to 12.0) */
-      background-image:         linear-gradient(130deg,  #F44336, #fc6262); /* Standard syntax; must be last */
-      color:transparent;
-      -webkit-background-clip: text;
-      background-clip: text;
-  }
-    &__card {
-      margin: 10% 0% 0% 18%;
-    }
-}
 
 @media screen and (max-width: $app_tablet) {
   .login {

@@ -9,10 +9,14 @@ import { MzBaseModal, MzModalComponent } from 'ng2-materialize';
 export class BirthdayModalComponent extends MzBaseModal implements OnInit {
   imageReady = false;
   @Input() calEvent;
+  public modalOptions: Materialize.ModalOptions = {
+    startingTop: '100%', // Starting top style attribute
+    endingTop: '0%', // Ending top style attribute
+  };
+
   constructor() {super(); }
 
   ngOnInit() {
-
   }
   showImage() {
     this.imageReady = true;

@@ -70,20 +70,20 @@
                     [label]="'Event ends'" />
                 </mz-datepicker-container>
                 <mz-timepicker-container class="col s12 m6">
-                    <i mz-icon-mdi mz-input-prefix
-                      [icon]="'clock'">
-                    </i>
-                    <input mz-timepicker
-                      mz-validation 
-                      required
-                      formControlName="eventEndHour"
-                      [errorMessageResource]="errorMessageResources.endHour"
-                      [label]="'Ends at'"
-                      [options]="timepickerOptions"
-                      id="timepicker-endTime"
-                      placeholder="Select an end time"
-                      type="text">
-                  </mz-timepicker-container>
+                  <i mz-icon-mdi mz-input-prefix
+                    [icon]="'clock'">
+                  </i>
+                  <input mz-timepicker
+                    mz-validation 
+                    required
+                    formControlName="eventEndHour"
+                    [errorMessageResource]="errorMessageResources.endHour"
+                    [label]="'Ends at'"
+                    [options]="timepickerOptions"
+                    id="timepicker-endTime"
+                    placeholder="Select an end time"
+                    type="text">
+                </mz-timepicker-container>
           </div>
           <div class="row">
               <mz-textarea-container class="col s12">

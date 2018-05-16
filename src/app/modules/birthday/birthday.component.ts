@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 
-import { EventsService } from '../../services/events.service';
+import { EventsService } from '../../services/events/events.service';
 import { Evento } from '../../interfaces/evento';
 
 @Component({
@@ -11,17 +11,16 @@ import { Evento } from '../../interfaces/evento';
 export class BirthdayComponent implements OnInit {
   public birthdays: Array<Evento>;
   public birthdayReady = false;
-  constructor(private event: EventsService) { }
+  constructor(private eventService: EventsService) { }
 
   ngOnInit() {
-    this.event.getEvents('birthdays')
+    this.eventService.getEvents('birthdays')
     .subscribe(response => {
       this.birthdays = Object.keys(response)
       .map(index => response[index]);
-      this.event.createCalendar(this.birthdays);
+      this.eventService.createCalendar(this.birthdays);
       this.birthdayReady = true;
     });
+    this.eventService.getEventsFromCalendar().then(r => console.log(r));
   }
-
-
 }

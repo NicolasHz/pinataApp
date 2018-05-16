@@ -27,7 +27,7 @@ export class UserService {
         fullName: user.displayName,
         profilePicUrl: user.photoURL,
         uId: user.uid,
-        isNewUser: false
+        isNewUser: user.metadata.creationTime === user.metadata.lastSignInTime
       };
       this.route.navigate(['home']);
     });
@@ -37,34 +37,32 @@ export class UserService {
   login(): Promise<boolean> {
     return gapi.auth2.getAuthInstance().signIn()
     .then((googleUser) => {
-      const unsubscribe = firebase.auth().onAuthStateChanged((firebaseUser) => {
-        const credential = firebase.auth.GoogleAuthProvider
-        .credential(googleUser.getAuthResponse().id_token);
-        if (firebaseUser) {
-          this.user.isNewUser = firebaseUser.metadata.creationTime === firebaseUser.metadata.lastSignInTime;
-        }
-        // Sign in with credential from the Google user.
-        return firebase.auth().signInWithCredential(credential);
-      });
+          const credential = firebase.auth.GoogleAuthProvider
+          .credential(googleUser.getAuthResponse().id_token);
+          // Sign in with credential from the Google user.
+          firebase.auth().signInWithCredential(credential);
       return true;
     })
     .catch(() => false);
   }
 
   logout(): Promise<boolean> {
-    return this.afAut.auth.signOut()
+    return gapi.auth2.getAuthInstance().signOut()
       .then(() => {
-        this.user = {
-          email: '',
-          fullName: '',
-          profilePicUrl: '',
-          uId: ''
-        };
+        return this.afAut.auth.signOut()
+        .then(() => {
+          this.user = {
+            email: '',
+            fullName: '',
+            profilePicUrl: '',
+            uId: ''
+          };
         return true;
       })
       .catch(
         error => false
       );
+    });
   }
 
   getUser() {

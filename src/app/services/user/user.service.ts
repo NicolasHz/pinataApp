@@ -37,10 +37,9 @@ export class UserService {
   login(): Promise<boolean> {
     return gapi.auth2.getAuthInstance().signIn()
     .then((googleUser) => {
-          const credential = firebase.auth.GoogleAuthProvider
-          .credential(googleUser.getAuthResponse().id_token);
-          // Sign in with credential from the Google user.
-          firebase.auth().signInWithCredential(credential);
+      const credential = firebase.auth.GoogleAuthProvider
+        .credential(googleUser.getAuthResponse().id_token);
+      firebase.auth().signInWithCredential(credential);      // Sign in with credential from the Google user.
       return true;
     })
     .catch(() => false);

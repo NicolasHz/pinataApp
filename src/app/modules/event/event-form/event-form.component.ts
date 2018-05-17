@@ -13,8 +13,7 @@ import {
   MODAL_OPTIONS,
   START_DATE_PICKER_OPTIONS,
   END_DATE_PICKER_OPTIONS,
-  ERROR_MESSAGES_RESOURCES,
-  IMAGES_CARD_SOURCE } from '../../../shared/options/date-time-pickers';
+  ERROR_MESSAGES_RESOURCES } from '../../../shared/options/date-time-pickers';
 import { User } from './../../../interfaces/user';
 import { Evento } from './../../../interfaces/evento';
 import * as moment from 'moment';
@@ -35,7 +34,6 @@ export class EventFormComponent extends MzBaseModal implements OnInit {
   public startDatepickerOptions = START_DATE_PICKER_OPTIONS;
   public endDatepickerOptions = END_DATE_PICKER_OPTIONS;
   public errorMessageResources = ERROR_MESSAGES_RESOURCES;
-  public cardImages = IMAGES_CARD_SOURCE;
   public cardGif;
   public endDateAvalible = false;
   private event: Evento;

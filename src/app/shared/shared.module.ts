@@ -17,6 +17,7 @@ import { MzInjectionService} from 'ng2-materialize';
 import { EventsService } from '../services/events/events.service';
 import { ModalService } from '../services/modal/modal.service';
 import { UtilsService } from '../services/utils/utils.service';
+import { GifsService } from '../services/gifs/gifs.service';
 
 @NgModule({
   imports: [
@@ -40,7 +41,8 @@ import { UtilsService } from '../services/utils/utils.service';
     EventsService,
     MzInjectionService,
     ModalService,
-    UtilsService
+    UtilsService,
+    GifsService
   ]
 })
 export class SharedModule { }

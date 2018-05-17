@@ -16,7 +16,7 @@
           [align]="'center'"
           [icon]="'date_range'"
           [size]="'tiny'">
-          </i>{{eventData.start | date:'short'}}</h6>
+          </i>{{eventData.start | date:'MMM-dd HH:mm'}}</h6>
       </div>
       <div class="buttons" *ngIf="eventAuthor">
         <div *ngIf="!optionsOpened" [@flyInOut]>

@@ -13,11 +13,13 @@ import {
   MODAL_OPTIONS,
   START_DATE_PICKER_OPTIONS,
   END_DATE_PICKER_OPTIONS,
-  ERROR_MESSAGES_RESOURCES } from '../../../shared/options/date-time-pickers';
+  ERROR_MESSAGES_RESOURCES,
+  IMAGES_CARD_SOURCE } from '../../../shared/options/date-time-pickers';
 import { User } from './../../../interfaces/user';
 import { Evento } from './../../../interfaces/evento';
 import * as moment from 'moment';
 import { UserService } from '../../../services/user/user.service';
+import { GifsService } from '../../../services/gifs/gifs.service';
 
 @Component({
   selector: 'app-event-form',
@@ -33,6 +35,8 @@ export class EventFormComponent extends MzBaseModal implements OnInit {
   public startDatepickerOptions = START_DATE_PICKER_OPTIONS;
   public endDatepickerOptions = END_DATE_PICKER_OPTIONS;
   public errorMessageResources = ERROR_MESSAGES_RESOURCES;
+  public cardImages = IMAGES_CARD_SOURCE;
+  public cardGif;
   public endDateAvalible = false;
   private event: Evento;
   private user: User;
@@ -42,7 +46,8 @@ export class EventFormComponent extends MzBaseModal implements OnInit {
     private formBuilder: FormBuilder,
     private toastService: MzToastService,
     private eventService: EventsService,
-    private userService: UserService
+    private userService: UserService,
+    private gifService: GifsService
   ) { super(); }
 
   ngOnInit() {
@@ -77,17 +82,16 @@ export class EventFormComponent extends MzBaseModal implements OnInit {
         ]
       ],
       image: [
-        null,
-        [Validators.maxLength(350)]
+        null
       ],
     });
   }
 
   buildEditForm() {
     this.endDateAvalible = true;
-    const startDay = moment(this.eventData.start).format('DD-MM-YYYY');
+    const startDay = moment(this.eventData.start).format('YYYY-MM-DD');
     const startHour = moment(this.eventData.start).format('HH:mm');
-    const endDay = moment(this.eventData.end).format('DD-MM-YYYY');
+    const endDay = moment(this.eventData.end).format('YYYY-MM-DD');
     const endHour = moment(this.eventData.end).format('HH:mm');
     this.eventForm = this.formBuilder.group({
       title: [this.eventData.title, Validators.required],
@@ -107,8 +111,8 @@ export class EventFormComponent extends MzBaseModal implements OnInit {
           Validators.minLength(20)
         ]
       ],
-      image: [this.eventData.image,
-        [Validators.maxLength(350)]
+      image: [
+        this.eventData.image
       ],
     });
   }
@@ -148,14 +152,27 @@ export class EventFormComponent extends MzBaseModal implements OnInit {
     }
   }
 
+  getGif(q) {
+    this.cardGif = this.gifService.getGif(q);
+  }
+
+  setCardImg(imgUrl) {
+    if (!imgUrl) {
+      return;
+    }
+    this.eventForm.controls['image'].setValue(imgUrl);
+  }
+
   showToast(message: string, color: string) {
     this.toastService.show(message, 4000, color );
   }
+
   setAvalibleEndDays() {
     if (this.eventForm.value.start.eventStartDay) {
       const minDate = this.eventForm.value.start.eventStartDay.split('-').map(Number);
       minDate[1]--; // Discounting a month because of the date picker restriction behavior
       this.endDatepickerOptions.min = minDate;
+      this.eventForm.value.end.eventEndDay = this.eventForm.value.start.eventStartDay;
       this.endDateAvalible = true;
     } else {
       this.endDateAvalible = false;

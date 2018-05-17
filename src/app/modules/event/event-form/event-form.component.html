@@ -3,7 +3,7 @@
     <h4>Create your event!!</h4>
   </mz-modal-header>
   <mz-modal-header *ngIf="editingEvent">
-    Update your event!
+    <h4>Update your event!</h4>
   </mz-modal-header>
     <mz-modal-content>
       <form [formGroup]="eventForm" >
@@ -98,17 +98,25 @@
                 </textarea>
               </mz-textarea-container>
           </div>
+          <input
+            formControlName="image"
+            id="input-hidden"
+            type="hidden" />
           <div class="row">
             <mz-input-container class="col s12 m12 l12">
               <input mz-input
-                mz-validation
                 id="input-image"
-                formControlName="image"
+                class="gif-search"
+                #gifName
                 type="text"
-                [label]="'Paste your image URL'"
-                [errorMessageResource]="errorMessageResources.image"
-                [length]="350"/>
-          </mz-input-container>
+                placeholder="Select a gif for your event"
+                [label]="'Card Gif'" />
+                <button mz-button (click)="getGif(gifName.value)">Search</button>
+                <button mz-button (click)="setCardImg(gifImg.src)">Choose</button>
+            </mz-input-container>
+            <div class="col s12 m12 l6 push-l3 gif-image">
+              <img #gifImg src="{{(cardGif | async)?.data[0].images.downsized.url}}" width="100%" alt="">
+            </div>
           </div>
         </div>
       </form>

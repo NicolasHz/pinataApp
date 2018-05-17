@@ -11,7 +11,6 @@ export class EventsService {
   public calendarEvents: any[];
 
   constructor(
-
     private db: AngularFirestore,
     private userService: UserService
   ) {

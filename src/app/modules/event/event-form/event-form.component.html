@@ -111,11 +111,19 @@
                 type="text"
                 placeholder="Select a gif for your event"
                 [label]="'Card Gif'" />
-                <button mz-button (click)="getGif(gifName.value)">Search</button>
-                <button mz-button (click)="setCardImg(gifImg.src)">Choose</button>
             </mz-input-container>
             <div class="col s12 m12 l6 push-l3 gif-image">
-              <img #gifImg src="{{(cardGif | async)?.data[0].images.downsized.url}}" width="100%" alt="">
+              <img *ngIf="(cardGif | async)?.data[0].images.downsized.url !== null" #gifImg src="{{(cardGif | async)?.data[0].images.downsized.url}}" width="100%" alt="">
+              <mz-progress *ngIf="(cardGif | async)?.data[0].images.downsized.url === null && firstSearch"
+                [backgroundClass]="'blue lighten-4'"
+                [progressClass]="'blue'">
+              </mz-progress>
+            </div>
+            <div class="col s12 m12 l12">
+              <div class="right">
+                <button mz-button (click)="getGif(gifName.value)">Search</button>
+                <button mz-button (click)="setCardImg(gifImg.src)">Choose</button>
+              </div>
             </div>
           </div>
         </div>

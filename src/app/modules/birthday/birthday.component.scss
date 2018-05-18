@@ -18,11 +18,10 @@
         background: linear-gradient(130deg, #3d1bfa , #fc5a5a);
         transition: all 500ms ease-in-out;
         background-size: 500px 1px;
+        color: white;
     }
     &__spreadsheet-button:hover {
         background-position: -245px;
-        color: white;
-        // background: linear-gradient(130deg, #3d1bfa, #fc5a5a);
     }
 }
 #calendar {

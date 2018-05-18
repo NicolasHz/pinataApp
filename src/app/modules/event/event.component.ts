@@ -1,12 +1,20 @@
 import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
-import { EventsService } from '../../services/events/events.service';
+
 import { EventFormComponent } from './event-form/event-form.component';
-import { MzModalService, MzToastService } from 'ng2-materialize';
-import { UtilsService } from '../../services/utils/utils.service';
+
+// Interfaces
 import { User } from '../../interfaces/user';
 import { Evento, eventInitialState } from '../../interfaces/evento';
+
+// Services
+import { MzModalService, MzToastService } from 'ng2-materialize';
+import { UtilsService } from '../../services/utils/utils.service';
 import { UserService } from '../../services/user/user.service';
+import { EventsService } from '../../services/events/events.service';
 import { ConfirmModalComponent } from '../../shared/confirm-modal/confirm-modal.component';
+
+// RxJs
+import { Subscription } from 'rxjs/Subscription';
 
 @Component({
   selector: 'app-event',
@@ -17,9 +25,12 @@ export class EventComponent implements OnInit, AfterViewInit {
   public events: Array<Evento>;
   public eventsReady = false;
   public user: User;
-  selectedEvent: Evento = eventInitialState;
+  public selectedEvent: Evento = eventInitialState;
+  public unsubscribe: Subscription;
+
   @ViewChild(ConfirmModalComponent) confirmModal: ConfirmModalComponent;
   @ViewChild('featureDiscovery') firstTimeIn;
+
   constructor(
     private eventService: EventsService,
     private modalService: MzModalService,
@@ -28,7 +39,7 @@ export class EventComponent implements OnInit, AfterViewInit {
     private toastService: MzToastService) { }
 
   ngOnInit() {
-    this.eventService.getEvents('events')
+    this.unsubscribe = this.eventService.getEvents('events')
     .subscribe(response => {
       this.events = Object.keys(response)
       .map(index => response[index])
@@ -114,5 +125,9 @@ export class EventComponent implements OnInit, AfterViewInit {
     }else {
       this.toastService.show('Canceled', 4000, 'red' );
     }
+  }
+
+  ngOnDestroy() {
+    this.unsubscribe.unsubscribe();
   }
 }

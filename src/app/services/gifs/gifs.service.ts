@@ -13,7 +13,7 @@ export class GifsService {
       return;
     }
     const offSet = Math.floor(Math.random() * 25);
-    const GIPHY_ENDPOINT = `http://api.giphy.com/v1/gifs/search?
+    const GIPHY_ENDPOINT = `//api.giphy.com/v1/gifs/search?
     q=${query}&limit=1&rating=pg&offset=${offSet}&api_key=Jxk0xJH6QxhBQ2EdrqmOivy3TpSVrx4S&tag`;
 
     return this.httpClient.get<any>(GIPHY_ENDPOINT);

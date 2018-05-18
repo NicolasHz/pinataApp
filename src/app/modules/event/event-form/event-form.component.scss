@@ -13,7 +13,6 @@ mz-modal {
 }
 
 .gif-search {
-    // width: 50%!important;
     margin-right: 10px;
 }
 
@@ -26,7 +25,7 @@ mz-modal {
         line-height: 60px;
         font-size: 2em;
     }
-    .gif-search {
-        // width: 100%!important;
+    .gif-buttons button {
+        padding: 0 20px;
     }
 }

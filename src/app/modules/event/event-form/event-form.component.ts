@@ -157,8 +157,6 @@ export class EventFormComponent extends MzBaseModal implements OnInit {
   }
 
   setCardImg(imgUrl) {
-    console.log(imgUrl);
-    
     if (!imgUrl) {
       return;
     }

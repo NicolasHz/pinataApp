@@ -9,7 +9,14 @@
         </div>
         <div class="row">
                 <div class="col s12 m12 l12 center">
-                        <button class="birthday__spreadsheet-button" mz-button (click)="printBDSpreadsheet()">Birthdays Spreadsheet</button>
+                        <button
+                        mz-button
+                        mz-tooltip 
+                        [tooltip]="'View/Print the complete birthdays spreadsheet'"
+                        [position]="'top'"
+                        [delay]="800"
+                        class="birthday__spreadsheet-button"
+                        (click)="printBDSpreadsheet()">Birthdays Spreadsheet</button>
                 </div>
         </div>
         <div id='calendar'></div>

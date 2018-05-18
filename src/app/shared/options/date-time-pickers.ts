@@ -64,8 +64,3 @@ export const ERROR_MESSAGES_RESOURCES = {
   },
 };
 
-export const IMAGES_CARD_SOURCE = [
-  'https://firebasestorage.googleapis.com/v0/b/miseventos-ebcef.appspot.com/o/images%2Fparty.gif?alt=media&token=4ab2681d-b062-44e9-b57c-cb61e1cdac03',
-  'https://firebasestorage.googleapis.com/v0/b/miseventos-ebcef.appspot.com/o/images%2Fparty0.gif?alt=media&token=0d09eb94-4a72-45a0-a798-01984dbf6d2d',
-  'https://firebasestorage.googleapis.com/v0/b/miseventos-ebcef.appspot.com/o/images%2Fparty1.gif?alt=media&token=d56b3787-63ad-489d-8512-cc805feced27',
-  'https://firebasestorage.googleapis.com/v0/b/miseventos-ebcef.appspot.com/o/images%2Fparty2.gif?alt=media&token=33153164-4634-4ff4-91af-853c52f870d8'];

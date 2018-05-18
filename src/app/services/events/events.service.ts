@@ -83,7 +83,7 @@ export class EventsService {
     });
   }
 
-    updateCalendarArr() {
+  updateCalendarArr() {
     this.getEventsFromCalendar().then((response) => this.calendarEvents = response);
   }
 

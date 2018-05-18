@@ -9,7 +9,8 @@ export class GifsService {
   constructor(private httpClient: HttpClient) { }
 
   getGif(query: String): Observable<any> {
-    if (!query) {
+    query = query.trim();
+    if (!query || query.length <= 0) {
       return;
     }
     const offSet = Math.floor(Math.random() * 25);

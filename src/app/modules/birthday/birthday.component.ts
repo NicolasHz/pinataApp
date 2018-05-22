@@ -8,6 +8,7 @@ import { MzModalService } from 'ng2-materialize';
 import { BirthdayModalComponent } from './birthday-modal/birthday-modal.component';
 
 import { Subscription } from 'rxjs/Subscription';
+import { UserService } from '../../services/user/user.service';
 
 declare let $: any;
 @Component({
@@ -19,7 +20,11 @@ export class BirthdayComponent implements OnInit, OnDestroy {
   public birthdays: Array<Evento>;
   public birthdayReady = false;
   public unsubscribe: Subscription;
-  constructor(private eventService: EventsService, private modalService: MzModalService) { }
+  public globantUser = false;
+  constructor(
+    private eventService: EventsService,
+    private modalService: MzModalService,
+    private userService: UserService) { }
 
   ngOnInit() {
     this.unsubscribe = this.eventService.getEvents('birthdays')
@@ -30,6 +35,7 @@ export class BirthdayComponent implements OnInit, OnDestroy {
       this.birthdayReady = true;
     });
     // this.eventService.getEventsFromCalendar().then(r => console.log(r));
+    this.globantUser = /(?:@globant)/.test(this.userService.getUser().email);
   }
 
   createCalendar(eventType) {

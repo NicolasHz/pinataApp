@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterViewInit, OnDestroy } from '@angular/core';
 
 import { EventFormComponent } from './event-form/event-form.component';
 
@@ -21,7 +21,7 @@ import { Subscription } from 'rxjs/Subscription';
   templateUrl: './event.component.html',
   styleUrls: ['./event.component.scss']
 })
-export class EventComponent implements OnInit, AfterViewInit {
+export class EventComponent implements OnInit, AfterViewInit, OnDestroy {
   public events: Array<Evento>;
   public eventsReady = false;
   public user: User;
@@ -63,31 +63,7 @@ export class EventComponent implements OnInit, AfterViewInit {
 
   joinEvent(eventData: Evento) {
     eventData.participants.push(this.user);
-    const calendarEvent = {
-      summary: eventData.title,
-      location: eventData.place,
-      description: eventData.description,
-      start: {
-          dateTime: eventData.start,
-          timeZone: 'America/Los_Angeles'
-      },
-      end: {
-          dateTime: eventData.end,
-          timeZone: 'America/Los_Angeles'
-      },
-      recurrence: [
-        'RRULE:FREQ=DAILY;COUNT=1'
-      ],
-      attendees: [{email: 'nicolasholzman@hotmail.com'}],
-      reminders: {
-          useDefault: false,
-          overrides: [
-            {method: 'email', minutes: 30},
-            {method: 'popup', minutes: 10}
-          ]
-      }
-    };
-    this.eventService.addEventToCalendar(calendarEvent)
+    this.eventService.addEventToCalendar(eventData)
     .then((success) => {
       if (success) {
         this.eventService.updateEvent('events', eventData);

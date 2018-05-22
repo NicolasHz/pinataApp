@@ -24,30 +24,7 @@ export class BirthdayModalComponent extends MzBaseModal {
 
   bookBirthday() {
     const eventData: Evento = this.calEvent;
-    const calendarEvent = {
-      summary: eventData.title,
-      location: eventData.place,
-      description: eventData.description,
-      start: {
-          dateTime: moment(eventData.start).format(),
-          timeZone: 'America/Los_Angeles'
-      },
-      end: {
-          dateTime: moment(eventData.end).format(),
-          timeZone: 'America/Los_Angeles'
-      },
-      recurrence: [
-        'RRULE:FREQ=DAILY;COUNT=1'
-      ],
-      reminders: {
-          useDefault: false,
-          overrides: [
-            {method: 'email', minutes: 24 * 60},
-            {method: 'popup', minutes: 10}
-          ]
-      }
-    };
-    this.eventService.addEventToCalendar(calendarEvent)
+    this.eventService.addEventToCalendar(eventData)
     .then((success) => {
       this.birhtdayModal.close();
       success ? this.toastService.show('Birthday booked successfully', 4000, 'green')

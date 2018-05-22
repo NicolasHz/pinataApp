@@ -4,10 +4,15 @@ import { Evento } from './../../interfaces/evento';
 import { UserService } from './../user/user.service';
 import { CalendarEventI } from './../../interfaces/calendar-event';
 import * as moment from 'moment';
-
+import { ENCODE32, DECODE32 } from './encode-decode';
 @Injectable()
 export class UtilsService {
   private user: User;
+  // private a = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ234567';
+
+  public encode32 = ENCODE32;
+  public decode32 = DECODE32;
+
   constructor( private userService: UserService) {
     this.user = this.userService.getUser();
    }
@@ -44,9 +49,9 @@ export class UtilsService {
   findCalendarEvent(eventData: Evento, calendarEvent: CalendarEventI[]) { // fixMe
     return calendarEvent
       .find( calendarObject =>  {
-          if (calendarObject.start.dateTime === eventData.start
-            && calendarObject.end.dateTime === eventData.end
-            && calendarObject.description === eventData.description) {
+          const decodedId = this.decode32(calendarObject.id.replace(/_.*/, ''));
+          const isId = new RegExp('(?:' + eventData.id + ')').test(decodedId);
+          if ( isId ) {
             return true;
           }else {
             return false;

@@ -19,6 +19,7 @@ import { Evento } from './../../../interfaces/evento';
 import * as moment from 'moment';
 import { UserService } from '../../../services/user/user.service';
 import { GifsService } from '../../../services/gifs/gifs.service';
+import { UtilsService } from '../../../services/utils/utils.service';
 
 @Component({
   selector: 'app-event-form',
@@ -46,7 +47,8 @@ export class EventFormComponent extends MzBaseModal implements OnInit {
     private toastService: MzToastService,
     private eventService: EventsService,
     private userService: UserService,
-    private gifService: GifsService
+    private gifService: GifsService,
+    private util: UtilsService
   ) { super(); }
 
   ngOnInit() {
@@ -129,18 +131,22 @@ export class EventFormComponent extends MzBaseModal implements OnInit {
         title: this.eventForm.value.title,
         start: formattedStart,
         end: formattedEnd,
+        createdTime: this.eventData.createdTime,
+        lastEditedTime: new Date(),
         description: this.eventForm.value.description.trim(),
         image: this.eventForm.value.image,
         creator: this.user,
         participants: this.eventData.participants
       };
       this.eventService.updateEvent('events', this.event);
+      this.eventService.updateCalendarEvent(this.util.findCalendarEvent(this.event, this.eventService.calendarEvents).id, this.event);
       this.clear();
     } else {
       this.event = <Evento>{
         title: this.eventForm.value.title,
         start: formattedStart,
         end: formattedEnd,
+        createdTime: new Date(),
         description: this.eventForm.value.description,
         image: this.eventForm.value.image,
         creator: this.user,

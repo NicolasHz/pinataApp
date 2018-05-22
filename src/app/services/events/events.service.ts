@@ -3,6 +3,8 @@ import { Injectable } from '@angular/core';
 import { AngularFirestore } from 'angularfire2/firestore';
 import { CalendarEventI } from './../../interfaces/calendar-event';
 import { UserService } from './../user/user.service';
+import * as moment from 'moment';
+import { UtilsService } from '../utils/utils.service';
 
 declare var gapi: any;
 declare let $: any;
@@ -12,7 +14,8 @@ export class EventsService {
 
   constructor(
     private db: AngularFirestore,
-    private userService: UserService
+    private userService: UserService,
+    private util: UtilsService
   ) {
       this.updateCalendarArr();
    }
@@ -65,6 +68,10 @@ export class EventsService {
     });
   }
 
+  //
+  // Start calendar API interaction.
+  //
+
   getEventsFromCalendar(): Promise<any> {
      return this.userService.getCalendarApi().then(() => {
       return gapi.client.calendar.events.list({
@@ -107,16 +114,106 @@ export class EventsService {
     .catch(() => false);
   }
 
-  addEventToCalendar(eventToAdd: CalendarEventI): Promise<boolean> {
+  updateCalendarEvent(id: string, eventToUpdate: Evento): Promise<boolean> {
+    const calendarEvent: CalendarEventI = {
+      summary: eventToUpdate.title,
+      location: eventToUpdate.place,
+      description: eventToUpdate.description,
+      start: {
+          dateTime: moment(eventToUpdate.start).format(),
+          timeZone: 'America/Los_Angeles'
+      },
+      end: {
+          dateTime: moment(eventToUpdate.end).format(),
+          timeZone: 'America/Los_Angeles'
+      },
+      recurrence: [
+        'RRULE:FREQ=DAILY;COUNT=1'
+      ],
+      guestsCanModify: false,
+      reminders: {
+          useDefault: false,
+          overrides: [
+            {method: 'email', minutes: 30},
+            {method: 'popup', minutes: 10}
+          ]
+      }
+    };
+    return this.userService.getCalendarApi()
+    .then( () => {
+      gapi.client.calendar.events.patch({
+        'calendarId': 'primary',
+        'eventId': id,
+        'resource': calendarEvent
+      })
+      .execute((response) => {
+        if (response.error || response === false) {
+          console.log('Error at update calendar Event');
+        }else {
+          this.updateCalendarArr();
+          console.log('Success at update calendar Event');
+        }
+      });
+      return true;
+    })
+    .catch(() => false);
+  }
+
+  addEventToCalendar(eventToAdd: Evento): Promise<boolean> {
+    const calendarEvent = this.createCalendarEvent(eventToAdd);
     return this.userService.getCalendarApi().then( () => {
       gapi.client.calendar.events.insert({
         'calendarId': 'primary',
-        'resource': eventToAdd
-      }).execute((event) => {
-        this.updateCalendarArr();
-        return event;
+        'resource': calendarEvent
+      })
+      .execute((response) => {
+        if (response.error || response === false) {
+          return false;
+        }else {
+          this.updateCalendarArr();
+          return true;
+        }
       });
       return true;
-    }).catch(() =>  false);
+    })
+    .catch(() => false);
+  }
+
+  createCalendarEvent(eventToAdd): CalendarEventI {
+    return  {
+      summary: eventToAdd.title,
+      location: eventToAdd.place,
+      description: eventToAdd.description,
+      start: {
+          dateTime: moment(eventToAdd.start).format(),
+          timeZone: 'America/Los_Angeles'
+      },
+      end: {
+          dateTime: moment(eventToAdd.end).format(),
+          timeZone: 'America/Los_Angeles'
+      },
+      recurrence: [
+        'RRULE:FREQ=DAILY;COUNT=1'
+      ],
+      guestsCanModify: false,
+      id: this.util.encode32(eventToAdd.id + this.makePlusId(5)),
+      reminders: {
+          useDefault: false,
+          overrides: [
+            {method: 'email', minutes: 30},
+            {method: 'popup', minutes: 10}
+          ]
+      }
+    };
+  }
+
+  makePlusId(finalLength: number) {
+    let text = '';
+    const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+
+    for (let i = 0; i < finalLength; i++) {
+      text += possible.charAt(Math.floor(Math.random() * possible.length));
+    }
+    return text;
   }
 }

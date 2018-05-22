@@ -6,6 +6,8 @@ export interface Evento {
     allDay?: boolean;
     start: string;
     end: string;
+    createdTime: any;
+    lastEditedTime?: any;
     url?: string;
     className?: string;
     editable?: string;
@@ -25,6 +27,8 @@ export const eventInitialState: Evento = {
     allDay: null,
     start: null,
     end: null,
+    createdTime: null,
+    lastEditedTime: null,
     url: null,
     className: null,
     editable: null,

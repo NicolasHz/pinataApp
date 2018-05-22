@@ -1,18 +1,27 @@
+import { trigger } from '@angular/animations';
 import { Component } from '@angular/core';
 import { UserService } from './../../services/user/user.service';
 
 @Component({
   selector: 'app-login',
+  animations: [
+    trigger('anim', [])
+  ],
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent {
   allow = true;
-  constructor( private userService: UserService ) { }
+  login = false;
+  constructor( public userService: UserService ) { }
 
-  logUser() {
+  logInUser() {
     this.userService.login().then((allow) => {
         this.allow = allow;
     });
+  }
+
+  changeIcon() {
+    this.login = !this.login;
   }
 }

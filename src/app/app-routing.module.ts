@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { ModuleWithProviders, NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+import { MzTooltipModule, MzButtonModule, MzIconMdiModule } from 'ng2-materialize';
 
 // Guards
 import { AuthGuardService } from './services/auth-guard/auth-guard';
@@ -52,7 +53,10 @@ const appRoutes: Routes = [
 @NgModule({
   imports: [
     CommonModule,
-    RouterModule.forRoot(appRoutes)
+    RouterModule.forRoot(appRoutes),
+    MzTooltipModule,
+    MzButtonModule,
+    MzIconMdiModule
   ],
   declarations: [
     LoginComponent,

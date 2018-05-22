@@ -16,9 +16,7 @@ export class EventsService {
     private db: AngularFirestore,
     private userService: UserService,
     private util: UtilsService
-  ) {
-      this.updateCalendarArr();
-   }
+  ) {  }
 
   getEvents(eventsType: string) {
     return this.db
@@ -85,13 +83,10 @@ export class EventsService {
         if (!response) {
           return;
         }
+        this.calendarEvents = response.result.items;
         return response.result.items;
       }).catch(() => console.log('something wrong at fetching events from calendar'));
     });
-  }
-
-  updateCalendarArr() {
-    this.getEventsFromCalendar().then((response) => this.calendarEvents = response);
   }
 
   deleteCalendarEvent(id: string): Promise<boolean> {
@@ -105,7 +100,7 @@ export class EventsService {
         if (response.error || response === false) {
           console.log('Error at delete calendar Event');
         }else {
-          this.updateCalendarArr();
+          this.getEventsFromCalendar();
           console.log('Success at delete calendar Event');
         }
       });
@@ -127,7 +122,7 @@ export class EventsService {
         if (response.error || response === false) {
           console.log('Error at update calendar Event');
         }else {
-          this.updateCalendarArr();
+          this.getEventsFromCalendar();
           console.log('Success at update calendar Event');
         }
       });
@@ -148,7 +143,7 @@ export class EventsService {
         if (response.error || response === false) {
           return false;
         }else {
-          this.updateCalendarArr();
+          this.getEventsFromCalendar();
           return true;
         }
       });

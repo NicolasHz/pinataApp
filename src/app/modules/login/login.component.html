@@ -1,24 +1,43 @@
 <div class="login">
-  <div class="login__container">
-    <div class="login__welcome">
-      <div class="login__wrapper">
-        <img src="../../assets/img/cake-boy.png" class="responsive-img" alt="Cake-boy" width="250px">
-        <h1>Welcome to Piñata!!</h1>
-        <!-- Display none on mobile -->
-        <p id="welcome-text">The quick brown fox jumps over the lazy dog, The quick brown fox jumps over the lazy dog
-          The quick brown fox jumps over the lazy dog. The quick brown fox jumps over the lazy dog.
-        </p>
-        <button
-          type="button"
-          class="btn btn-large waves-effect waves-green login__btn"
-          (click)="logUser()"
-          >
-        <i class="material-icons left login__btn__icon">subdirectory_arrow_right</i>
-        <span class="login__btn__text" > Login </span>
-        </button>
-        <p *ngIf="!allow" style="color: #5cb85c">Please let us access you calendar for a better experiencie</p>
+  <div class="login__welcome">
+    <img src="../../assets/img/cake-boy.png" class="responsive-img wow tada" alt="Cake-boy" width="250px">
+    <h1>Welcome to Piñata!!</h1>
+    <!-- Display none on mobile -->
+    <p id="welcome-text">The quick brown fox jumps over the lazy dog, The quick brown fox jumps over the lazy dog
+      The quick brown fox jumps over the lazy dog. The quick brown fox jumps over the lazy dog.
+    </p>
+    <div class="login__button-login">
+      <button
+        mz-button
+        mz-tooltip
+        [large]="true"
+        [tooltip]="'Log in with google account'"
+        [position]="'top'"
+        [delay]="800"
+        class="login__button-login__google wow fadeIn"
+        data-wow-duration="1.8s"
+        (click)="logInUser()"
+        (mouseover)="changeIcon()"
+        (mouseout)="changeIcon()">
+        <i *ngIf="!login"
+          [@anim]
+          mz-icon-mdi
+          [align]="'left'"
+          [icon]="'login'"
+          [size]="'24px'"
+          class="wow fadeIn">
+        </i>
+        <i *ngIf="login"
+          [@anim]
+          mz-icon-mdi
+          [align]="'left'"
+          [icon]="'google'"
+          [size]="'24px'"
+          class="wow fadeIn">
+        </i>
+        Log in</button>
       </div>
-    </div>
+    <p *ngIf="!allow" style="color: #5cb85c">Please let us access you calendar for a better experiencie</p>
   </div>
 </div>
 

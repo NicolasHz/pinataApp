@@ -72,4 +72,9 @@ export class UtilsService {
     }
     return text;
   }
+
+  diferenceOfTimeFromNow(date) {
+    const now = new Date();
+    return moment.duration(moment(now).diff(moment(date))).asHours();
+  }
 }

@@ -43,7 +43,8 @@ export class EventComponent implements OnInit, AfterViewInit, OnDestroy {
     .subscribe(response => {
       this.events = Object.keys(response)
       .map(index => response[index])
-      .filter((event) => this.util.deleteOldDatesEvents(event));
+      .filter((event) => this.util.deleteOldDatesEvents(event))
+      .sort((a, b) => this.util.diferenceOfTimeFromNow(b.start) - this.util.diferenceOfTimeFromNow(a.start));
       this.eventsReady = true;
     });
     this.user = this.userService.getUser();

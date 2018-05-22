@@ -18,6 +18,9 @@
     &__cards {
         margin-bottom: 0;
     }
+    &__cards app-card {
+        min-height: 470px;
+    }
     .spinner {
         text-align: center;
     }

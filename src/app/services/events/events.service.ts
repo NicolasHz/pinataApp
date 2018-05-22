@@ -115,30 +115,7 @@ export class EventsService {
   }
 
   updateCalendarEvent(id: string, eventToUpdate: Evento): Promise<boolean> {
-    const calendarEvent: CalendarEventI = {
-      summary: eventToUpdate.title,
-      location: eventToUpdate.place,
-      description: eventToUpdate.description,
-      start: {
-          dateTime: moment(eventToUpdate.start).format(),
-          timeZone: 'America/Los_Angeles'
-      },
-      end: {
-          dateTime: moment(eventToUpdate.end).format(),
-          timeZone: 'America/Los_Angeles'
-      },
-      recurrence: [
-        'RRULE:FREQ=DAILY;COUNT=1'
-      ],
-      guestsCanModify: false,
-      reminders: {
-          useDefault: false,
-          overrides: [
-            {method: 'email', minutes: 30},
-            {method: 'popup', minutes: 10}
-          ]
-      }
-    };
+    const calendarEvent = this.createCalendarEvent(eventToUpdate);
     return this.userService.getCalendarApi()
     .then( () => {
       gapi.client.calendar.events.patch({
@@ -161,6 +138,7 @@ export class EventsService {
 
   addEventToCalendar(eventToAdd: Evento): Promise<boolean> {
     const calendarEvent = this.createCalendarEvent(eventToAdd);
+    calendarEvent.id = this.util.encode32(eventToAdd.id + this.util.makePlusId(5));
     return this.userService.getCalendarApi().then( () => {
       gapi.client.calendar.events.insert({
         'calendarId': 'primary',
@@ -196,7 +174,6 @@ export class EventsService {
         'RRULE:FREQ=DAILY;COUNT=1'
       ],
       guestsCanModify: false,
-      id: this.util.encode32(eventToAdd.id + this.makePlusId(5)),
       reminders: {
           useDefault: false,
           overrides: [
@@ -205,15 +182,5 @@ export class EventsService {
           ]
       }
     };
-  }
-
-  makePlusId(finalLength: number) {
-    let text = '';
-    const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-
-    for (let i = 0; i < finalLength; i++) {
-      text += possible.charAt(Math.floor(Math.random() * possible.length));
-    }
-    return text;
   }
 }

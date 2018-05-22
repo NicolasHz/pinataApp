@@ -62,4 +62,14 @@ export class UtilsService {
   deleteOldDatesEvents(event) {
       return event.start >= moment(new Date).format();
   }
+
+  makePlusId(finalLength: number) {
+    let text = '';
+    const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+
+    for (let i = 0; i < finalLength; i++) {
+      text += possible.charAt(Math.floor(Math.random() * possible.length));
+    }
+    return text;
+  }
 }

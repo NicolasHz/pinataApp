@@ -5,6 +5,7 @@
   background: linear-gradient(360deg, #ffd86f, #fc6262)!important;
   &__welcome {
     @extend %main-element;
+    padding: 0 22% 5% 22%;
     @media all and (max-width: $app_especific_toggle_menu) {
       padding: 0 22% 5% 22%;
     }

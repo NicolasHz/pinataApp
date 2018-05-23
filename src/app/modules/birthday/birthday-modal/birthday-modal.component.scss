@@ -16,11 +16,17 @@ mz-spinner {
     }
 }
 mz-modal {
+    .user-pic {
+        border-radius: 50%;
+    }
     button {
         margin: 1% 4%!important;
     }
     .header-title {
         text-align: center;
+    }
+    /deep/.modal-content > p {
+        width: 100%;
     }
     /deep/.modal-content {
         display: flex;
@@ -28,9 +34,9 @@ mz-modal {
         align-items: center;
     }
     /deep/.modal.modal-fixed-footer{
-        min-height: 450px;
-        width: 550px;
-        max-height: 450px;
+        min-height: 370px;
+        width: 400px;
+        max-height: 370px;
         border-radius: 20px;
     }
     @media screen and (min-width: $app_mobile) and (max-width: $app_tablet){

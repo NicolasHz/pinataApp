@@ -1,0 +1,9 @@
+<div class="birthday center">
+  <div class="birthday__user-pic">
+    <img src={{birthdayData?.image}} alt="Birthday User Image">
+  </div>
+  <div class="birthday__description" [ngStyle]="{'background':descriptionColor}">
+      <h5 class="birhtday__description__title">{{birthdayData?.title}}</h5>
+      <span>{{birthdayData?.start | date:'MMM-dd'}}</span>
+  </div>
+</div>

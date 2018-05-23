@@ -35,7 +35,7 @@ export class BirthdayComponent implements OnInit, OnDestroy {
       this.birthdayReady = true;
     });
     // this.eventService.getEventsFromCalendar().then(r => console.log(r));
-    this.globantUser = /(?:@globant)/.test(this.userService.getUser().email);
+    this.globantUser = /(?:@globant.com)/.test(this.userService.getUser().email);
   }
 
   createCalendar(eventType) {

@@ -10,12 +10,14 @@
     <div [ngClass]="[eventsReady ? '' : 'hide']">
         <div class="row event__cards">
             <app-card *ngFor="let event of events"
-                [eventData]="event" 
+                [eventData]="event"
+                [enableEdit]="true"
                 (join)="joinEvent($event)"
                 (leave)="leaveEvent($event)"
                 (edit)="editEvent($event)"
                 (delete)="confirmDelete($event)"
-                class="col s12 m4 l3">
+                class="col s12 m4 l3 wow flipInX"
+                data-wow-duration="1.4s">
             </app-card>
             <app-confirm-modal
                 [eventData]="selectedEvent"

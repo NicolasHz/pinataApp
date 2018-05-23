@@ -14,6 +14,7 @@ import { trigger, style, state, animate, transition } from '@angular/animations'
 })
 export class CardComponent implements OnInit {
   @Input() eventData = eventInitialState;
+  @Input() enableEdit = false;
   @Output() join: EventEmitter<Evento> = new EventEmitter<Evento>();
   @Output() leave: EventEmitter<Evento> = new EventEmitter<Evento>();
   @Output() edit: EventEmitter<Evento> = new EventEmitter<Evento>();

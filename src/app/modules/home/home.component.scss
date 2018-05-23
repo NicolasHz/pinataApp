@@ -14,3 +14,19 @@
         }
     }
 }
+.events {
+    @extend %common-layout;
+}
+.birthdays {
+    @extend %common-layout;
+    &__bithday-card{
+        margin: 20px 0;
+    }
+}
+
+%common-layout {
+    padding: 7% 10% 2% 10%;
+    @media all and (max-width: $app_especific_toggle_menu) {
+        padding: 7% 5% 2% 5%;
+    }
+}

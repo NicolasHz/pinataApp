@@ -35,7 +35,7 @@ export class UserService {
   }
 
   login(): Promise<boolean> {
-    return gapi.auth2.getAuthInstance().signIn()
+    return gapi.auth2.getAuthInstance().signIn({prompt: 'select_account'})
     .then((googleUser) => {
       const credential = firebase.auth.GoogleAuthProvider
         .credential(googleUser.getAuthResponse().id_token);
@@ -86,20 +86,3 @@ export class UserService {
   }
 }
 
-
-
-  // Saved method in case of rollback
-  // logIn() {
-  //   const firebaseInit = new firebase.auth.GoogleAuthProvider();
-  //   firebaseInit.addScope('https://www.googleapis.com/auth/calendar');
-  //   firebaseInit.setCustomParameters({
-  //     apiKey: this.API_KEY,
-  //     clientId: this.CLIENT_ID,
-  //     discoveryDocs: this.DISCOVERY_DOCS
-  //   });
-  //   this.afAut.auth.signInWithPopup(firebaseInit)
-  //   .then((response) => {console.log(response.additionalUserInfo.isNewUser)})
-  //   .catch(
-  //     error => console.log(error)
-  //   );
-  // }

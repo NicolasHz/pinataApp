@@ -1,11 +1,11 @@
 <mz-modal [fixedFooter]="true" [options]="modalOptions" #BirhtdayModal>
   <mz-modal-header>
-    <h4 class="header-title">{{calEvent.title}}</h4>
+    <h4 class="header-title">Cumpleaños {{calEvent.title}}</h4>
   </mz-modal-header>
   <mz-modal-content>
     <div class="row user-details" [ngClass]="[imageReady ? '' : 'hidden']">
       <div class="birth-data col s12 m6 l6">
-        <img class="responsive-img" [src]="calEvent.image"  (load)="showImage()" alt="">
+        <img class="responsive-img user-pic" [src]="calEvent.image"  (load)="showImage()" alt="">
         <h5>{{calEvent.start | date:'MMM-dd'}}</h5>
         </div>
       <div class="col s12 m6 l6">

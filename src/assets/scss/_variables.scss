@@ -52,4 +52,7 @@ $pinata_background: linear-gradient(360deg, #ffd86f, #fc6262);
     align-items: center;
     flex-flow: column wrap;
     text-align: center;
+    p {
+        font-size: 1.2em;
+    }
 }

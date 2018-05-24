@@ -79,7 +79,7 @@ export class EventComponent implements OnInit, AfterViewInit, OnDestroy {
 
   leaveEvent(eventData: Evento) {
     const index = eventData.participants.indexOf(this.util.findUser(eventData));
-    eventData.participants.splice(index);
+    eventData.participants.splice(index, 1);
     this.eventService.updateEvent('events', eventData);
     if (!this.util.findUser(eventData)) {
       this.toastService.show('Event leaved!', 4000, 'red');

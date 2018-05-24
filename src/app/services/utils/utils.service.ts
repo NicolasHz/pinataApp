@@ -77,4 +77,11 @@ export class UtilsService {
     const now = new Date();
     return moment.duration(moment(now).diff(moment(date))).asHours();
   }
+
+  digestYearOfBirthday(birthday) {
+    const incomingYear = moment(birthday.start).format('YYYY');
+    birthday.start = birthday.start.replace( incomingYear, new Date().getFullYear() );
+    birthday.end = birthday.end.replace( incomingYear, new Date().getFullYear() );
+    return birthday;
+  }
 }

@@ -10,8 +10,10 @@ import * as moment from 'moment';
   templateUrl: './birthday-modal.component.html',
   styleUrls: ['./birthday-modal.component.scss']
 })
-export class BirthdayModalComponent extends MzBaseModal {
-  imageReady = false;
+export class BirthdayModalComponent extends MzBaseModal implements OnInit {
+  public imageReady = false;
+  public showSvg = false;
+  public preferences = false;
   @Input() calEvent;
   @ViewChild('BirhtdayModal') birhtdayModal;
 
@@ -22,6 +24,18 @@ export class BirthdayModalComponent extends MzBaseModal {
 
   constructor(private eventService: EventsService, private toastService: MzToastService) {super(); }
 
+  ngOnInit() {
+    if (!this.calEvent) {
+      return;
+    }
+    if (this.calEvent.image === '' || this.calEvent.image === null) {
+      this.showSvg = true;
+    }
+    if (this.calEvent.preferences.length <= 0) {
+      this.preferences = true;
+    }
+  }
+
   bookBirthday() {
     const eventData: Evento = this.calEvent;
     this.eventService.addEventToCalendar(eventData)
@@ -30,9 +44,5 @@ export class BirthdayModalComponent extends MzBaseModal {
       success ? this.toastService.show('Birthday booked successfully', 4000, 'green')
       : this.toastService.show('Failed at booking Birthday', 4000, 'red');
     });
-  }
-
-  showImage() {
-    this.imageReady = true;
   }
 }

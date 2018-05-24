@@ -24,7 +24,6 @@ export class BirhdayCardComponent implements OnInit {
 
   ngOnInit() {
     this.descriptionColor = this.colors[Math.floor(Math.random() * this.colors.length)];
-    console.log(this.descriptionColor)
   }
 
 }

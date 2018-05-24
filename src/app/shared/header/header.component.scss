@@ -4,6 +4,11 @@ mz-navbar-item  a {
   color: $white!important;
 }
 
+.pinata-logo-side-menu {
+    cursor: pointer;
+    outline: none;
+}
+
 .logo {
   display: flex;
   max-height:46px;

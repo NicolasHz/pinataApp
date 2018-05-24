@@ -4,7 +4,9 @@ import { EventFormComponent } from './event-form/event-form.component';
 
 // Interfaces
 import { User } from '../../interfaces/user';
-import { Evento, eventInitialState } from '../../interfaces/evento';
+import { Evento } from '../../interfaces/evento';
+import { eventInitialState } from './../../interfaces/evento-initial-state';
+
 
 // Services
 import { MzModalService, MzToastService } from 'ng2-materialize';

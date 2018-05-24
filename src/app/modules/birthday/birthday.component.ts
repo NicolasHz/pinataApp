@@ -9,6 +9,7 @@ import { BirthdayModalComponent } from './birthday-modal/birthday-modal.componen
 
 import { Subscription } from 'rxjs/Subscription';
 import { UserService } from '../../services/user/user.service';
+import { UtilsService } from '../../services/utils/utils.service';
 
 declare let $: any;
 @Component({
@@ -20,22 +21,23 @@ export class BirthdayComponent implements OnInit, OnDestroy {
   public birthdays: Array<Evento>;
   public birthdayReady = false;
   public unsubscribe: Subscription;
-  public globantUser = false;
+  public isglobantUser = false;
   constructor(
     private eventService: EventsService,
     private modalService: MzModalService,
-    private userService: UserService) { }
+    private userService: UserService,
+    private util: UtilsService) { }
 
   ngOnInit() {
     this.unsubscribe = this.eventService.getEvents('birthdays')
     .subscribe(response => {
       this.birthdays = Object.keys(response)
       .map(index => response[index]);
+      this.birthdays.map((birthday) => this.util.digestYearOfBirthday(birthday));
       this.createCalendar(this.birthdays);
       this.birthdayReady = true;
     });
-    // this.eventService.getEventsFromCalendar().then(r => console.log(r));
-    this.globantUser = /(?:@globant.com)/.test(this.userService.getUser().email);
+    this.isglobantUser = /(?:@globant.com)/.test(this.userService.getUser().email);
   }
 
   createCalendar(eventType) {
@@ -62,7 +64,7 @@ export class BirthdayComponent implements OnInit, OnDestroy {
   }
 
   printBDSpreadsheet() {
-    window.open('https://docs.google.com/spreadsheets/d/1lKo13ZHTg4mJzX_VuxND5cWaoVuvZQpBXatrEV6BmYo/edit#gid=0', '_blank');
+    window.open('//docs.google.com/spreadsheets/d/1lKo13ZHTg4mJzX_VuxND5cWaoVuvZQpBXatrEV6BmYo/edit#gid=0', '_blank');
   }
 
   ngOnDestroy() {

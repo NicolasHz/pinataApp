@@ -1,8 +1,10 @@
-import { Evento, eventInitialState } from './../../interfaces/evento';
 import { Component, OnInit, Input, OnDestroy, Output, EventEmitter } from '@angular/core';
 import { EventsService } from '../../services/events/events.service';
 import { UtilsService } from '../../services/utils/utils.service';
 import { trigger, style, state, animate, transition } from '@angular/animations';
+
+import { eventInitialState } from './../../interfaces/evento-initial-state';
+import { Evento } from '../../interfaces/evento';
 
 @Component({
   selector: 'app-card',

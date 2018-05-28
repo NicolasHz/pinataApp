@@ -59,8 +59,8 @@ export class UtilsService {
       });
   }
 
-  deleteOldDatesEvents(event) {
-      return event.start >= moment(new Date).format();
+  deleteOldDatesEvents(event: Evento, from = new Date()) {
+      return event.end >= moment(from).format();
   }
 
   makePlusId(finalLength: number) {

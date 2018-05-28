@@ -54,6 +54,7 @@ export class BirthdayComponent implements OnInit, OnDestroy {
       editable: false,
       eventLimit: true,
       events: eventType,
+      nowIndicator: true ,
       displayEventTime: false,
       eventClick: (calEvent, jsEvent, view) => {
         this.modalService.open(BirthdayModalComponent, {calEvent, jsEvent, view});

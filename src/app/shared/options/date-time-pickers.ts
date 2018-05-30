@@ -67,7 +67,7 @@ export const ERROR_MESSAGES_RESOURCES = {
     validString: 'Description can\'t be only white-spaces.'
   },
   birthday: {
-    required: 'What day did you born?.',
+    required: 'What day did you born?',
   },
   preferences: {
     required: 'What are your preferences?.',

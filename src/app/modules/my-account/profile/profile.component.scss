@@ -6,7 +6,13 @@
     @extend %common-style;
     &__form {
       &__user-image {
-        width: 30%;
+        width: 50%;
+      }
+      &__preferences-title {
+        padding: 0 3rem;
+        @media all and (max-width: $app_especific_toggle_menu) {
+          padding: 0;
+        }
       }
     }
   }

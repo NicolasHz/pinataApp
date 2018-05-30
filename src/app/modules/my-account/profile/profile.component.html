@@ -5,30 +5,30 @@
       <form [formGroup]="generalForm" >
         <div class="section">
           <div class="row">
-            <mz-input-container class="col s12 m5 l5 push-m1 push-l1">
-              <input mz-input mz-validation required
-                id="input-fullName"
-                formControlName="fullName"
-                type="text"
-                [errorMessageResource]="errorMessageResources.fullName"
-                [label]="'Full Name'" />
-            </mz-input-container>
+            <div class="col s12 m6 l6 push-m1 push-l1">
+                <mz-input-container class="col s12 m12 l12">
+                    <input mz-input mz-validation required
+                      id="input-fullName"
+                      formControlName="fullName"
+                      type="text"
+                      [errorMessageResource]="errorMessageResources.fullName"
+                      [label]="'Full Name'" />
+                  </mz-input-container>
+                  <mz-checkbox-container class="col s12 m12 l12" >
+                    <input mz-checkbox
+                      (click)="toggleBirthdayList($event)"
+                      id="checkbox-job"
+                      type="checkbox"
+                      [filledIn]="false"
+                      [label]="'Participate on Birthday List?'">
+                  </mz-checkbox-container>
+            </div>
             <div class="col s12 m5 l5 push-m1 push-l1 center">
-              <img class="profile__personal-information__form__user-image" src="https://i1.wp.com/www.winhelponline.com/blog/wp-content/uploads/2017/12/user.png" alt="">
+                <img class="profile__personal-information__form__user-image" src="https://i1.wp.com/www.winhelponline.com/blog/wp-content/uploads/2017/12/user.png" alt="">
             </div>
           </div>
         </div>
       </form>
-    </div>
-    <div class="row">
-      <mz-checkbox-container class="col s12 m5 l5 push-m1 push-l1">
-        <input mz-checkbox
-          (click)="toggleBirthdayList($event)"
-          id="checkbox-job"
-          type="checkbox"
-          [filledIn]="false"
-          [label]="'Participate on Birthday List?'">
-      </mz-checkbox-container>
     </div>
     <div class="profile__personal-information__form">
       <form [formGroup]="birthdayListForm" >
@@ -49,7 +49,7 @@
           </mz-datepicker-container>
         </div>
         <div class="row">
-          <h6>Preferences</h6>
+          <h6 class="profile__personal-information__form__preferences-title">Preferences</h6>
           <div class="col s12 m8 l8 push-m1 push-l1" formArrayName="preferences">
             <div *ngFor="let preference of getPreferences(); let i = index">
               <mz-input-container class="col s11" [formGroup]="birthdayListForm.get('preferences').at(i)">

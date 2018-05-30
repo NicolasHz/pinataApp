@@ -1,22 +1,25 @@
 import { Component, OnInit, Input } from '@angular/core';
-import {
-  FormBuilder,
-  FormGroup,
-  Validators } from '@angular/forms';
-  import { IsEmptyValidator } from '../../../shared/validators/validators';
-import {
-  MzToastService,
-  MzBaseModal} from 'ng2-materialize';
-import { EventsService } from '../../../services/events/events.service';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+
+// Validators
+import { IsEmptyValidator } from '../../../shared/validators/validators';
 import {
   TIME_PICKER_OPTIONS,
   MODAL_OPTIONS,
   START_DATE_PICKER_OPTIONS,
   END_DATE_PICKER_OPTIONS,
   ERROR_MESSAGES_RESOURCES } from '../../../shared/options/date-time-pickers';
+
+// Interfaces
 import { User } from './../../../interfaces/user';
 import { Evento } from './../../../interfaces/evento';
 import * as moment from 'moment';
+
+// Services
+import {
+  MzToastService,
+  MzBaseModal} from 'ng2-materialize';
+import { EventsService } from '../../../services/events/events.service';
 import { UserService } from '../../../services/user/user.service';
 import { GifsService } from '../../../services/gifs/gifs.service';
 import { UtilsService } from '../../../services/utils/utils.service';
@@ -40,7 +43,7 @@ export class EventFormComponent extends MzBaseModal implements OnInit {
   public endDateAvalible = false;
   private event: Evento;
   private user: User;
-  eventForm: FormGroup;
+  public eventForm: FormGroup;
 
   constructor(
     private formBuilder: FormBuilder,

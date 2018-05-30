@@ -1,5 +1,36 @@
 @import 'src/assets/scss/variables';
 .profile {
-    @extend %full_width_heigth;
-    background: linear-gradient(160deg, #feac5e, #c779d0, #4bc0c8); // previsional colors
+  @extend %full_width_heigth;
+  background: linear-gradient(160deg, #feac5e, #c779d0, #4bc0c8); // previsional colors
+  &__personal-information {
+    @extend %common-style;
+    &__form {
+      &__user-image {
+        width: 30%;
+      }
+    }
   }
+  &__general {
+    @extend %common-style;
+  }
+  &__log-out {
+    padding: 0 1rem;
+    position: absolute;
+    bottom: 3%;
+    right: 3%;
+  }
+}
+
+mz-datepicker-container {
+  /deep/.picker__frame {
+    top: 5%;
+  }
+}
+
+%common-style {
+  margin: 10px 15px!important;
+  background-color: white;
+  margin: 10px 0;
+  border-radius: 10px;
+  box-shadow: 5px 8px 17px 0px rgba(0, 0, 0, 0.2), 5px 6px 18px 0px rgba(0, 0, 0, 0.19);
+}

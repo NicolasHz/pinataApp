@@ -1,3 +1,4 @@
+import { User } from './../../../interfaces/user';
 import { Component, OnInit } from '@angular/core';
 import {
   FormBuilder,
@@ -25,22 +26,23 @@ export class ProfileComponent implements OnInit {
   public datepickerOptions = DATE_OF_BIRTH_PICKER_OPTIONS;
   public generalForm: FormGroup;
   public birthdayListForm: FormGroup;
+  public user: User;
 
   constructor(
-    private user: UserService,
+    private userService: UserService,
     private router: Router,
     private formBuilder: FormBuilder,
     private toastService: MzToastService) { }
 
   ngOnInit() {
+    this.user = this.userService.getUser();
     this.buildGeneralForm();
     this.buildBirthdayForm();
-    this.addPreference();
   }
 
   buildGeneralForm() {
     this.generalForm = this.formBuilder.group({
-      fullName: [null, Validators.required, IsEmptyValidator]
+      fullName: [this.user.fullName, [Validators.required, IsEmptyValidator]]
     });
   }
 
@@ -49,12 +51,13 @@ export class ProfileComponent implements OnInit {
       dayOfBirth : [null, Validators.required],
       preferences: this.formBuilder.array([])
     });
+    this.addPreference();
   }
 
   addPreference(): void {
     const preferenceControl = <FormArray>this.birthdayListForm.get('preferences');
     const newPreferenceGroup = this.formBuilder.group({
-      preference: ['', [Validators.required, IsEmptyValidator]],
+      preference: ['', [Validators.required, IsEmptyValidator, Validators.maxLength(15)]],
     });
     preferenceControl.push(newPreferenceGroup);
   }
@@ -69,7 +72,7 @@ export class ProfileComponent implements OnInit {
   }
 
   toggleBirthdayList(event) {
-    console.log(event.target.checked)
+      this.user.onBirthdayList = event.target.checked;
   }
 
   submitForm() {
@@ -80,12 +83,16 @@ export class ProfileComponent implements OnInit {
 
   }
 
+  uploadUserImage() {
+    
+  }
+
   showToast(message: string, color: string) {
     this.toastService.show(message, 4000, color );
   }
 
   logOutUser() {
-    this.user.logout()
+    this.userService.logout()
     .then(() => {
       this.router.navigate(['/login']);
     });

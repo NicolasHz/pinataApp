@@ -1,5 +1,7 @@
 <app-header></app-header>
-<div class="my-account" [ngClass]="[scrolled ? 'scrolled' : '']">
-    <app-my-account-nav></app-my-account-nav>
+<div class="my-account">
+  <div class="my-account__navigation" [ngClass]="[scrolled ? 'scrolled' : '']">
+      <app-my-account-nav></app-my-account-nav>
+  </div>
 </div>
 <router-outlet></router-outlet>

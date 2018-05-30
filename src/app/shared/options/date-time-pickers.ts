@@ -64,14 +64,15 @@ export const ERROR_MESSAGES_RESOURCES = {
   },
   fullName: {
     required: 'Don\'t you have a name?',
-    validString: 'Description can\'t be only white-spaces.'
+    validString: 'This can\'t be only white-spaces.'
   },
   birthday: {
     required: 'What day did you born?',
   },
   preferences: {
     required: 'What are your preferences?.',
-    validString: 'Description can\'t be only white-spaces.'
+    validString: 'This can\'t be only white-spaces.',
+    maxlength: 'Preference cannot be more than 15 characters long.',
   }
 };
 

@@ -5,60 +5,81 @@
       <form [formGroup]="generalForm" >
         <div class="section">
           <div class="row">
-            <div class="col s12 m6 l6 push-m1 push-l1">
-                <mz-input-container class="col s12 m12 l12">
-                    <input mz-input mz-validation required
-                      id="input-fullName"
-                      formControlName="fullName"
-                      type="text"
-                      [errorMessageResource]="errorMessageResources.fullName"
-                      [label]="'Full Name'" />
-                  </mz-input-container>
-                  <mz-checkbox-container class="col s12 m12 l12" >
-                    <input mz-checkbox
-                      (click)="toggleBirthdayList($event)"
-                      id="checkbox-job"
-                      type="checkbox"
-                      [filledIn]="false"
-                      [label]="'Participate on Birthday List?'">
-                  </mz-checkbox-container>
-            </div>
             <div class="col s12 m5 l5 push-m1 push-l1 center">
-                <img class="profile__personal-information__form__user-image" src="https://i1.wp.com/www.winhelponline.com/blog/wp-content/uploads/2017/12/user.png" alt="">
+              <img class="profile__personal-information__form__user-image" src="{{user.profilePicUrl}}" alt="">
+              <button mz-button
+                mz-tooltip
+                [tooltip]="'Change Image'"
+                [position]="'top'"
+                [delay]="800"
+                [float]="true"
+                class="wow fadeIn blue"
+                (click)="uploadUserImage()">
+                <i id="createEvent" mz-icon 
+                  [align]="'center'"
+                  [icon]="'add'">
+                </i>
+              </button>
+            </div>
+            <div class="col s12 m6 l6 push-m1 push-l1">
+              <mz-input-container class="col s12 m12 l12 profile__personal-information__form__full-name">
+                <i mz-icon-mdi mz-input-prefix
+                  [icon]="'account'">
+                </i>
+                <input mz-input mz-validation required
+                  id="input-fullName"
+                  formControlName="fullName"
+                  type="text"
+                  [errorMessageResource]="errorMessageResources.fullName"
+                  [label]="'Full Name'" />
+              </mz-input-container>
+              <mz-checkbox-container class="col s12 m12 l12 profile__personal-information__form__birthday-check" >
+                <input mz-checkbox
+                  (click)="toggleBirthdayList($event)"
+                  id="checkbox-job"
+                  type="checkbox"
+                  [filledIn]="false"
+                  [label]="'Participate on Birthday List?'">
+              </mz-checkbox-container>
             </div>
           </div>
         </div>
       </form>
     </div>
-    <div class="profile__personal-information__form">
+    <div *ngIf="this.user.onBirthdayList" class="profile__birthday-list__form">
       <form [formGroup]="birthdayListForm" >
         <div class="row">
-          <mz-datepicker-container class="col s12 m5 l5 push-m1 push-l1">
-            <i mz-icon-mdi mz-input-prefix
-            [icon]="'baby'">
-            </i>
-            <input mz-datepicker
-              mz-validation
-              required
-              id="datepicker-dayOfBirth"
-              formControlName="dayOfBirth"
-              type="text"
-              [errorMessageResource]="errorMessageResources.birthday"
-              [options]="datepickerOptions"
-              [label]="'Date of Birth'" />
-          </mz-datepicker-container>
+          <div class="col s12 m6 l6 push-m1 push-l1">
+            <mz-datepicker-container class="col s11 m11 l11">
+              <i mz-icon-mdi mz-input-prefix
+              [icon]="'baby'">
+              </i>
+              <input mz-datepicker
+                mz-validation
+                required
+                id="datepicker-dayOfBirth"
+                formControlName="dayOfBirth"
+                type="text"
+                [errorMessageResource]="errorMessageResources.birthday"
+                [options]="datepickerOptions"
+                [label]="'Date of Birth'" />
+            </mz-datepicker-container>
+          </div>
         </div>
         <div class="row">
-          <h6 class="profile__personal-information__form__preferences-title">Preferences</h6>
-          <div class="col s12 m8 l8 push-m1 push-l1" formArrayName="preferences">
+          <div class="col s12 m6 l6 push-m1 push-l1" formArrayName="preferences">
+            <h6 class="">Preferences</h6>
             <div *ngFor="let preference of getPreferences(); let i = index">
-              <mz-input-container class="col s11" [formGroup]="birthdayListForm.get('preferences').at(i)">
+              <mz-input-container class="col s11 m11 l11" [formGroup]="birthdayListForm.get('preferences').at(i)">
+                <i mz-icon-mdi mz-input-prefix
+                  [icon]="'checkbox-marked-circle-outline'">
+                </i>
                 <input mz-input mz-validation
                   id="input-preference-{{i}}"
                   formControlName="preference"
                   type="text"
                   [errorMessageResource]="errorMessageResources.preferences"
-                  [label]="'Preference'" />
+                  [label]="'Preference (ex:\'books\', \'sports\')'" />
               </mz-input-container>
               <div class="col s1">
                 <button mz-button *ngIf="i > 0" [flat]="true" [float]="true" (click)="deletePreference(i)" type="button">
@@ -75,7 +96,7 @@
         </div>
       </form>
     </div>
-    <div class="row">
+    <div *ngIf="generalForm.dirty" class="row">
         <div class="right gif-buttons">
           <button mz-button class="red" 
             (click)="cancelForm()" 
@@ -92,12 +113,15 @@
   <div class="col s11 m10 l10 push-m1 push-l1 profile__general">
     <h5>General</h5>
   </div>
-  <button mz-button class="wow fadeIn profile__log-out" (click)="logOutUser()">
-    <i mz-icon-mdi
-      [align]="'left'"
-      [icon]="'login'"
-      [size]="'24px'">
-    </i>
-    Logout
-  </button>
+    <div class="col s11 m10 l10 push-m1 push-l1">
+      <button mz-button class="wow fadeIn profile__log-out right red" (click)="logOutUser()">
+        <i mz-icon-mdi
+          [align]="'left'"
+          [icon]="'login'"
+          [size]="'24px'">
+        </i>
+        Logout
+      </button>
+    </div>
 </div>
+

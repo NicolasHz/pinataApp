@@ -19,7 +19,7 @@ import { BirthdayModalComponent } from './birthday-modal/birthday-modal.componen
     BirthdayComponent,
     BirthdayModalComponent
   ],
-  providers: [ ],
+  providers: [],
   entryComponents: [
     BirthdayModalComponent
   ]

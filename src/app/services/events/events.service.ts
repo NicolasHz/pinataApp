@@ -1,12 +1,10 @@
 import { Evento } from './../../interfaces/evento';
 import { Injectable } from '@angular/core';
-import 'fullcalendar';
-import 'fullcalendar-scheduler';
-import { MzModalService } from 'ng2-materialize';
-import { BirthdayModalComponent } from '../../modules/birthday/birthday-modal/birthday-modal.component';
 import { AngularFirestore } from 'angularfire2/firestore';
 import { CalendarEventI } from './../../interfaces/calendar-event';
 import { UserService } from './../user/user.service';
+import * as moment from 'moment';
+import { UtilsService } from '../utils/utils.service';
 
 declare var gapi: any;
 declare let $: any;
@@ -15,12 +13,10 @@ export class EventsService {
   public calendarEvents: any[];
 
   constructor(
-    private modalService: MzModalService,
     private db: AngularFirestore,
-    private userService: UserService
-  ) {
-      this.updateCalendarArr();
-   }
+    private userService: UserService,
+    private util: UtilsService
+  ) {  }
 
   getEvents(eventsType: string) {
     return this.db
@@ -70,27 +66,9 @@ export class EventsService {
     });
   }
 
-  createCalendar(eventType) {
-    $('#calendar').fullCalendar({
-      schedulerLicenseKey: 'GPL-My-Project-Is-Open-Source',
-      header: {
-      right: 'prev,next today',
-      center: 'title',
-      left: 'month,agendaWeek,agendaDay'
-    },
-    themeSystem: 'bootstrap3',
-    selectable: false,
-    selectHelper: false,
-    editable: false,
-    eventLimit: true,
-    events: eventType,
-    eventClick: (calEvent, jsEvent, view) => {
-      this.modalService.open(BirthdayModalComponent, {calEvent, jsEvent, view});
-      // console.log(jsEvent.currentTarget.style) if you want to look for style options.....
-      // jsEvent.currentTarget.style.borderColor = 'red';
-    }
-    });
-  }
+  //
+  // Start calendar API interaction.
+  //
 
   getEventsFromCalendar(): Promise<any> {
      return this.userService.getCalendarApi().then(() => {
@@ -105,13 +83,10 @@ export class EventsService {
         if (!response) {
           return;
         }
+        this.calendarEvents = response.result.items;
         return response.result.items;
       }).catch(() => console.log('something wrong at fetching events from calendar'));
     });
-  }
-
-    updateCalendarArr() {
-    this.getEventsFromCalendar().then((response) => this.calendarEvents = response);
   }
 
   deleteCalendarEvent(id: string): Promise<boolean> {
@@ -125,7 +100,7 @@ export class EventsService {
         if (response.error || response === false) {
           console.log('Error at delete calendar Event');
         }else {
-          this.updateCalendarArr();
+          this.getEventsFromCalendar();
           console.log('Success at delete calendar Event');
         }
       });
@@ -134,16 +109,73 @@ export class EventsService {
     .catch(() => false);
   }
 
-  addEventToCalendar(eventToAdd: CalendarEventI): Promise<boolean> {
+  updateCalendarEvent(id: string, eventToUpdate: Evento): Promise<boolean> {
+    const calendarEvent = this.createCalendarEvent(eventToUpdate);
+    return this.userService.getCalendarApi()
+    .then( () => {
+      gapi.client.calendar.events.patch({
+        'calendarId': 'primary',
+        'eventId': id,
+        'resource': calendarEvent
+      })
+      .execute((response) => {
+        if (response.error || response === false) {
+          console.log('Error at update calendar Event');
+        }else {
+          this.getEventsFromCalendar();
+          console.log('Success at update calendar Event');
+        }
+      });
+      return true;
+    })
+    .catch(() => false);
+  }
+
+  addEventToCalendar(eventToAdd: Evento): Promise<boolean> {
+    const calendarEvent = this.createCalendarEvent(eventToAdd);
+    calendarEvent.id = this.util.encode32(eventToAdd.id + this.util.makePlusId(5));
     return this.userService.getCalendarApi().then( () => {
       gapi.client.calendar.events.insert({
         'calendarId': 'primary',
-        'resource': eventToAdd
-      }).execute((event) => {
-        this.updateCalendarArr();
-        return event;
+        'resource': calendarEvent
+      })
+      .execute((response) => {
+        if (response.error || response === false) {
+          return false;
+        }else {
+          this.getEventsFromCalendar();
+          return true;
+        }
       });
       return true;
-    }).catch(() => false);
+    })
+    .catch(() => false);
+  }
+
+  createCalendarEvent(eventToAdd): CalendarEventI {
+    return  {
+      summary: eventToAdd.title,
+      location: eventToAdd.place,
+      description: eventToAdd.description,
+      start: {
+          dateTime: moment(eventToAdd.start).format(),
+          timeZone: 'America/Los_Angeles'
+      },
+      end: {
+          dateTime: moment(eventToAdd.end).format(),
+          timeZone: 'America/Los_Angeles'
+      },
+      recurrence: [
+        'RRULE:FREQ=DAILY;COUNT=1'
+      ],
+      guestsCanModify: false,
+      reminders: {
+          useDefault: false,
+          overrides: [
+            {method: 'email', minutes: 30},
+            {method: 'popup', minutes: 10}
+          ]
+      }
+    };
   }
 }

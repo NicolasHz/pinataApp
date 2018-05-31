@@ -27,7 +27,7 @@ export class UserService {
         fullName: user.displayName,
         profilePicUrl: user.photoURL,
         uId: user.uid,
-        isNewUser: false
+        isNewUser: user.metadata.creationTime === user.metadata.lastSignInTime
       };
       this.route.navigate(['home']);
     });
@@ -35,32 +35,33 @@ export class UserService {
   }
 
   login(): Promise<boolean> {
-    return gapi.auth2.getAuthInstance().signIn()
+    return gapi.auth2.getAuthInstance().signIn({prompt: 'select_account'})
     .then((googleUser) => {
-      const unsubscribe = firebase.auth().onAuthStateChanged((firebaseUser) => {
-        const credential = firebase.auth.GoogleAuthProvider
+      const credential = firebase.auth.GoogleAuthProvider
         .credential(googleUser.getAuthResponse().id_token);
-        if (firebaseUser) {
-          this.user.isNewUser = firebaseUser.metadata.creationTime === firebaseUser.metadata.lastSignInTime;
-        }
-        // Sign in with credential from the Google user.
-        return firebase.auth().signInWithCredential(credential);
-      });
-      return true;
+      firebase.auth().signInWithCredential(credential);     // Sign in with credential from the Google user.
+      return gapi.auth2;
     })
     .catch(() => false);
   }
 
-  logout() {
-    this.afAut.auth.signOut().catch(
-      error => console.log(error)
-    );
-    this.user = {
-      email: '',
-      fullName: '',
-      profilePicUrl: '',
-      uId: ''
-    };
+  logout(): Promise<boolean> {
+    return gapi.auth2.getAuthInstance().signOut()
+      .then(() => {
+        return this.afAut.auth.signOut()
+        .then(() => {
+          this.user = {
+            email: '',
+            fullName: '',
+            profilePicUrl: '',
+            uId: ''
+          };
+        return true;
+      })
+      .catch(
+        error => false
+      );
+    });
   }
 
   getUser() {
@@ -85,20 +86,3 @@ export class UserService {
   }
 }
 
-
-
-  // Saved method in case of rollback
-  // logIn() {
-  //   const firebaseInit = new firebase.auth.GoogleAuthProvider();
-  //   firebaseInit.addScope('https://www.googleapis.com/auth/calendar');
-  //   firebaseInit.setCustomParameters({
-  //     apiKey: this.API_KEY,
-  //     clientId: this.CLIENT_ID,
-  //     discoveryDocs: this.DISCOVERY_DOCS
-  //   });
-  //   this.afAut.auth.signInWithPopup(firebaseInit)
-  //   .then((response) => {console.log(response.additionalUserInfo.isNewUser)})
-  //   .catch(
-  //     error => console.log(error)
-  //   );
-  // }

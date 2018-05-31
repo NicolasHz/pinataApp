@@ -4,6 +4,11 @@ mz-navbar-item  a {
   color: $white!important;
 }
 
+.pinata-logo-side-menu {
+    cursor: pointer;
+    outline: none;
+}
+
 .logo {
   display: flex;
   max-height:46px;
@@ -25,11 +30,17 @@ mz-navbar-item  a {
 }
 
 @media all and (max-width: $app_especific_toggle_menu) {
+  mz-navbar-item-container {
+    display: none;
+  }
   .toogle_menu {
     display: block!important;
     margin-top: 10px;
     padding: 0;
     color:white;
+  }
+  .toogle_menu i {
+    line-height: inherit;
   }
 }
 .active {

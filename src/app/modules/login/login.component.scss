@@ -1,121 +1,38 @@
 @import 'src/assets/scss/variables';
 
 .login {
-    background: url("../../../assets/img/8759391612_8ef35db62c_h.jpg") no-repeat;
-    background-size: cover;
-    position: absolute;
-    width: 100vw;
-    top:0;
-    z-index: -1;
-    &__container {
-        width: 100vw;
-        height: 100vh;
-        color: white;
-        display: flex;
-        align-items: center;
-        flex-flow: column wrap;
-        text-align: center;
+  @extend %general_background;
+  background: linear-gradient(360deg, #ffd86f, #fc6262)!important;
+  &__welcome {
+    @extend %main-element;
+    padding: 7% 22% 5% 22%!important;
+    @media all and (max-width: $app_especific_toggle_menu) {
+      padding: 0 22% 5% 22%;
     }
-    &__welcome {
-      color: $light_orange;
-      font-size: 1.2em;
-      font-weight: 900;
-      display: flex;
-      align-items: center;
-      flex-flow: column wrap;
-      text-align: center;
-      h1 {
-          font-family: $strawberry_font;
-          background-image:linear-gradient(130deg,  #F44336, #fc6262); /* Standard syntax; must be last */
-          color:transparent;
-          -webkit-background-clip: text;
-          background-clip: text;
-      }
-    }
-    &__wrapper {
-      margin: 2% 22% 5% 22%;
-      height: 500px;      
-    }
-    &__btn {
-      width: 45%;
-      box-shadow: none;
-      background: $success_green_bg ;
-      border-radius: 20px;
-      font-weight: 900;
-      font-size: 1.5em;
-      margin-top: 5%;
-      text-align: center;
-      color: $light_orange;
-      border: 3px solid $success_green;
-      -webkit-tap-highlight-color: $success_green;
-    }
-}
-
-
-@media screen and (max-width: $app_tablet) {
-  .login {
-    &__container {
-      height: 100vh;
-    }
-    &__welcome {
-      font-size: 1em;
-      h1 {
-        font-size: 4.5em;
-      }
+    h1 {
+        font-family: $strawberry_font;
+        font-size: 5.2em;
+        background-image: linear-gradient(130deg,  #F44336, #fc6262);
+        color:transparent;
+        -webkit-background-clip: text;
+        background-clip: text;
     }
   }
-  .phrase {
-    &__text {
-      position: relative;
-      top: 35%;
-      text-align: center;
-      font-size: 7em;
+
+  &__button-login {
+    width: 100%;
+    &__google {
+      background: linear-gradient(130deg, #3d1bfa , #fc5a5a);
+      transition: all 500ms ease-in-out;
+      background-size: 200% 1px;
+      color: white;
+      width: 20%;
+      @media all and (max-width: $app_especific_toggle_menu) {
+        width: 100%;
+      }
+    }
+    &__google:hover {
+        background-position: 100%;
     }
   }
 }
-
-@media screen and (max-width: $app_phrase_breakpoint) {
-  .login {
-    &__container {
-      height: 100vh;
-    }
-    &__welcome {
-      font-size: 0.9em;
-      h1 {
-        font-size: 4.1em;
-      }
-    }
-  }
-  .phrase {
-    &__text {
-      display: none;
-    }
-  }
-}
-
-@media screen and (max-width: $app_mobile) {
-  .login {
-    &__container {
-      height: 100vh;
-    }
-    &__welcome {
-      font-size: 1em;
-      h1 {
-        font-size: 4.1em;
-      }
-    }
-    &__btn {
-      text-align: center;
-      width: 22%;
-      &__text {
-        display: none;
-      }
-      &__icon {
-        margin-left: -7px;
-      }
-    }
-  }
-}
-
-
-

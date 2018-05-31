@@ -14,7 +14,8 @@ export const START_DATE_PICKER_OPTIONS: Pickadate.DateOptions = {
     today: 'Today', // Today button text
     closeOnClear: false,
     closeOnSelect: true,
-    // format: 'dddd, dd mmm, yyyy', // Visible date format (defaulted to formatSubmit if provided otherwise 'd mmmm, yyyy')
+    min: new Date(),
+    format: 'dd/mm/yyyy', // Visible date format (defaulted to formatSubmit if provided otherwise 'd mmmm, yyyy')
     formatSubmit: 'yyyy-mm-dd',   // Return value format (used to set/get value)
   };
 export const END_DATE_PICKER_OPTIONS: Pickadate.DateOptions = {
@@ -23,8 +24,8 @@ export const END_DATE_PICKER_OPTIONS: Pickadate.DateOptions = {
   today: 'Today', // Today button text
   closeOnClear: false,
   closeOnSelect: true,
-  // format: 'dddd, dd mmm, yyyy', // Visible date format (defaulted to formatSubmit if provided otherwise 'd mmmm, yyyy')
-  formatSubmit: 'yyyy-mm-dd',   // Return value format (used to set/get value)
+  format: 'dd/mm/yyyy', // Visible date format (defaulted to formatSubmit if provided otherwise 'd mmmm, yyyy')
+  formatSubmit: 'yyyy-mm-dd',   // Return value format (used to set/get value) yyyy-mm-dd
 };
 
 export const MODAL_OPTIONS: Materialize.ModalOptions = {
@@ -44,20 +45,48 @@ export const ERROR_MESSAGES_RESOURCES = {
     required: 'Start date is required.',
   },
   endDate: {
-    required: 'Start date is required.',
+    required: 'End date is required.',
   },
   startHour: {
     required: 'Start hour is required.',
   },
   endHour: {
-    required: 'Start hour is required.',
+    required: 'End hour is required.',
   },
   description: {
     required: 'You need a description for this event.',
-    minlength: 'Min lenght 20 characters',
-    maxlength: 'Description cannot be more than 255 characters long.'
+    minlength: 'Min lenght 20 characters.',
+    maxlength: 'Description cannot be more than 255 characters long.',
+    validString: 'Description can\'t be only white-spaces.'
   },
   image: {
     maxlength: 'This URL cannot be more than 350 characters long.'
   },
+  fullName: {
+    required: 'Don\'t you have a name?',
+    validString: 'This can\'t be only white-spaces.'
+  },
+  birthday: {
+    required: 'What day did you born?',
+  },
+  preferences: {
+    required: 'What are your preferences?.',
+    validString: 'This can\'t be only white-spaces.',
+    maxlength: 'Preference cannot be more than 15 characters long.',
+  }
 };
+
+const legalAge = new Date();
+legalAge.setFullYear(new Date().getFullYear() - 18);
+export const DATE_OF_BIRTH_PICKER_OPTIONS: Pickadate.DateOptions = {
+  clear: 'Clear', // Clear button text
+  close: 'Ok',    // Ok button text
+  today: 'Today', // Today button text
+  closeOnClear: false,
+  closeOnSelect: true,
+  max: legalAge,
+  selectYears: 20,
+  format: 'dd/mm/yyyy', // Visible date format (defaulted to formatSubmit if provided otherwise 'd mmmm, yyyy')
+  formatSubmit: 'yyyy-mm-dd',   // Return value format (used to set/get value)
+};
+

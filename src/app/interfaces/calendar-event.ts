@@ -5,9 +5,11 @@ export interface CalendarEventI {
     description: string;
     start: CalTimeI;
     end: CalTimeI;
+    guestsCanModify: boolean;
     recurrence: string[];
-    attendees: any[];
+    attendees?: any[];
     reminders: ReminderI;
+    status?: string;
 }
 
 export interface CalTimeI {

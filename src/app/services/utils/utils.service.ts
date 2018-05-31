@@ -4,10 +4,15 @@ import { Evento } from './../../interfaces/evento';
 import { UserService } from './../user/user.service';
 import { CalendarEventI } from './../../interfaces/calendar-event';
 import * as moment from 'moment';
-
+import { ENCODE32, DECODE32 } from './encode-decode';
 @Injectable()
 export class UtilsService {
   private user: User;
+  // private a = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ234567';
+
+  public encode32 = ENCODE32;
+  public decode32 = DECODE32;
+
   constructor( private userService: UserService) {
     this.user = this.userService.getUser();
    }
@@ -44,9 +49,9 @@ export class UtilsService {
   findCalendarEvent(eventData: Evento, calendarEvent: CalendarEventI[]) { // fixMe
     return calendarEvent
       .find( calendarObject =>  {
-          if (calendarObject.start.dateTime === eventData.start
-            && calendarObject.end.dateTime === eventData.end
-            && calendarObject.description === eventData.description) {
+          const decodedId = this.decode32(calendarObject.id.replace(/_.*/, ''));
+          const isId = new RegExp('(?:' + eventData.id + ')').test(decodedId);
+          if ( isId ) {
             return true;
           }else {
             return false;
@@ -54,7 +59,29 @@ export class UtilsService {
       });
   }
 
-  deleteOldDatesEvents(event) {
-      return event.start >= moment(new Date).format();
+  deleteOldDatesEvents(event: Evento, from = new Date()) {
+      return event.end >= moment(from).format();
+  }
+
+  makePlusId(finalLength: number) {
+    let text = '';
+    const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+
+    for (let i = 0; i < finalLength; i++) {
+      text += possible.charAt(Math.floor(Math.random() * possible.length));
+    }
+    return text;
+  }
+
+  diferenceOfTimeFromNow(date) {
+    const now = new Date();
+    return moment.duration(moment(now).diff(moment(date))).asHours();
+  }
+
+  digestYearOfBirthday(birthday) {
+    const incomingYear = moment(birthday.start).format('YYYY');
+    birthday.start = birthday.start.replace( incomingYear, new Date().getFullYear() );
+    birthday.end = birthday.end.replace( incomingYear, new Date().getFullYear() );
+    return birthday;
   }
 }

@@ -9,7 +9,7 @@
     </mz-navbar-item>
     <mz-navbar-item>
       <a [routerLink]="['/my-account']" routerLinkActive="active" class="waves-effect">
-        <img [src]="user.profilePicUrl" class="responsive-img avatar" alt="User Image">
+        <img [src]="user.profilePicUrl" class="responsive-img avatar" alt="">
         <span>{{userName}}</span>
       </a>
     </mz-navbar-item>
@@ -23,10 +23,10 @@
 </mz-navbar>
  
 <mz-sidenav [id]="'sidenav-demo'" [collapseButtonId]="'btn-sidenav-demo'">
-  <mz-sidenav-header>
-    Sidenav header
+  <mz-sidenav-header class="center">
+    <img [routerLink]="['/home']" class="pinata-logo-side-menu" src="../../assets/img/favicon.png" alt="Pinata-Logo" width="40%">
   </mz-sidenav-header>
-  <mz-sidenav-subheader>Link Subheader</mz-sidenav-subheader>
+  <mz-sidenav-subheader>Menu</mz-sidenav-subheader>
   <mz-sidenav-link>
     <a [routerLink]="['/birthdays']" routerLinkActive="active" class="waves-effect">Birthdays</a>
   </mz-sidenav-link>
@@ -35,7 +35,7 @@
   </mz-sidenav-link>
   <mz-sidenav-link>
     <a [routerLink]="['/my-account']" routerLinkActive="active" class="waves-effect">
-      <img [src]="user.profilePicUrl" class="responsive-img avatar" alt="User Image">
+      <img [src]="user.profilePicUrl" class="responsive-img avatar" alt="">
       <span>{{user.fullName}}</span>
     </a>
   </mz-sidenav-link>

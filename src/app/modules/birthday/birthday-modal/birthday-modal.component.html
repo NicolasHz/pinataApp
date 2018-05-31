@@ -1,20 +1,24 @@
-<mz-modal [fixedFooter]="true" [options]="modalOptions">
+<mz-modal [fixedFooter]="true" [options]="modalOptions" #BirhtdayModal>
   <mz-modal-header>
-    {{calEvent.title}}
+    <h4 class="header-title">Cumpleaños {{calEvent.title}}</h4>
   </mz-modal-header>
   <mz-modal-content>
-    <div class="row user-details" [ngClass]="[imageReady ? '' : 'hidden']">
+    <div class="row user-details" [ngClass]="[calEvent ? '' : 'hidden']">
       <div class="birth-data col s12 m6 l6">
-        <img class="responsive-img" [src]="calEvent.image"  (load)="showImage()" alt="">
-        <h5>{{calEvent.start | date:'mediumDate' | slice:0:6}}</h5>
+        <svg *ngIf="showSvg" style="max-height:110px" enable-background="new 0 0 128 128" id="Layer_1" version="1.1" viewBox="0 0 128 128" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><circle cx="64" cy="64" fill="#4B5F83" id="circle" r="64"/><g id="icon"><path d="M64,99h35c0-16-10.4-29-24.6-33.4C80.1,62,84,55.7,84,48.5c0-11-9-20-20-20" fill="#E6E6E6" id="right"/><path d="M64,28.5c-11,0-20,9-20,20c0,7.2,3.9,13.6,9.6,17.1C39.4,70,29,83,29,99h35" fill="#FFFFFF" id="left"/></g></svg>
+        <img class="responsive-img user-pic" src="{{calEvent?.image}}"  alt="">
+        <h5>{{calEvent.start | date:'MMM-dd'}}</h5>
         </div>
       <div class="col s12 m6 l6">
         <h5 class="">Preferences:</h5>
-        <div *ngFor="let preferenceItem of calEvent.preferences" >
-            <p class="user-details__preferences">
+        <div *ngIf="!preferences">
+            <p>No preferences yet...</p>
+        </div>
+        <div *ngIf="preferences" >
+            <p *ngFor="let preferenceItem of calEvent.preferences" class="user-details__preferences">
               <i mz-icon-mdi
               [align]="'left'"
-              [icon]="'account-outline'"
+              [icon]="'checkbox-marked-circle-outline'"
               [size]="'1.3rem'">
               </i>
               {{preferenceItem}}
@@ -22,18 +26,16 @@
         </div>
       </div>
     </div>
-    <div class="section spinner" *ngIf="!imageReady">
-      <div class="row">
-        <mz-spinner
-        class="col s12 m12 l12"
-        [color]="'blue'"
-        [size]="'big'">
-        </mz-spinner>
-      </div>
-    </div>
   </mz-modal-content>
   <mz-modal-footer>
-    <button mz-button  mz-modal-close>Close</button>
-    <!-- <button mz-button [flat]="true" mz-modal-close>Agree</button> -->
+    <button
+      [tooltip]="'Save birthday in your calendar'"
+      [position]="'top'"
+      [delay]="800"
+      class="blue left"
+      mz-button
+      mz-tooltip
+      (click)="bookBirthday()">Book it</button>
+    <button mz-button mz-modal-close>Close</button>
   </mz-modal-footer>
 </mz-modal>

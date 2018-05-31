@@ -1,26 +1,38 @@
-import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
-import { EventsService } from '../../services/events/events.service';
+import { Component, OnInit, ViewChild, AfterViewInit, OnDestroy } from '@angular/core';
+
 import { EventFormComponent } from './event-form/event-form.component';
+
+// Interfaces
+import { User } from '../../interfaces/user';
+import { Evento } from '../../interfaces/evento';
+import { eventInitialState } from './../../interfaces/evento-initial-state';
+
+
+// Services
 import { MzModalService, MzToastService } from 'ng2-materialize';
 import { UtilsService } from '../../services/utils/utils.service';
-import { User } from '../../interfaces/user';
-import { Evento, eventInitialState } from '../../interfaces/evento';
 import { UserService } from '../../services/user/user.service';
-import * as moment from 'moment';
+import { EventsService } from '../../services/events/events.service';
 import { ConfirmModalComponent } from '../../shared/confirm-modal/confirm-modal.component';
+
+// RxJs
+import { Subscription } from 'rxjs/Subscription';
 
 @Component({
   selector: 'app-event',
   templateUrl: './event.component.html',
   styleUrls: ['./event.component.scss']
 })
-export class EventComponent implements OnInit, AfterViewInit {
+export class EventComponent implements OnInit, AfterViewInit, OnDestroy {
   public events: Array<Evento>;
   public eventsReady = false;
   public user: User;
-  selectedEvent: Evento = eventInitialState;
+  public selectedEvent: Evento = eventInitialState;
+  public unsubscribe: Subscription;
+
   @ViewChild(ConfirmModalComponent) confirmModal: ConfirmModalComponent;
   @ViewChild('featureDiscovery') firstTimeIn;
+
   constructor(
     private eventService: EventsService,
     private modalService: MzModalService,
@@ -29,11 +41,12 @@ export class EventComponent implements OnInit, AfterViewInit {
     private toastService: MzToastService) { }
 
   ngOnInit() {
-    this.eventService.getEvents('events')
+    this.unsubscribe = this.eventService.getEvents('events')
     .subscribe(response => {
       this.events = Object.keys(response)
       .map(index => response[index])
-      .filter((event) => this.util.deleteOldDatesEvents(event));
+      .filter((event) => this.util.deleteOldDatesEvents(event))
+      .sort((a, b) => this.util.diferenceOfTimeFromNow(b.start) - this.util.diferenceOfTimeFromNow(a.start));
       this.eventsReady = true;
     });
     this.user = this.userService.getUser();
@@ -53,31 +66,7 @@ export class EventComponent implements OnInit, AfterViewInit {
 
   joinEvent(eventData: Evento) {
     eventData.participants.push(this.user);
-    const calendarEvent = {
-      summary: eventData.title,
-      location: eventData.place,
-      description: eventData.description,
-      start: {
-          dateTime: eventData.start,
-          timeZone: 'America/Los_Angeles'
-      },
-      end: {
-          dateTime: eventData.end,
-          timeZone: 'America/Los_Angeles'
-      },
-      recurrence: [
-        'RRULE:FREQ=DAILY;COUNT=1'
-      ],
-      attendees: [{email: 'nicolasholzman@hotmail.com'}],
-      reminders: {
-          useDefault: false,
-          overrides: [
-            {method: 'email', minutes: 24 * 60},
-            {method: 'popup', minutes: 10}
-          ]
-      }
-    };
-    this.eventService.addEventToCalendar(calendarEvent)
+    this.eventService.addEventToCalendar(eventData)
     .then((success) => {
       if (success) {
         this.eventService.updateEvent('events', eventData);
@@ -90,7 +79,7 @@ export class EventComponent implements OnInit, AfterViewInit {
 
   leaveEvent(eventData: Evento) {
     const index = eventData.participants.indexOf(this.util.findUser(eventData));
-    eventData.participants.splice(index);
+    eventData.participants.splice(index, 1);
     this.eventService.updateEvent('events', eventData);
     if (!this.util.findUser(eventData)) {
       this.toastService.show('Event leaved!', 4000, 'red');
@@ -115,5 +104,9 @@ export class EventComponent implements OnInit, AfterViewInit {
     }else {
       this.toastService.show('Canceled', 4000, 'red' );
     }
+  }
+
+  ngOnDestroy() {
+    this.unsubscribe.unsubscribe();
   }
 }

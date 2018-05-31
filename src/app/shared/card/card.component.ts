@@ -1,8 +1,10 @@
-import { Evento, eventInitialState } from './../../interfaces/evento';
 import { Component, OnInit, Input, OnDestroy, Output, EventEmitter } from '@angular/core';
 import { EventsService } from '../../services/events/events.service';
 import { UtilsService } from '../../services/utils/utils.service';
 import { trigger, style, state, animate, transition } from '@angular/animations';
+
+import { eventInitialState } from './../../interfaces/evento-initial-state';
+import { Evento } from '../../interfaces/evento';
 
 @Component({
   selector: 'app-card',
@@ -14,6 +16,7 @@ import { trigger, style, state, animate, transition } from '@angular/animations'
 })
 export class CardComponent implements OnInit {
   @Input() eventData = eventInitialState;
+  @Input() enableEdit = false;
   @Output() join: EventEmitter<Evento> = new EventEmitter<Evento>();
   @Output() leave: EventEmitter<Evento> = new EventEmitter<Evento>();
   @Output() edit: EventEmitter<Evento> = new EventEmitter<Evento>();
@@ -31,7 +34,7 @@ export class CardComponent implements OnInit {
     '../../assets/img/party0.gif',
     '../../assets/img/party1.gif',
     '../../assets/img/party2.gif'];
-  tooltip = '';
+    participantsTooltip = 'Join and be the first!';
 
   constructor(
     private eventService: EventsService,
@@ -44,10 +47,13 @@ export class CardComponent implements OnInit {
     if (this.util.findUser(this.eventData)) {
       this.joined = true;
     }
-    this.eventData.participants.map((res) => {
-      const avatar = res.profilePicUrl ? res.profilePicUrl : ' ';
-      this.tooltip = this.tooltip + `<img src="${avatar}"/>  ` + res.fullName.concat('<br/>');
-    });
+    if (this.eventData.participants.length > 0) {
+      this.participantsTooltip = '';
+      this.eventData.participants.map((res) => {
+        const avatar = res.profilePicUrl ? res.profilePicUrl : '';
+        this.participantsTooltip = this.participantsTooltip + `<img src="${avatar}"/>  ` + res.fullName.concat('<br/>');
+      });
+    }
   }
 
   toggleClass() {

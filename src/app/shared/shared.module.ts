@@ -17,6 +17,8 @@ import { MzInjectionService} from 'ng2-materialize';
 import { EventsService } from '../services/events/events.service';
 import { ModalService } from '../services/modal/modal.service';
 import { UtilsService } from '../services/utils/utils.service';
+import { GifsService } from '../services/gifs/gifs.service';
+import { BirhdayCardComponent } from './birthday-card/birhday-card/birhday-card.component';
 
 @NgModule({
   imports: [
@@ -28,19 +30,22 @@ import { UtilsService } from '../services/utils/utils.service';
   declarations: [
       HeaderComponent,
       CardComponent,
-      ConfirmModalComponent
+      ConfirmModalComponent,
+      BirhdayCardComponent
   ],
   exports: [
       HeaderComponent,
       CardComponent,
       MaterialModule,
-      ConfirmModalComponent
+      ConfirmModalComponent,
+      BirhdayCardComponent
   ],
   providers: [
     EventsService,
     MzInjectionService,
     ModalService,
-    UtilsService
+    UtilsService,
+    GifsService
   ]
 })
 export class SharedModule { }

@@ -3,6 +3,7 @@
 .event {
     @extend %general_background;
     background-image: linear-gradient(130deg, #fc5a5a, #3d1bfa)!important;
+    padding-bottom: 50px;
     &__welcome {
         @extend %main-element;
         h1 {
@@ -16,6 +17,14 @@
     }
     &__cards {
         margin-bottom: 0;
+    }
+    &__cards app-card {
+        min-height: 470px;
+    }
+    @media all and (min-width: $app_desktop) {
+        &__cards app-card {
+            min-height: 620px;
+        }
     }
     .spinner {
         text-align: center;

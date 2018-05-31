@@ -12,6 +12,7 @@ $app_especific_toggle_menu: 992px;
 $app_mobile: 320px;
 $app_phrase_breakpoint: 414px;
 $app_tablet: 768px;
+$app_desktop: 1200px;
 
 // Colors
 
@@ -51,4 +52,15 @@ $pinata_background: linear-gradient(360deg, #ffd86f, #fc6262);
     align-items: center;
     flex-flow: column wrap;
     text-align: center;
+    p {
+        font-size: 1.2em;
+    }
 }
+
+@keyframes animatedBackground {
+    from {
+      background-position: 0px 0px; }
+  
+    to {
+      background-position: 100% 0px; } 
+  }

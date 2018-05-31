@@ -1,24 +1,29 @@
 import { Component, OnInit, Input } from '@angular/core';
-import {
-  AbstractControl,
-  FormBuilder,
-  FormGroup,
-  Validators } from '@angular/forms';
-import {
-  MzToastService,
-  MzBaseModal,
-  MzModalComponent } from 'ng2-materialize';
-import { EventsService } from '../../../services/events/events.service';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+
+// Validators
+import { IsEmptyValidator } from '../../../shared/validators/validators';
 import {
   TIME_PICKER_OPTIONS,
   MODAL_OPTIONS,
   START_DATE_PICKER_OPTIONS,
   END_DATE_PICKER_OPTIONS,
   ERROR_MESSAGES_RESOURCES } from '../../../shared/options/date-time-pickers';
+
+// Interfaces
 import { User } from './../../../interfaces/user';
 import { Evento } from './../../../interfaces/evento';
 import * as moment from 'moment';
+
+// Services
+import {
+  MzToastService,
+  MzBaseModal} from 'ng2-materialize';
+import { EventsService } from '../../../services/events/events.service';
 import { UserService } from '../../../services/user/user.service';
+import { GifsService } from '../../../services/gifs/gifs.service';
+import { UtilsService } from '../../../services/utils/utils.service';
+
 @Component({
   selector: 'app-event-form',
   templateUrl: './event-form.component.html',
@@ -33,20 +38,25 @@ export class EventFormComponent extends MzBaseModal implements OnInit {
   public startDatepickerOptions = START_DATE_PICKER_OPTIONS;
   public endDatepickerOptions = END_DATE_PICKER_OPTIONS;
   public errorMessageResources = ERROR_MESSAGES_RESOURCES;
+  public cardGif;
+  public firstSearch = false;
   public endDateAvalible = false;
   private event: Evento;
   private user: User;
-  eventForm: FormGroup;
+  public eventForm: FormGroup;
+
   constructor(
     private formBuilder: FormBuilder,
     private toastService: MzToastService,
     private eventService: EventsService,
-    private userService: UserService
+    private userService: UserService,
+    private gifService: GifsService,
+    private util: UtilsService
   ) { super(); }
 
   ngOnInit() {
     this.startDatepickerOptions.onOpen = () => this.endDateAvalible = false;
-    this.startDatepickerOptions.onClose = () => this.setAvalibleDays();
+    this.startDatepickerOptions.onClose = () => this.setAvalibleEndDays();
     if (this.editingEvent) {
       this.buildEditForm();
     } else {
@@ -71,12 +81,12 @@ export class EventFormComponent extends MzBaseModal implements OnInit {
         [
           Validators.required,
           Validators.maxLength(255),
-          Validators.minLength(20)
+          Validators.minLength(20),
+          IsEmptyValidator
         ]
       ],
       image: [
-        null,
-        [Validators.maxLength(350)]
+        null
       ],
     });
   }
@@ -105,8 +115,8 @@ export class EventFormComponent extends MzBaseModal implements OnInit {
           Validators.minLength(20)
         ]
       ],
-      image: [this.eventData.image,
-        [Validators.maxLength(350)]
+      image: [
+        this.eventData.image
       ],
     });
   }
@@ -124,18 +134,22 @@ export class EventFormComponent extends MzBaseModal implements OnInit {
         title: this.eventForm.value.title,
         start: formattedStart,
         end: formattedEnd,
-        description: this.eventForm.value.description,
+        createdTime: this.eventData.createdTime,
+        lastEditedTime: new Date(),
+        description: this.eventForm.value.description.trim(),
         image: this.eventForm.value.image,
         creator: this.user,
         participants: this.eventData.participants
       };
       this.eventService.updateEvent('events', this.event);
+      this.eventService.updateCalendarEvent(this.util.findCalendarEvent(this.event, this.eventService.calendarEvents).id, this.event);
       this.clear();
     } else {
       this.event = <Evento>{
         title: this.eventForm.value.title,
         start: formattedStart,
         end: formattedEnd,
+        createdTime: new Date(),
         description: this.eventForm.value.description,
         image: this.eventForm.value.image,
         creator: this.user,
@@ -146,14 +160,28 @@ export class EventFormComponent extends MzBaseModal implements OnInit {
     }
   }
 
+  getGif(q) {
+    this.cardGif = this.gifService.getGif(q);
+    this.firstSearch = true;
+  }
+
+  setCardImg(imgUrl) {
+    if (!imgUrl) {
+      return;
+    }
+    this.eventForm.controls['image'].setValue(imgUrl);
+  }
+
   showToast(message: string, color: string) {
     this.toastService.show(message, 4000, color );
   }
-  setAvalibleDays() {
+
+  setAvalibleEndDays() {
     if (this.eventForm.value.start.eventStartDay) {
       const minDate = this.eventForm.value.start.eventStartDay.split('-').map(Number);
       minDate[1]--; // Discounting a month because of the date picker restriction behavior
       this.endDatepickerOptions.min = minDate;
+      this.eventForm.value.end.eventEndDay = this.eventForm.value.start.eventStartDay;
       this.endDateAvalible = true;
     } else {
       this.endDateAvalible = false;

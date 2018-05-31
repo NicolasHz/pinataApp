@@ -14,6 +14,15 @@
             background-clip: text;
         }
     }
+    &__spreadsheet-button {
+        background: linear-gradient(130deg, #3d1bfa , #fc5a5a);
+        transition: all 500ms ease-in-out;
+        background-size: 200% 1px;
+        color: white;
+    }
+    &__spreadsheet-button:hover {
+        background-position: 100%;
+    }
 }
 #calendar {
     width: 70vw;

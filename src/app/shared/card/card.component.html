@@ -1,8 +1,7 @@
-<div class="col s12 m4 l3">
-  <div class="card wow flipInX"
+
+  <div class="card"
     (mouseover)="toggleClass($event)"
     (mouseout)="toggleClass($event)"
-    data-wow-duration="1.4s"
     mz-tooltip 
     [tooltip]="'Creator: ' + eventData.creator.fullName"
     [position]="'top'"
@@ -16,9 +15,9 @@
           [align]="'center'"
           [icon]="'date_range'"
           [size]="'tiny'">
-          </i>{{eventData.start | date:'short'}}</h6>
+          </i>{{eventData.start | date:'MMM-dd HH:mm'}}</h6>
       </div>
-      <div class="buttons" *ngIf="eventAuthor">
+      <div class="buttons" *ngIf="eventAuthor && enableEdit">
         <div *ngIf="!optionsOpened" [@flyInOut]>
           <button
           (click)="toggleEdit()"
@@ -82,7 +81,7 @@
     <div class="card-action row">
         <p class="col card-action__participants"
           mz-tooltip 
-          [tooltip]="tooltip"
+          [tooltip]="participantsTooltip"
           [html]="true"
           [position]="'left'"
           [delay]="800">
@@ -97,4 +96,4 @@
       <button *ngIf="joined" mz-button class="red col s4 m5 l4 right wow flipInX" data-wow-duration="1.5s" (click)="leaveEvent()" type="button">Leave!</button>
     </div>
   </div>
-</div>
+

@@ -1,0 +1,53 @@
+<app-header></app-header>
+<div class="event">
+    <div class="event__welcome">
+            <img src="../../assets/img/event-boy.png" class="responsive-img wow slideInDown" data-wow-duration="1.8s" alt="Cake-boy" width="250px">
+            <h1 class="responsive-img wow fadeIn" data-wow-duration="1.5s">The events!!</h1>
+    </div>
+    <div [ngClass]="[eventsReady ? '' : 'hide']">
+        <div class="row event__cards">
+            <app-card *ngFor="let event of events"
+                [eventData]="event"
+                [enableEdit]="true"
+                (join)="joinEvent($event)"
+                (leave)="leaveEvent($event)"
+                (edit)="editEvent($event)"
+                (delete)="confirmDelete($event)"
+                class="col s12 m4 l3 wow flipInX"
+                data-wow-duration="1.4s">
+            </app-card>
+            <app-confirm-modal
+                [eventData]="selectedEvent"
+                (response)="deleteEvent($event)">
+            </app-confirm-modal>
+        </div>
+    </div>
+    <button 
+        class="addEvent wow slideInRight" 
+        data-wow-duration="1.8s" 
+        mz-button
+        mz-tooltip 
+        [float]="true" 
+        (click)="openEventForm()"
+        [tooltip]="'Create Event'"
+        [position]="'left'"
+        [delay]="800">
+            <i id="createEvent" mz-icon 
+                [align]="'center'"
+                [icon]="'add'">
+            </i>
+    </button>
+    <div class="section" *ngIf="!eventsReady">
+        <div class="row">
+            <mz-spinner
+                class="col s12 m12 l12 spinner"
+                [color]="'blue'"
+                [size]="'big'">
+            </mz-spinner>
+        </div>
+    </div>
+</div>
+<mz-feature-discovery [targetId]="'createEvent'" #featureDiscovery>
+  <h5>Create Events!</h5>
+  <p>Press me to create new events and start sharing it!</p>
+</mz-feature-discovery>

@@ -19,13 +19,25 @@
       "testTsconfig": "tsconfig.spec.json",
       "prefix": "app",
       "styles": [
+        "../node_modules/bootstrap/dist/css/bootstrap.min.css",
         "../node_modules/materialize-css/dist/css/materialize.min.css",
         "../node_modules/mdi/css/materialdesignicons.min.css" ,
+        "../node_modules/wowjs/css/libs/animate.css",
+        "../node_modules/fullcalendar/dist/fullcalendar.min.css",
+        "../node_modules/fullcalendar-scheduler/dist/scheduler.min.css",
         "./styles.scss"
       ],
       "scripts": [
         "../node_modules/jquery/dist/jquery.min.js",
-        "../node_modules/materialize-css/dist/js/materialize.min.js"
+        "../node_modules/bootstrap/dist/js/bootstrap.min.js",
+        "../node_modules/tether/dist/js/tether.js",
+        "../node_modules/materialize-css/dist/js/materialize.min.js",
+        "../node_modules/moment/min/moment.min.js",
+        "../node_modules/fullcalendar/dist/fullcalendar.min.js",
+        "../node_modules/fullcalendar-scheduler/dist/scheduler.min.js",
+        "../node_modules/wowjs/dist/wow.js",
+        "assets/js/api.min.js"
+         
       ],
       "environmentSource": "environments/environment.ts",
       "environments": {

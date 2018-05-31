@@ -1,0 +1,22 @@
+.birthday {
+    border-radius: 5px;
+    box-shadow: 0 8px 17px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    background: url('/assets/img/confeti2.gif');
+    &__user-pic {
+        padding: 20px;
+    }
+    &__user-pic img {
+        width: 96px;
+        border-radius: 50%;
+        box-shadow: 0 8px 17px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    }
+    &__description {
+        padding: 10px 0;
+        &__title {
+            margin: 20px 0;
+        }
+    }
+}
+.hide {
+    display: none;
+}

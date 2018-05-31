@@ -1,1 +1,66 @@
+// Fonts
+
+$strawberry_font: "Strawberry-Blossom";
+$proxima-normal_font: "Proxima-Nova-Normal";
+$proxima-regular_font: "Proxima-Nova-Regular";
+$proxima-bold_font: "Proxima-Nova-Bold";
+$proxima-thin_font: "Proxima-Nova-Thin";
+
+// Sizes
+
 $app_especific_toggle_menu: 992px;
+$app_mobile: 320px;
+$app_phrase_breakpoint: 414px;
+$app_tablet: 768px;
+$app_desktop: 1200px;
+
+// Colors
+
+$white: white;
+$success_green: rgb(92,184,92);
+$success_green_bg: rgba(92, 184, 92, 0.5);
+$danger_red: rgb(217,83,79);
+$orange: #FF6F00;
+$light_orange: #FFCC80;
+$grey: #E0E0E0;
+
+// Miselaneus
+%full_width_heigth {
+    width: 100%;
+    height: 100%;
+}
+
+
+// Backgrounds 
+// $pinata_background: linear-gradient(130deg, #fc5a5a, #3d1bfa);
+$pinata_background: linear-gradient(360deg, #ffd86f, #fc6262);
+
+%general_background {
+    background: $pinata_background !important;
+    background-size: cover;
+    width: 100%;
+    min-height: 100vh;
+    // position: absolute;
+    top:0;
+    z-index: -1;
+}
+
+%main-element {
+    padding: 7% 22% 0 22%;
+    color: $white;
+    display: flex;
+    align-items: center;
+    flex-flow: column wrap;
+    text-align: center;
+    p {
+        font-size: 1.2em;
+    }
+}
+
+@keyframes animatedBackground {
+    from {
+      background-position: 0px 0px; }
+  
+    to {
+      background-position: 100% 0px; } 
+  }

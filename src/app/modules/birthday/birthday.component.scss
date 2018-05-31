@@ -1,0 +1,39 @@
+@import 'src/assets/scss/variables';
+
+.birthday {
+    @extend %general_background;
+    padding: 0 0 20px 0;
+    &__welcome {
+        @extend %main-element;
+        h1 {
+            font-family: $strawberry_font;
+            font-size: 5.2em;
+            background-image: linear-gradient(130deg, #fc5a5a, #3d1bfa);
+            color:transparent;
+            -webkit-background-clip: text;
+            background-clip: text;
+        }
+    }
+    &__spreadsheet-button {
+        background: linear-gradient(130deg, #3d1bfa , #fc5a5a);
+        transition: all 500ms ease-in-out;
+        background-size: 200% 1px;
+        color: white;
+    }
+    &__spreadsheet-button:hover {
+        background-position: 100%;
+    }
+}
+#calendar {
+    width: 70vw;
+    margin: 0 auto;
+}
+@media all and (max-width: $app_especific_toggle_menu) {
+    #calendar {
+        width: 90vw;
+        margin: 0 auto;
+    }
+}
+.spinner{
+    text-align: center;
+}

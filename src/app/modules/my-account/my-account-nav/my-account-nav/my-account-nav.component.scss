@@ -1,0 +1,30 @@
+.nav-bar {
+    height: 50px;
+    background: white;
+    margin: 0;
+    &__nav-item {
+        height: 100%;
+        text-align: center;
+        padding: 0;
+    }
+    &__nav-item a {
+        font-size: 1.2em;
+        padding: 12px 0;
+        height: 100%;
+        width: 100%;
+    }
+}
+.nav-bar::after {
+    height: 1px;
+    display: block;
+    width: 100%;
+    background: lightgray;
+    border-right: 1px white;
+    content: ''
+}
+
+
+.active {
+    border-bottom: 3px solid;
+    color: #039be5;
+}

@@ -1,0 +1,42 @@
+@import 'src/assets/scss/variables';
+
+.event {
+    @extend %general_background;
+    background-image: linear-gradient(130deg, #fc5a5a, #3d1bfa)!important;
+    padding-bottom: 50px;
+    &__welcome {
+        @extend %main-element;
+        h1 {
+            font-family: $strawberry_font;
+            font-size: 5.2em;
+            background-image: linear-gradient(130deg,#f7b733, #fc4a1a);
+            color: transparent;
+            -webkit-background-clip: text;
+            background-clip: text;
+        }
+    }
+    &__cards {
+        margin-bottom: 0;
+    }
+    &__cards app-card {
+        min-height: 470px;
+    }
+    @media all and (min-width: $app_desktop) {
+        &__cards app-card {
+            min-height: 620px;
+        }
+    }
+    .spinner {
+        text-align: center;
+    }
+    .hide {
+        display: none;
+    }
+    .addEvent {
+        position:fixed;
+        bottom:20px;
+        right: 20px;
+    }
+    button:focus {outline:0;}
+}
+

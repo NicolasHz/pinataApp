@@ -1,0 +1,99 @@
+
+  <div class="card"
+    (mouseover)="toggleClass($event)"
+    (mouseout)="toggleClass($event)"
+    mz-tooltip 
+    [tooltip]="'Creator: ' + eventData.creator.fullName"
+    [position]="'top'"
+    [delay]="800">
+    <div class="card-image">
+      <div class="event-time" [ngClass]="[showEventTime ? 'show' : '']">
+        <h6>
+          <i 
+          class="calendar-icon"
+          mz-icon 
+          [align]="'center'"
+          [icon]="'date_range'"
+          [size]="'tiny'">
+          </i>{{eventData.start | date:'MMM-dd HH:mm'}}</h6>
+      </div>
+      <div class="buttons" *ngIf="eventAuthor && enableEdit">
+        <div *ngIf="!optionsOpened" [@flyInOut]>
+          <button
+          (click)="toggleEdit()"
+          mz-button
+          mz-tooltip
+          [tooltip]="'More'"
+          [position]="'top'"
+          [float]="true"
+          [delay]="500"
+          class=" buttons__open wow fadeIn" 
+          data-wow-duration="0.8s" 
+          type="button">
+            <i mz-icon 
+            [align]="'center'"
+            [icon]="'more_horiz'">
+            </i>
+          </button>
+        </div>
+        <div *ngIf="optionsOpened" [@flyInOut]>
+          <button 
+            (click)="deleteEvent()"
+            mz-button
+            mz-tooltip
+            [tooltip]="'Delete'"
+            [position]="'top'"
+            [delay]="500"
+            [float]="true"
+            class="red buttons__delete wow fadeIn" 
+            data-wow-duration="0.8s" 
+            type="button">
+              <i mz-icon 
+              [align]="'center'"
+              [icon]="'delete_forever'">
+              </i>
+          </button>
+          <button
+            (click)="editEvent()"
+            mz-button
+            mz-tooltip
+            [tooltip]="'Edit'"
+            [position]="'top'"
+            [float]="true"
+            [delay]="500"
+            class="green buttons__delete wow fadeIn" 
+            data-wow-duration="0.8s" 
+            type="button">
+              <i mz-icon 
+              [align]="'center'"
+              [icon]="'mode_edit'">
+              </i>
+          </button>
+        </div>
+      </div>
+      <img class="wow fadeIn" data-wow-duration="1s" [ngClass]="[actualImgReady ? '' : 'hidden']" (load)="showImage()" src="{{ eventData?.image }}" alt="Card Img">
+      <img [src]="preLoaderImg" alt="" *ngIf="!actualImgReady">
+      <span class="card-title">{{eventData.title}}</span>
+    </div>
+    <div class="card-content">
+      <p>{{eventData.description}}</p>
+    </div>
+    <div class="card-action row">
+        <p class="col card-action__participants"
+          mz-tooltip 
+          [tooltip]="participantsTooltip"
+          [html]="true"
+          [position]="'left'"
+          [delay]="800">
+            <i mz-icon-mdi
+            [align]="'left'"
+            [icon]="'account-multiple-outline'"
+            [size]="'24px'">
+            </i>
+            {{participants}}
+        </p>
+      <button *ngIf="!joined" mz-button class="green col s4 m5 l4 right wow flipInX" data-wow-duration="1.5s" (click)="joinEvent()" type="button">Join!</button>
+      <button *ngIf="joined" mz-button class="red col s4 m5 l4 right wow flipInX" data-wow-duration="1.5s" (click)="leaveEvent()" type="button">Leave!</button>
+    </div>
+  </div>
+

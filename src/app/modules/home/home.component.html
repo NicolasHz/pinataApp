@@ -1,3 +1,45 @@
 <app-header></app-header>
-<router-outlet></router-outlet>
-<p>Esto es el home</p>
+<div class="home">
+    <div class="home__welcome">
+            <img src="../../assets/img/pinata-logo.gif" class="responsive-img wow slideInDown" data-wow-duration="1.8s" alt="Pinata" width="280px">
+            <h1 class="responsive-img wow fadeIn" data-wow-duration="1.5s">Welcome to Piñata!!</h1>
+            <p class="responsive-img wow fadeIn" data-wow-duration="1.5s">
+                Este sitio fue creado para nuclear todos los eventos de Globant Bahia, desde cumpleaños, afters, reuniones.
+                Podras crear tus propios eventos y agendar todo lo que necesites en tu calendar. No te pierdas de nada! Disfruta, Piñata!
+            </p>
+    </div>
+    <div class="birthdays" [ngClass]="[birthdayReady ? '' : 'hide']">
+        <div class="row">
+            <h5 class="events__upcoming-events">Upcoming birthdays:</h5>
+            <hr>
+            <app-birhday-card
+                *ngFor="let birthday of birthdays"
+                [birthdayData]="birthday"
+                class="col s12 m4 l4 birthdays__bithday-card wow flipInX">
+            </app-birhday-card>
+        </div>
+    </div>
+    <div class="events">
+        <div [ngClass]="[eventsReady ? '' : 'hide']">
+            <h5 class="events__upcoming-events">Don't miss these events:</h5>
+            <hr>
+            <div class="row event__cards">
+                <app-card *ngFor="let event of events"
+                    [eventData]="event"
+                    class="col s12 m4 l4 wow flipInX"
+                    data-wow-duration="1.4s">
+                </app-card>
+            </div>
+        </div>
+        <div class="section" *ngIf="!eventsReady">
+            <div class="row">
+                <mz-spinner
+                    class="col center s12 m12 l12 spinner"
+                    [color]="'blue'"
+                    [size]="'big'">
+                </mz-spinner>
+            </div>
+        </div>
+    </div>
+</div>
+

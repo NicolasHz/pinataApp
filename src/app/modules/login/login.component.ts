@@ -1,15 +1,27 @@
-import { Component, OnInit } from '@angular/core';
+import { trigger } from '@angular/animations';
+import { Component } from '@angular/core';
+import { UserService } from './../../services/user/user.service';
 
 @Component({
   selector: 'app-login',
+  animations: [
+    trigger('anim', [])
+  ],
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent {
+  allow = true;
+  login = false;
+  constructor( public userService: UserService ) { }
 
-  constructor() { }
-
-  ngOnInit() {
+  logInUser() {
+    this.userService.login().then((allow) => {
+        this.allow = allow;
+    });
   }
 
+  changeIcon() {
+    this.login = !this.login;
+  }
 }

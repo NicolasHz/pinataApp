@@ -1,0 +1,56 @@
+.card {
+    box-shadow: 0 8px 17px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+.hidden {
+    display: hidden;
+}
+.spinner {
+    text-align: center;
+}
+.card-image {
+    background: #663399;
+}
+.card-action {
+    &__participants {
+        line-height: 20px;
+        margin: 5px 0;
+        font-size: 18px;
+    }
+}
+.buttons {
+    position: absolute;
+    right: 0px;
+    &__edit {
+        position: relative;
+        margin: 5px 2px;
+    }
+    &__delete {
+        position: relative;
+        margin: 5px 2px;
+    }
+    &__open {
+        margin: 5px
+    }
+    button:focus {outline:0;}
+}
+.event-time {
+    background: rgba(0, 0, 0, 0.64);
+    z-index: 800;
+    position: absolute;
+    top: 5px;
+    left: 2px;
+    color: white;
+    border-radius: 20px;
+    padding: 0 12px;
+    visibility: hidden;
+    opacity: 0;
+    transition: all 300ms linear;
+}
+.show {
+    visibility: visible;
+    opacity: 1;
+}
+.calendar-icon {
+    vertical-align: -2px;
+    padding: 0 4px;
+}

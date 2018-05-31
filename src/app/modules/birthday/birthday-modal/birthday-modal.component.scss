@@ -1,0 +1,57 @@
+@import 'src/assets/scss/variables';
+.birth-data {
+    text-align: center;
+}
+.hidden {
+    display: hidden;
+}
+.spinner {
+    text-align: center;
+}
+
+mz-spinner {
+    /deep/ .big {
+        width: 10rem;
+        height: 10rem;
+    }
+}
+mz-modal {
+    .user-pic {
+        border-radius: 50%;
+        max-height: 120px;
+    }
+    button {
+        margin: 1% 4%!important;
+    }
+    .header-title {
+        text-align: center;
+    }
+    /deep/.modal-content > p {
+        width: 100%;
+    }
+    /deep/.modal-content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    /deep/.modal.modal-fixed-footer{
+        min-height: 370px;
+        width: 400px;
+        max-height: 370px;
+        border-radius: 20px;
+    }
+    @media screen and (min-width: $app_mobile) and (max-width: $app_tablet){
+        /deep/.modal.modal-fixed-footer { 
+            min-height: 80%;
+            width: 85%;
+        }
+    }
+    @media only screen and (max-width: $app_especific_toggle_menu) and (orientation : landscape) {
+        /deep/.modal.modal-fixed-footer { 
+            min-height: 95vh;
+            width: 50vw;
+        }
+    }
+}
+
+

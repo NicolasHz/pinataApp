@@ -1,0 +1,32 @@
+<app-header></app-header>
+<div class="birthday">
+        <div class="birthday__welcome">
+                <img src="../../assets/img/cake-boy.png" class="responsive-img wow slideInDown" data-wow-duration="1.8s" alt="Cake-boy" width="250px">
+                <h1 class="responsive-img wow fadeIn" data-wow-duration="1.5s">All the birthdays here!!</h1>
+                <p class="responsive-img wow fadeIn" data-wow-duration="1.5s">
+                        Chequea los cumpleaños del mes, descarga la planilla para los regalos, enterate de preferencias y agenda los cumples que te interesen.
+                </p>
+        </div>
+        <div class="row" *ngIf="isglobantUser">
+                <div class="col s12 m12 l12 center wow fadeIn" data-wow-duration="4s">
+                        <button
+                        mz-button
+                        mz-tooltip 
+                        [tooltip]="'View/Print the complete birthdays spreadsheet'"
+                        [position]="'top'"
+                        [delay]="800"
+                        class="birthday__spreadsheet-button"
+                        (click)="printBDSpreadsheet()">Birthdays Spreadsheet</button>
+                </div>
+        </div>
+        <div id='calendar'></div>
+        <div class="section" *ngIf="!birthdayReady">
+                <div class="row">
+                        <mz-spinner
+                        class="col s12 m12 l12 spinner"
+                        [color]="'blue'"
+                        [size]="'big'">
+                        </mz-spinner>
+                </div>
+        </div>
+</div>

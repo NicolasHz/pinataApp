@@ -1,0 +1,39 @@
+@import 'src/assets/scss/variables';
+
+.home {
+    @extend %general_background;
+    &__welcome {
+        @extend %main-element;
+        h1 {
+            font-family: $strawberry_font;
+            font-size: 5.2em;
+            background-image:         linear-gradient(130deg,  #F44336, #fc6262); /* Standard syntax; must be last */
+            color:transparent;
+            -webkit-background-clip: text;
+            background-clip: text;
+        }
+    }
+}
+.events {
+    @extend %common-layout;
+}
+.birthdays {
+    @extend %common-layout;
+    &__bithday-card{
+        margin: 20px 0;
+    }
+}
+
+hr {
+    width: 80%;
+    height: 2px;
+    background: white;
+    border-radius: 50%;
+}
+
+%common-layout {
+    padding: 2% 10% 2% 10%;
+    @media all and (max-width: $app_especific_toggle_menu) {
+        padding: 2% 5% 2% 5%;
+    }
+}

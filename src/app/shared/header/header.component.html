@@ -1,0 +1,47 @@
+<mz-navbar class="row" [ngClass]="[scrolled ? 'scrolled' : '']">
+    <a class="brand-logo col s2 m1 l1 offset-s2 offset-m2 offset-l2" [routerLink]="['/home']"><img class="responsive-img logo" src="../../assets/img/glb-no-bg.png" alt=""></a>
+  <mz-navbar-item-container [align]="'right'" class="col s4 offset-s6">
+    <mz-navbar-item>
+      <a [routerLink]="['/birthdays']" routerLinkActive="active" class="waves-effect">Birthdays</a>
+    </mz-navbar-item>
+    <mz-navbar-item>
+      <a [routerLink]="['/events']" routerLinkActive="active" class="waves-effect">Events</a>
+    </mz-navbar-item>
+    <mz-navbar-item>
+      <a [routerLink]="['/my-account']" routerLinkActive="active" class="waves-effect">
+        <img [src]="user.profilePicUrl" class="responsive-img avatar" alt="">
+        <span>{{userName}}</span>
+      </a>
+    </mz-navbar-item>
+  </mz-navbar-item-container>
+  <a mz-button class="col s1 offset-s10 toogle_menu waves-effect transparent"  [flat]="true" id="btn-sidenav-demo">
+    <i mz-icon-mdi 
+    [align]="'center'"
+    [icon]="'menu'">
+    </i>
+  </a>
+</mz-navbar>
+ 
+<mz-sidenav [id]="'sidenav-demo'" [collapseButtonId]="'btn-sidenav-demo'">
+  <mz-sidenav-header class="center">
+    <img [routerLink]="['/home']" class="pinata-logo-side-menu" src="../../assets/img/favicon.png" alt="Pinata-Logo" width="40%">
+  </mz-sidenav-header>
+  <mz-sidenav-subheader>Menu</mz-sidenav-subheader>
+  <mz-sidenav-link>
+    <a [routerLink]="['/birthdays']" routerLinkActive="active" class="waves-effect">Birthdays</a>
+  </mz-sidenav-link>
+  <mz-sidenav-link>
+    <a [routerLink]="['/events']" routerLinkActive="active" class="waves-effect">Events</a>
+  </mz-sidenav-link>
+  <mz-sidenav-link>
+    <a [routerLink]="['/my-account']" routerLinkActive="active" class="waves-effect">
+      <img [src]="user.profilePicUrl" class="responsive-img avatar" alt="">
+      <span>{{user.fullName}}</span>
+    </a>
+  </mz-sidenav-link>
+  <!-- <mz-sidenav-divider></mz-sidenav-divider>
+  <mz-sidenav-link>
+    <a class="waves-effect" (click)="logOutUser()">Logout</a>
+  </mz-sidenav-link>
+  <mz-sidenav-divider></mz-sidenav-divider> -->
+</mz-sidenav>

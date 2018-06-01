@@ -1,6 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 
 import { Evento } from '../../interfaces/evento';
+import { User } from '../../interfaces/user';
 import 'fullcalendar';
 
 import { EventsService } from '../../services/events/events.service';
@@ -37,7 +38,7 @@ export class BirthdayComponent implements OnInit, OnDestroy {
       this.createCalendar(this.birthdays);
       this.birthdayReady = true;
     }));
-    this.subscriptions.add(this.userService.getUser().subscribe((user) => {
+    this.subscriptions.add(this.userService.getUser().subscribe((user: User) => {
       this.isglobantUser = /(?:@globant.com)/.test(user.email);
     }));
   }

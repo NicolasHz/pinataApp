@@ -1,5 +1,5 @@
 import { User } from './../../../interfaces/user';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy, AfterViewInit, ViewChild, ElementRef } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -7,6 +7,7 @@ import {
   FormArray,
   AbstractControl} from '@angular/forms';
 import { Router } from '@angular/router';
+import { Subscription } from 'rxjs/Subscription';
 
 // Options-Validators
 import { ERROR_MESSAGES_RESOURCES, DATE_OF_BIRTH_PICKER_OPTIONS } from '../../../shared/options/date-time-pickers';
@@ -21,12 +22,14 @@ import { MzToastService } from 'ng2-materialize';
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.scss']
 })
-export class ProfileComponent implements OnInit {
+export class ProfileComponent implements OnInit, AfterViewInit, OnDestroy {
   public errorMessageResources = ERROR_MESSAGES_RESOURCES;
   public datepickerOptions = DATE_OF_BIRTH_PICKER_OPTIONS;
   public generalForm: FormGroup;
   public birthdayListForm: FormGroup;
   public user: User;
+  @ViewChild('onBirthdayListChk') onBirthdayList: ElementRef;
+  private subscriptions: Subscription = new Subscription();
 
   constructor(
     private userService: UserService,
@@ -35,11 +38,16 @@ export class ProfileComponent implements OnInit {
     private toastService: MzToastService) { }
 
   ngOnInit() {
-    this.userService.getUser().subscribe((user) => {
+    this.subscriptions.add(this.userService.getUser().subscribe((user: User) => {
       this.user = user;
-    });
+    }));
     this.buildGeneralForm();
     this.buildBirthdayForm();
+  }
+
+  ngAfterViewInit() {
+    this.onBirthdayList.nativeElement.value = this.user.onBirthdayList;
+    this.onBirthdayList.nativeElement.checked = this.user.onBirthdayList;
   }
 
   buildGeneralForm() {
@@ -49,9 +57,18 @@ export class ProfileComponent implements OnInit {
   }
 
   buildBirthdayForm() {
+    const userPreferences = [];
+    if (this.user.preferences.length > 0) {
+      this.user.preferences.map((preference) => {
+        const newPreferenceGroup = this.formBuilder.group({
+          preference: [preference, [Validators.required, IsEmptyValidator, Validators.maxLength(15)]],
+        });
+        userPreferences.push(newPreferenceGroup);
+      });
+    }
     this.birthdayListForm = this.formBuilder.group({
-      dayOfBirth : [null, Validators.required],
-      preferences: this.formBuilder.array([])
+      dayOfBirth : [this.user.dateOfBirth, Validators.required],
+      preferences: this.formBuilder.array(userPreferences)
     });
     this.addPreference();
   }
@@ -74,7 +91,7 @@ export class ProfileComponent implements OnInit {
   }
 
   toggleBirthdayList(event) {
-      this.user.onBirthdayList = event.target.checked;
+    this.user.onBirthdayList = event.target.checked;
   }
 
   submitForm() {
@@ -98,5 +115,9 @@ export class ProfileComponent implements OnInit {
     .then(() => {
       this.router.navigate(['/login']);
     });
+  }
+
+  ngOnDestroy() {
+    this.subscriptions.unsubscribe();
   }
 }

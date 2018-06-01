@@ -15,7 +15,7 @@ export class UserService {
   private SCOPE = 'https://www.googleapis.com/auth/calendar';
   private user: BehaviorSubject<User> = new BehaviorSubject<User>(userInitialState);
   public calendarApiClient;
-
+  public googleUser;
   constructor(
     private db: AngularFirestore,
     public afAut: AngularFireAuth,
@@ -25,7 +25,8 @@ export class UserService {
       if (!googleUser) {
         return;
       }
-      this.fetchUser(googleUser);
+      this.googleUser = googleUser;
+      this.fetchUser();
     });
     gapi.load('client:auth2', this.initClient);
   }
@@ -40,8 +41,8 @@ export class UserService {
     });
   }
 
-  fetchUser(googleUser) {
-    this.db.collection('users').doc(googleUser.uid).ref.get()
+  fetchUser() {
+    this.db.collection('users').doc(this.googleUser.uid).ref.get()
     .then((doc) => {
       if (doc.exists) {
         const userData = doc.data();
@@ -59,24 +60,24 @@ export class UserService {
           userSince: userData.userSince
         };
         this.user.next(user);
-        if (googleUser.metadata.creationTime !== googleUser.metadata.lastSignInTime && userData.isNewUser) {
+        if (this.googleUser.metadata.creationTime !== this.googleUser.metadata.lastSignInTime && userData.isNewUser) {
           user.isNewUser = false;
           this.addUser(user);
         }
         this.route.navigate(['home']);
       } else {
         const newUser = {
-          email: googleUser.email,
-          fullName: googleUser.displayName,
-          profilePicUrl: googleUser.photoURL,
-          uId: googleUser.uid,
-          isNewUser: googleUser.metadata.creationTime === googleUser.metadata.lastSignInTime,
+          email: this.googleUser.email,
+          fullName: this.googleUser.displayName,
+          profilePicUrl: this.googleUser.photoURL,
+          uId: this.googleUser.uid,
+          isNewUser: this.googleUser.metadata.creationTime === this.googleUser.metadata.lastSignInTime,
           preferences: [],
           dateOfBirth: '',
           onBirthdayList: false,
           hasPayed: false,
-          lastTimeSignedIn: googleUser.metadata.lastSignInTime,
-          userSince: googleUser.metadata.creationTime
+          lastTimeSignedIn: this.googleUser.metadata.lastSignInTime,
+          userSince: this.googleUser.metadata.creationTime
         };
         this.addUser(newUser);
         this.user.next(newUser);

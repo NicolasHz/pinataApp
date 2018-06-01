@@ -49,7 +49,7 @@ export class EventComponent implements OnInit, AfterViewInit, OnDestroy {
       .sort((a, b) => this.util.diferenceOfTimeFromNow(b.start) - this.util.diferenceOfTimeFromNow(a.start));
       this.eventsReady = true;
     }));
-    this.subscriptions.add(this.userService.getUser().subscribe((user) => {
+    this.subscriptions.add(this.userService.getUser().subscribe((user: User) => {
       this.user = user;
     }));
   }

@@ -1,3 +1,4 @@
+import { Observable } from 'rxjs/Observable';
 import { User } from './../../interfaces/user';
 import { Router } from '@angular/router';
 import { UserService } from './../../services/user/user.service';
@@ -12,8 +13,8 @@ import { UtilsService } from '../../services/utils/utils.service';
 })
 export class HeaderComponent implements OnInit {
   public scrolled = false;
-  public user: User;
-  public userName;
+  public user;
+  public userName = 'a';
   constructor(
     private userService: UserService,
     public route: Router,
@@ -21,8 +22,7 @@ export class HeaderComponent implements OnInit {
     private util: UtilsService) { }
 
   ngOnInit() {
-    this.user = this.userService.getUser();
-    this.userName = this.user.fullName.replace(/ .*/, '');
+    this.user = this.userService.getUser()
   }
 
   @HostListener('window:scroll', [])

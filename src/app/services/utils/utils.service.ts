@@ -5,6 +5,7 @@ import { UserService } from './../user/user.service';
 import { CalendarEventI } from './../../interfaces/calendar-event';
 import * as moment from 'moment';
 import { ENCODE32, DECODE32 } from './encode-decode';
+import { take } from 'rxjs/operators';
 @Injectable()
 export class UtilsService {
   private user: User;
@@ -14,7 +15,9 @@ export class UtilsService {
   public decode32 = DECODE32;
 
   constructor( private userService: UserService) {
-    this.user = this.userService.getUser();
+    this.userService.getUser().pipe(take(3)).subscribe((user: User) => {
+      this.user = user;
+    });
    }
 
   scrolled(doc: Document) {

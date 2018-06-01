@@ -9,8 +9,8 @@
     </mz-navbar-item>
     <mz-navbar-item>
       <a [routerLink]="['/my-account']" routerLinkActive="active" class="waves-effect">
-        <img [src]="user.profilePicUrl" class="responsive-img avatar" alt="">
-        <span>{{userName}}</span>
+        <img src="{{(user | async).profilePicUrl}}" class="responsive-img avatar" alt="">
+        <span>{{((user| async).fullName) | splice }}</span>
       </a>
     </mz-navbar-item>
   </mz-navbar-item-container>
@@ -35,8 +35,8 @@
   </mz-sidenav-link>
   <mz-sidenav-link>
     <a [routerLink]="['/my-account']" routerLinkActive="active" class="waves-effect">
-      <img [src]="user.profilePicUrl" class="responsive-img avatar" alt="">
-      <span>{{user.fullName}}</span>
+      <img src="{{(user | async).profilePicUrl}}" class="responsive-img avatar" alt="">
+      <span>{{(user| async).fullName}}</span>
     </a>
   </mz-sidenav-link>
   <!-- <mz-sidenav-divider></mz-sidenav-divider>

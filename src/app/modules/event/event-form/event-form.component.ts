@@ -62,7 +62,9 @@ export class EventFormComponent extends MzBaseModal implements OnInit {
     } else {
       this.buildForm();
     }
-    this.user = this.userService.getUser();
+    this.userService.getUser().subscribe((user) => {
+      this.user = user;
+    });
   }
 
   buildForm() {

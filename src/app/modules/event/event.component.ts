@@ -28,7 +28,7 @@ export class EventComponent implements OnInit, AfterViewInit, OnDestroy {
   public eventsReady = false;
   public user: User;
   public selectedEvent: Evento = eventInitialState;
-  public unsubscribe: Subscription;
+  public subscriptions: Subscription = new Subscription();
 
   @ViewChild(ConfirmModalComponent) confirmModal: ConfirmModalComponent;
   @ViewChild('featureDiscovery') firstTimeIn;
@@ -41,18 +41,21 @@ export class EventComponent implements OnInit, AfterViewInit, OnDestroy {
     private toastService: MzToastService) { }
 
   ngOnInit() {
-    this.unsubscribe = this.eventService.getEvents('events')
+    this.subscriptions.add(this.eventService.getEvents('events')
     .subscribe(response => {
       this.events = Object.keys(response)
       .map(index => response[index])
       .filter((event) => this.util.deleteOldDatesEvents(event))
       .sort((a, b) => this.util.diferenceOfTimeFromNow(b.start) - this.util.diferenceOfTimeFromNow(a.start));
       this.eventsReady = true;
-    });
-    this.user = this.userService.getUser();
+    }));
+    this.subscriptions.add(this.userService.getUser().subscribe((user) => {
+      this.user = user;
+    }));
   }
 
   ngAfterViewInit() {
+    console.log(this.user)
     if (this.user.isNewUser) {
       setTimeout(() => this.firstTimeIn.open(), 3000);
     }
@@ -107,6 +110,6 @@ export class EventComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.unsubscribe.unsubscribe();
+    this.subscriptions.unsubscribe();
   }
 }

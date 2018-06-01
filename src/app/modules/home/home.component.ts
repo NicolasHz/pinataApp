@@ -24,7 +24,6 @@ export class HomeComponent implements OnInit, OnDestroy {
   public birthdayReady = false;
 
   constructor(
-    private userService: UserService,
     private eventService: EventsService,
     private util: UtilsService ) { }
 

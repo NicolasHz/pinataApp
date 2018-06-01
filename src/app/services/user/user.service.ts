@@ -1,8 +1,10 @@
 import { Router } from '@angular/router';
-import { User } from './../../interfaces/user';
+import { User, userInitialState } from './../../interfaces/user';
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from 'angularfire2/auth';
 import * as firebase from 'firebase/app';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { AngularFirestore } from 'angularfire2/firestore';
 
 declare var gapi: any;
 @Injectable()
@@ -11,27 +13,78 @@ export class UserService {
   private CLIENT_ID = '289697189757-l3muf4hpsin6f3dnt73ka1jvh1ckvnd9.apps.googleusercontent.com';
   private DISCOVERY_DOCS = ['https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest'];
   private SCOPE = 'https://www.googleapis.com/auth/calendar';
-  private user: User;
+  private user: BehaviorSubject<User> = new BehaviorSubject<User>(userInitialState);
   public calendarApiClient;
 
   constructor(
+    private db: AngularFirestore,
     public afAut: AngularFireAuth,
     private route: Router) {
 
-    this.afAut.authState.subscribe( user => {
-      if (!user) {
+    this.afAut.authState.subscribe( googleUser => {
+      if (!googleUser) {
         return;
       }
-      this.user = {
-        email: user.email,
-        fullName: user.displayName,
-        profilePicUrl: user.photoURL,
-        uId: user.uid,
-        isNewUser: user.metadata.creationTime === user.metadata.lastSignInTime
-      };
-      this.route.navigate(['home']);
+      this.fetchUser(googleUser);
     });
     gapi.load('client:auth2', this.initClient);
+  }
+
+  addUser(user: User) {
+    this.db.collection('users').doc(user.uId).set(user)
+    .then(() => {
+        console.log( 'User successfully written!');
+    })
+    .catch((error) => {
+        console.error('Error writing user: ', error);
+    });
+  }
+
+  fetchUser(googleUser) {
+    this.db.collection('users').doc(googleUser.uid).ref.get()
+    .then((doc) => {
+      if (doc.exists) {
+        const userData = doc.data();
+        const user =  {
+          email: userData.email,
+          fullName: userData.fullName,
+          profilePicUrl: userData.profilePicUrl,
+          uId: userData.uId,
+          isNewUser: userData.isNewUser,
+          preferences: userData.preferences,
+          dateOfBirth: userData.dateOfBirth,
+          onBirthdayList: userData.onBirthdayList,
+          hasPayed: userData.hasPayed,
+          lastTimeSignedIn: userData.lastTimeSignedIn,
+          userSince: userData.userSince
+        };
+        this.user.next(user);
+        if (googleUser.metadata.creationTime !== googleUser.metadata.lastSignInTime && userData.isNewUser) {
+          user.isNewUser = false;
+          this.addUser(user);
+        }
+        this.route.navigate(['home']);
+      } else {
+        const newUser = {
+          email: googleUser.email,
+          fullName: googleUser.displayName,
+          profilePicUrl: googleUser.photoURL,
+          uId: googleUser.uid,
+          isNewUser: googleUser.metadata.creationTime === googleUser.metadata.lastSignInTime,
+          preferences: [],
+          dateOfBirth: '',
+          onBirthdayList: false,
+          hasPayed: false,
+          lastTimeSignedIn: googleUser.metadata.lastSignInTime,
+          userSince: googleUser.metadata.creationTime
+        };
+        this.addUser(newUser);
+        this.user.next(newUser);
+        this.route.navigate(['my-account']);
+      }
+    }).catch((error) => {
+        console.log('Error getting user:', error);
+    });
   }
 
   login(): Promise<boolean> {
@@ -50,12 +103,7 @@ export class UserService {
       .then(() => {
         return this.afAut.auth.signOut()
         .then(() => {
-          this.user = {
-            email: '',
-            fullName: '',
-            profilePicUrl: '',
-            uId: ''
-          };
+          this.user.next(userInitialState);
         return true;
       })
       .catch(

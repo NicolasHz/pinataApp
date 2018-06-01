@@ -35,7 +35,9 @@ export class ProfileComponent implements OnInit {
     private toastService: MzToastService) { }
 
   ngOnInit() {
-    this.user = this.userService.getUser();
+    this.userService.getUser().subscribe((user) => {
+      this.user = user;
+    });
     this.buildGeneralForm();
     this.buildBirthdayForm();
   }

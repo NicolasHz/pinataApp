@@ -19,6 +19,7 @@ import { ModalService } from '../services/modal/modal.service';
 import { UtilsService } from '../services/utils/utils.service';
 import { GifsService } from '../services/gifs/gifs.service';
 import { BirhdayCardComponent } from './birthday-card/birhday-card/birhday-card.component';
+import { SplicePipe } from './splice/splice.pipe';
 
 @NgModule({
   imports: [
@@ -31,7 +32,8 @@ import { BirhdayCardComponent } from './birthday-card/birhday-card/birhday-card.
       HeaderComponent,
       CardComponent,
       ConfirmModalComponent,
-      BirhdayCardComponent
+      BirhdayCardComponent,
+      SplicePipe
   ],
   exports: [
       HeaderComponent,

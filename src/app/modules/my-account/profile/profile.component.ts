@@ -70,7 +70,9 @@ export class ProfileComponent implements OnInit, AfterViewInit, OnDestroy {
       dayOfBirth : [this.user.dateOfBirth, Validators.required],
       preferences: this.formBuilder.array(userPreferences)
     });
-    this.addPreference();
+    if (this.birthdayListForm.value.preferences.length <= 0) {
+      this.addPreference();
+    }
   }
 
   addPreference(): void {
@@ -103,7 +105,7 @@ export class ProfileComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   uploadUserImage() {
-    
+
   }
 
   showToast(message: string, color: string) {

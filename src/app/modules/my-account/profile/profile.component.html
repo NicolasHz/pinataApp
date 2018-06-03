@@ -97,7 +97,7 @@
         </div>
       </form>
     </div>
-    <div *ngIf="generalForm.dirty" class="row">
+    <div *ngIf="generalForm.dirty || birthdayListForm?.touched" class="row">
         <div class="right gif-buttons">
           <button mz-button class="red" 
             (click)="cancelForm()" 

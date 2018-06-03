@@ -111,6 +111,7 @@ export class ProfileComponent implements OnInit, AfterViewInit, OnDestroy {
       this.deleteBirthdayList();
     }
     this.user.onBirthdayList = event.target.checked;
+    this.generalForm.markAsTouched();
   }
 
   submitForm() {
@@ -127,7 +128,14 @@ export class ProfileComponent implements OnInit, AfterViewInit, OnDestroy {
         preferences: preferences,
       };
     }
-    this.userService.addUser(this.user);
+    this.userService.addUser(this.user).then((response) => {
+      if (response) {
+        this.initForms();
+      } else {
+        this.initForms();
+        this.showToast('something went wrong please try again', 'red');
+      }
+    });
   }
 
   cancelForm() {

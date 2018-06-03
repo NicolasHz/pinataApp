@@ -31,14 +31,16 @@ export class UserService {
     gapi.load('client:auth2', this.initClient);
   }
 
-  addUser(user: User) {
-    this.db.collection('users').doc(user.uId).set(user)
+  addUser(user: User): Promise<boolean> {
+    return this.db.collection('users').doc(user.uId).set(user)
     .then(() => {
         console.log( 'User successfully written!');
         this.user.next(user);
+        return true;
     })
     .catch((error) => {
         console.error('Error writing user: ', error);
+        return false;
     });
   }
 

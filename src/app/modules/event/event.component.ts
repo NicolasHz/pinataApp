@@ -55,7 +55,6 @@ export class EventComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngAfterViewInit() {
-    console.log(this.user)
     if (this.user.isNewUser) {
       setTimeout(() => this.firstTimeIn.open(), 3000);
     }

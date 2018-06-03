@@ -35,6 +35,7 @@ export class UserService {
     this.db.collection('users').doc(user.uId).set(user)
     .then(() => {
         console.log( 'User successfully written!');
+        this.user.next(user);
     })
     .catch((error) => {
         console.error('Error writing user: ', error);
@@ -80,7 +81,6 @@ export class UserService {
           userSince: this.googleUser.metadata.creationTime
         };
         this.addUser(newUser);
-        this.user.next(newUser);
         this.route.navigate(['my-account']);
       }
     }).catch((error) => {

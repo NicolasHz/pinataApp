@@ -5,7 +5,8 @@ import {
   FormGroup,
   Validators,
   FormArray,
-  AbstractControl} from '@angular/forms';
+  AbstractControl,
+  FormControl} from '@angular/forms';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
 
@@ -26,7 +27,6 @@ export class ProfileComponent implements OnInit, AfterViewInit, OnDestroy {
   public errorMessageResources = ERROR_MESSAGES_RESOURCES;
   public datepickerOptions = DATE_OF_BIRTH_PICKER_OPTIONS;
   public generalForm: FormGroup;
-  public birthdayListForm: FormGroup;
   public user: User;
   @ViewChild('onBirthdayListChk') onBirthdayList: ElementRef;
   private subscriptions: Subscription = new Subscription();
@@ -41,13 +41,19 @@ export class ProfileComponent implements OnInit, AfterViewInit, OnDestroy {
     this.subscriptions.add(this.userService.getUser().subscribe((user: User) => {
       this.user = user;
     }));
-    this.buildGeneralForm();
-    this.buildBirthdayForm();
+    this.initForms();
   }
 
   ngAfterViewInit() {
     this.onBirthdayList.nativeElement.value = this.user.onBirthdayList;
     this.onBirthdayList.nativeElement.checked = this.user.onBirthdayList;
+  }
+
+  initForms() {
+    this.buildGeneralForm();
+    if (this.user.onBirthdayList) {
+      this.buildBirthdayForm();
+    }
   }
 
   buildGeneralForm() {
@@ -66,46 +72,71 @@ export class ProfileComponent implements OnInit, AfterViewInit, OnDestroy {
         userPreferences.push(newPreferenceGroup);
       });
     }
-    this.birthdayListForm = this.formBuilder.group({
-      dayOfBirth : [this.user.dateOfBirth, Validators.required],
-      preferences: this.formBuilder.array(userPreferences)
-    });
-    if (this.birthdayListForm.value.preferences.length <= 0) {
+    this.generalForm.addControl('dateOfBirth', new FormControl(this.user.dateOfBirth, Validators.required));
+    this.generalForm.addControl('preferences', this.formBuilder.array(userPreferences));
+    if (this.generalForm.value.preferences.length <= 0) {
       this.addPreference();
     }
   }
 
   addPreference(): void {
-    const preferenceControl = <FormArray>this.birthdayListForm.get('preferences');
+    const preferenceControl = <FormArray>this.generalForm.get('preferences');
     const newPreferenceGroup = this.formBuilder.group({
       preference: ['', [Validators.required, IsEmptyValidator, Validators.maxLength(15)]],
     });
     preferenceControl.push(newPreferenceGroup);
+    this.generalForm.markAsTouched();
   }
 
   getPreferences(): AbstractControl[] {
-    return (<FormArray>this.birthdayListForm.get('preferences')).controls;
+    return (<FormArray>this.generalForm.get('preferences')).controls;
   }
 
   deletePreference(index: number) {
-    const phoneNumbersControl = <FormArray>this.birthdayListForm.get('preferences');
+    const phoneNumbersControl = <FormArray>this.generalForm.get('preferences');
     phoneNumbersControl.removeAt(index);
+    this.generalForm.markAsTouched();
+  }
+
+  deleteBirthdayList() {
+    this.generalForm.removeControl('dateOfBirth');
+    this.generalForm.removeControl('preferences');
+    this.generalForm.markAsTouched();
   }
 
   toggleBirthdayList(event) {
+    if (event.target.checked) {
+      this.buildBirthdayForm();
+    } else {
+      this.deleteBirthdayList();
+    }
     this.user.onBirthdayList = event.target.checked;
   }
 
   submitForm() {
-
+    if (!this.user.onBirthdayList) {
+      this.user.fullName = this.generalForm.value.fullName;
+    } else {
+      const preferences = [];
+      this.generalForm.value.preferences.map((preference) => {
+        preferences.push(preference.preference);
+      });
+      this.user = {
+        ...this.user,
+        dateOfBirth: this.generalForm.value.dateOfBirth,
+        preferences: preferences,
+      };
+    }
+    this.userService.addUser(this.user);
   }
 
   cancelForm() {
-
+    this.initForms();
   }
 
-  uploadUserImage() {
-
+  onFileSelected(event) {
+    const file = <File>event.target.files[0];
+    console.log(file)
   }
 
   showToast(message: string, color: string) {
@@ -116,7 +147,8 @@ export class ProfileComponent implements OnInit, AfterViewInit, OnDestroy {
     this.userService.logout()
     .then(() => {
       this.router.navigate(['/login']);
-    });
+    })
+    .catch((error) => alert(error));
   }
 
   ngOnDestroy() {

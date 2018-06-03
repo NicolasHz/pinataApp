@@ -10,6 +10,7 @@ import { MyAccountComponent } from './my-account.component';
 import { ProfileComponent } from './profile/profile.component';
 import { MyEventsComponent } from './my-events/my-events.component';
 import { MyAccountNavComponent } from './my-account-nav/my-account-nav/my-account-nav.component';
+import { FeedbackComponent } from './feedback/feedback/feedback.component';
 
 
 @NgModule({
@@ -27,7 +28,8 @@ import { MyAccountNavComponent } from './my-account-nav/my-account-nav/my-accoun
     MyAccountComponent,
     ProfileComponent,
     MyEventsComponent,
-    MyAccountNavComponent
+    MyAccountNavComponent,
+    FeedbackComponent
 ]
 })
 export class MyAccountModule { }

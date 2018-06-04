@@ -82,8 +82,13 @@ export class UserService {
           lastTimeSignedIn: this.googleUser.metadata.lastSignInTime,
           userSince: this.googleUser.metadata.creationTime
         };
-        this.addUser(newUser);
-        this.route.navigate(['my-account']);
+        this.addUser(newUser).then((added) => {
+          if (added) {
+            this.route.navigate(['my-account']);
+          }else {
+            console.log('error at save and load user');
+          }
+        });
       }
     }).catch((error) => {
         console.log('Error getting user:', error);

@@ -80,6 +80,7 @@
                   id="input-preference-{{i}}"
                   formControlName="preference"
                   type="text"
+                  (keyup.enter)="addPreference()"
                   [errorMessageResource]="errorMessageResources.preferences"
                   [label]="'Preference (ex:\'books\', \'sports\')'" />
               </mz-input-container>

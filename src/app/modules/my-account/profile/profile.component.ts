@@ -82,7 +82,7 @@ export class ProfileComponent implements OnInit, AfterViewInit, OnDestroy {
   addPreference(): void {
     const preferenceControl = <FormArray>this.generalForm.get('preferences');
     const newPreferenceGroup = this.formBuilder.group({
-      preference: ['', [Validators.required, IsEmptyValidator, Validators.maxLength(15)]],
+      preference: ['', [Validators.required, IsEmptyValidator, Validators.maxLength(15)]]
     });
     preferenceControl.push(newPreferenceGroup);
     this.generalForm.markAsTouched();

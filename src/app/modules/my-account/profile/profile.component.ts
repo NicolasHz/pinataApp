@@ -17,6 +17,7 @@ import { IsEmptyValidator } from '../../../shared/validators/validators';
 // Services
 import { UserService } from '../../../services/user/user.service';
 import { MzToastService } from 'ng2-materialize';
+import { UtilsService } from '../../../services/utils/utils.service';
 
 @Component({
   selector: 'app-profile',
@@ -28,6 +29,7 @@ export class ProfileComponent implements OnInit, AfterViewInit, OnDestroy {
   public datepickerOptions = DATE_OF_BIRTH_PICKER_OPTIONS;
   public generalForm: FormGroup;
   public user: User;
+  public tooltip = '';
   @ViewChild('onBirthdayListChk') onBirthdayList: ElementRef;
   private subscriptions: Subscription = new Subscription();
 
@@ -35,6 +37,7 @@ export class ProfileComponent implements OnInit, AfterViewInit, OnDestroy {
     private userService: UserService,
     private router: Router,
     private formBuilder: FormBuilder,
+    private util: UtilsService,
     private toastService: MzToastService) { }
 
   ngOnInit() {
@@ -42,11 +45,13 @@ export class ProfileComponent implements OnInit, AfterViewInit, OnDestroy {
       this.user = user;
     }));
     this.initForms();
+    this.tooltip = !this.util.isGlobantUser(this.user) ? 'Sorry this is not an Globant account!' : 'Join the birthday list form';
   }
 
   ngAfterViewInit() {
     this.onBirthdayList.nativeElement.value = this.user.onBirthdayList;
     this.onBirthdayList.nativeElement.checked = this.user.onBirthdayList;
+    this.onBirthdayList.nativeElement.disabled = !this.util.isGlobantUser(this.user);
   }
 
   initForms() {

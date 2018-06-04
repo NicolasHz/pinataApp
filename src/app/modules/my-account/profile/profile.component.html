@@ -34,7 +34,12 @@
                   [errorMessageResource]="errorMessageResources.fullName"
                   [label]="'Full Name'" />
               </mz-input-container>
-              <mz-checkbox-container class="col s12 m12 l12 profile__personal-information__form__birthday-check" >
+              <mz-checkbox-container 
+                mz-tooltip
+                [tooltip]="tooltip"
+                [position]="'left'"
+                [delay]="800"
+                class="col s12 m12 l12 profile__personal-information__form__birthday-check" >
                 <input mz-checkbox
                   (click)="toggleBirthdayList($event)"
                   id="checkbox-job"

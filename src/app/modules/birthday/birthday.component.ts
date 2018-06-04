@@ -39,7 +39,7 @@ export class BirthdayComponent implements OnInit, OnDestroy {
       this.birthdayReady = true;
     }));
     this.subscriptions.add(this.userService.getUser().subscribe((user: User) => {
-      this.isglobantUser = /(?:@globant.com)/.test(user.email);
+      this.isglobantUser = this.util.isGlobantUser(user);
     }));
   }
 

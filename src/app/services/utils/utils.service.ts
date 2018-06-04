@@ -41,6 +41,10 @@ export class UtilsService {
    }
   }
 
+  isGlobantUser(user: User) {
+    return /(@globant.com)/.test(user.email);
+  }
+
   isEventCreator(eventData: Evento) {
     return eventData.creator.uId === this.user.uId;
   }

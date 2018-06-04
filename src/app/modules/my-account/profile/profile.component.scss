@@ -48,6 +48,12 @@ mz-datepicker-container {
   }
 }
 
+mz-input-container {
+  /deep/label {
+    font-size: 0.98rem;
+  }
+}
+
 %common-style {
   margin: 10px 15px!important;
   background-color: white;

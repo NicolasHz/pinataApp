@@ -1,6 +1,23 @@
 @import 'src/assets/scss/variables';
 .my-events {
-    @extend %full_width_heigth;
-    padding-top: 125px;
-    background: linear-gradient(260deg, #0099f7, #f11712);// previsional colors
+  @extend %full_width_heigth;
+  margin: 0 0 0 0;
+  min-height:100%;
+  padding: 125px 0 3% 0;
+  height: unset;
+  background: linear-gradient(160deg, #feac5e, #c779d0, #4bc0c8); // previsional colors
+  &__created-events {
+    @extend %common-style;
   }
+  &__joined-events {
+    @extend %common-style;
+  }
+}
+
+%common-style {
+  margin: 10px 15px!important;
+  background-color: white;
+  margin: 10px 0;
+  border-radius: 10px;
+  box-shadow: 5px 8px 17px 0px rgba(0, 0, 0, 0.2), 5px 6px 18px 0px rgba(0, 0, 0, 0.19);
+}

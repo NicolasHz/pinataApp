@@ -23,7 +23,7 @@
         <div [ngClass]="[eventsReady ? '' : 'hide']">
             <h5 class="events__upcoming-events">Don't miss these events:</h5>
             <hr>
-            <div class="row event__cards">
+            <div class="row">
                 <app-card *ngFor="let event of events"
                     [eventData]="event"
                     (join)="joinEvent($event)"

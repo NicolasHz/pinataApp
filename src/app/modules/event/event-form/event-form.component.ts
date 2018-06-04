@@ -179,6 +179,7 @@ export class EventFormComponent extends MzBaseModal implements OnInit {
   }
 
   setAvalibleEndDays() {
+    window.scrollTo(0, 0);
     if (this.eventForm.value.start.eventStartDay) {
       const minDate = this.eventForm.value.start.eventStartDay.split('-').map(Number);
       minDate[1]--; // Discounting a month because of the date picker restriction behavior

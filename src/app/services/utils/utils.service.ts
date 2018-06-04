@@ -62,8 +62,18 @@ export class UtilsService {
       });
   }
 
-  deleteOldDatesEvents(event: Evento, from = new Date()) {
+  deleteOldDatesEvents(event: Evento, from = new Date()): boolean {
       return event.end >= moment(from).format();
+  }
+
+  getCurrentUserEvents(event: Evento): boolean  {
+    return event.creator.uId === this.user.uId;
+  }
+
+  getJoinedEvents(event: Evento): boolean {
+    return event.participants.some((participant) => {
+      return participant.uId === this.user.uId;
+    });
   }
 
   makePlusId(finalLength: number) {

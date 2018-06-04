@@ -11,6 +11,7 @@ import { ProfileComponent } from './profile/profile.component';
 import { MyEventsComponent } from './my-events/my-events.component';
 import { MyAccountNavComponent } from './my-account-nav/my-account-nav/my-account-nav.component';
 import { FeedbackComponent } from './feedback/feedback/feedback.component';
+import { EventFormComponent } from '../event/event-form/event-form.component';
 
 
 @NgModule({
@@ -30,6 +31,9 @@ import { FeedbackComponent } from './feedback/feedback/feedback.component';
     MyEventsComponent,
     MyAccountNavComponent,
     FeedbackComponent
-]
+  ],
+  entryComponents: [
+    EventFormComponent
+  ]
 })
 export class MyAccountModule { }

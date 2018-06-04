@@ -17,6 +17,9 @@
       margin: auto 0;
     }
   }
+  &__no-events {
+    filter: grayscale(1) opacity(.3);
+  }
 }
 
 %common-style {

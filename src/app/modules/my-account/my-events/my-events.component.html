@@ -12,7 +12,7 @@
         </button>
     </div>
     <div [ngClass]="[eventsReady ? '' : 'hide']">
-      <div class="row event__cards">
+      <div class="row">
         <app-card *ngFor="let event of events"
             [eventData]="event"
             [enableEdit]="true"
@@ -23,6 +23,11 @@
             class="col s12 m4 l3 wow flipInX"
             data-wow-duration="1.4s">
         </app-card>
+        <div *ngIf="events.length === 0" class="my-events__no-events center">
+          <img src="/assets/img/no-events.gif" class="wow fadeIn" alt="">
+          <h5 *ngIf="view === 'created'" class="wow fadeIn" >You haven't created any events...</h5>
+          <h5 *ngIf="view === 'joined'" class="wow fadeIn" >You haven't joined any events yet...</h5>
+        </div>
       </div>
     </div>
     <div class="section" *ngIf="!eventsReady">

@@ -124,6 +124,7 @@ export class ProfileComponent implements OnInit, AfterViewInit, OnDestroy {
       });
       this.user = {
         ...this.user,
+        fullName: this.generalForm.value.fullName,
         dateOfBirth: this.generalForm.value.dateOfBirth,
         preferences: preferences,
       };

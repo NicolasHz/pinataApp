@@ -26,6 +26,8 @@
             <div class="row event__cards">
                 <app-card *ngFor="let event of events"
                     [eventData]="event"
+                    (join)="joinEvent($event)"
+                    (leave)="leaveEvent($event)"
                     class="col s12 m4 l4 wow flipInX"
                     data-wow-duration="1.4s">
                 </app-card>

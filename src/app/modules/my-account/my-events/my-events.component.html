@@ -1,35 +1,19 @@
 <div class="row my-events">
-  <div class="col s11 m10 l10 push-m1 push-l1 my-events__created-events">
-    <h5>Events that you created</h5>
+  <div class="col s11 m10 l10 push-m1 push-l1 my-events__events">
+    <div class="my-events__title">
+      <h5 *ngIf="view === 'created'" class="wow fadeIn">Events that you created</h5>
+      <h5 *ngIf="view === 'joined'" class="wow fadeIn">Joined events</h5>
+      <button mz-button [float]="true" class="profile__log-out right blue" (click)="onSwitchEventView()">
+        <i mz-icon-mdi
+          [align]="'left'"
+          [icon]="'find-replace'"
+          [size]="'24px'">
+        </i>
+        </button>
+    </div>
     <div [ngClass]="[eventsReady ? '' : 'hide']">
       <div class="row event__cards">
         <app-card *ngFor="let event of events"
-            [eventData]="event"
-            [enableEdit]="true"
-            (join)="joinEvent($event)"
-            (leave)="leaveEvent($event)"
-            (edit)="editEvent($event)"
-            (delete)="confirmDelete($event)"
-            class="col s12 m4 l3 wow flipInX"
-            data-wow-duration="1.4s">
-        </app-card>
-      </div>
-    </div>
-    <div class="section" *ngIf="!eventsReady">
-      <div class="row">
-          <mz-spinner
-              class="col center s12 m12 l12 spinner"
-              [color]="'blue'"
-              [size]="'big'">
-          </mz-spinner>
-      </div>
-    </div>
-  </div>
-  <div class="col s11 m10 l10 push-m1 push-l1 my-events__joined-events">
-    <h5>Joined Events</h5>
-    <div [ngClass]="[eventsReady ? '' : 'hide']">
-      <div class="row event__cards">
-        <app-card *ngFor="let event of joinedEvents"
             [eventData]="event"
             [enableEdit]="true"
             (join)="joinEvent($event)"

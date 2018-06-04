@@ -24,10 +24,11 @@ import { EventFormComponent } from '../../event/event-form/event-form.component'
   styleUrls: ['./my-events.component.scss']
 })
 export class MyEventsComponent implements OnInit, OnDestroy {
-  public events: Array<Evento>;
-  public joinedEvents: Array<Evento>;
+  public allEvents: Array<Evento>;
+  public events: Array<Evento> = [];
   public eventsReady = false;
   public user: User;
+  public view: 'created' | 'joined' = 'created';
   public selectedEvent: Evento = eventInitialState;
   public subscriptions: Subscription = new Subscription();
   @ViewChild(ConfirmModalComponent) confirmModal: ConfirmModalComponent;
@@ -43,22 +44,34 @@ export class MyEventsComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.subscriptions.add(this.eventService.getEvents('events')
     .subscribe(response => {
-      this.events = Object.keys(response)
-      .map(index => response[index])
-      .filter((event: Evento) => this.util.getCurrentUserEvents(event))
-      .filter((event: Evento) => this.util.deleteOldDatesEvents(event))
-      .sort((a, b) => this.util.diferenceOfTimeFromNow(b.start) - this.util.diferenceOfTimeFromNow(a.start));
-
-    this.joinedEvents = Object.keys(response)
+      this.allEvents = Object.keys(response)
       .map(index => response[index])
       .filter((event: Evento) => this.util.deleteOldDatesEvents(event))
-      .filter((event: Evento) => this.util.getJoinedEvents(event))
       .sort((a, b) => this.util.diferenceOfTimeFromNow(b.start) - this.util.diferenceOfTimeFromNow(a.start));
+      this.onEventsCreated();
       this.eventsReady = true;
     }));
     this.subscriptions.add(this.userService.getUser().subscribe((user: User) => {
       this.user = user;
     }));
+  }
+
+  onSwitchEventView() {
+    if (this.view === 'created') {
+      this.onJoinedEvents();
+    }else {
+      this.onEventsCreated();
+    }
+  }
+
+  onJoinedEvents() {
+    this.events = this.allEvents.slice().filter((event: Evento) => this.util.getJoinedEvents(event));
+    this.view = 'joined';
+  }
+
+  onEventsCreated() {
+    this.events = this.allEvents.slice().filter((event: Evento) => this.util.getCurrentUserEvents(event));
+    this.view = 'created';
   }
 
   joinEvent(eventData: Evento) {

@@ -3,14 +3,19 @@
   @extend %full_width_heigth;
   margin: 0 0 0 0;
   min-height:100%;
-  padding: 125px 0 3% 0;
+  padding: 125px 0 10% 0;
   height: unset;
   background: linear-gradient(160deg, #feac5e, #c779d0, #4bc0c8); // previsional colors
-  &__created-events {
+  &__events {
     @extend %common-style;
   }
-  &__joined-events {
-    @extend %common-style;
+  &__title {
+    display: flex;
+    justify-content: space-between;
+    margin: 0 0 15px 0;
+    button {
+      margin: auto 0;
+    }
   }
 }
 

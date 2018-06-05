@@ -3,13 +3,14 @@
     <div class="my-events__title">
       <h5 *ngIf="view === 'created'" class="wow fadeIn">Events that you created</h5>
       <h5 *ngIf="view === 'joined'" class="wow fadeIn">Joined events</h5>
-      <button mz-button [float]="true" class="profile__log-out right blue pulse" (click)="onSwitchEventView()">
-        <i mz-icon-mdi
-          [align]="'left'"
-          [icon]="'find-replace'"
-          [size]="'24px'">
-        </i>
-        </button>
+      <mz-switch-container>
+        <input mz-switch
+          id="switch-id"
+          [off]="'Created'"
+          [on]="'Joined'"
+          type="checkbox"
+          (click)="onSwitchEventView()">
+      </mz-switch-container>
     </div>
     <div [ngClass]="[eventsReady ? '' : 'hide']">
       <div class="row">

@@ -24,7 +24,7 @@ import { Subscription } from 'rxjs/Subscription';
   styleUrls: ['./event.component.scss']
 })
 export class EventComponent implements OnInit, AfterViewInit, OnDestroy {
-  public events: Array<Evento>;
+  public events: Array<Evento> = [];
   public eventsReady = false;
   public user: User;
   public selectedEvent: Evento = eventInitialState;

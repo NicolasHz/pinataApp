@@ -19,7 +19,7 @@ import { Subscription } from 'rxjs/Subscription';
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit, OnDestroy {
-  public events: Array<Evento>;
+  public events: Array<Evento> = [];
   public birthdays: Array<Evento>;
   public user: User;
   public subscriptions = new Subscription();

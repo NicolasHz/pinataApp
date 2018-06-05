@@ -5,6 +5,10 @@
             <h1 class="responsive-img wow fadeIn" data-wow-duration="1.5s">The events!!</h1>
     </div>
     <div [ngClass]="[eventsReady ? '' : 'hide']">
+        <div *ngIf="events.length === 0" class="event__no-events center">
+            <img src="/assets/img/no-events.gif" class="wow fadeIn" alt="">
+            <h5>Oops! There are no events yet, create one here!</h5>
+        </div>
         <div class="row event__cards">
             <app-card *ngFor="let event of events"
                 [eventData]="event"

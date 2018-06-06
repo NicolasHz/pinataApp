@@ -9,8 +9,8 @@ import { SharedModule } from '../../shared/shared.module';
 import { MyAccountComponent } from './my-account.component';
 import { ProfileComponent } from './profile/profile.component';
 import { MyEventsComponent } from './my-events/my-events.component';
-import { MyAccountNavComponent } from './my-account-nav/my-account-nav/my-account-nav.component';
-import { FeedbackComponent } from './feedback/feedback/feedback.component';
+import { MyAccountNavComponent } from './my-account-nav/my-account-nav.component';
+import { FeedbackComponent } from './feedback/feedback.component';
 import { EventFormComponent } from '../event/event-form/event-form.component';
 
 

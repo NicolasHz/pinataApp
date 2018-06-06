@@ -22,7 +22,7 @@
         display: inline-block;
         button {
           position: absolute;
-          right: 20px;
+          right: 18%;
           top: 25%;
         }
       }
@@ -58,6 +58,10 @@ mz-input-container {
   /deep/label {
     font-size: 0.98rem;
   }
+}
+
+.spinner {
+  padding: 30px 0!important;
 }
 
 %common-style {

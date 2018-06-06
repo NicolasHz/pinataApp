@@ -20,7 +20,7 @@ export const userInitialState = {
     preferences: [],
     isNewUser: true,
     dateOfBirth: '',
-    onBirthdayList: true,
+    onBirthdayList: false,
     hasPayed: false,
     lastTimeSignedIn: '',
     userSince: ''

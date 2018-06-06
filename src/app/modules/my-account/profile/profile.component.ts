@@ -48,8 +48,8 @@ export class ProfileComponent implements OnInit, AfterViewInit, OnDestroy {
     this.subscriptions.add(this.userService.getUser().subscribe((user: User) => {
       this.user = user;
       this.currentUserImage = this.user.profilePicUrl;
+      this.initForms();
     }));
-    this.initForms();
     this.tooltip = !this.util.isGlobantUser(this.user) ? 'Sorry this is not an Globant account!' : 'Join the birthday list form';
   }
 
@@ -144,7 +144,7 @@ export class ProfileComponent implements OnInit, AfterViewInit, OnDestroy {
         this.initForms();
       } else {
         this.initForms();
-        this.showToast('something went wrong please try again', 'red');
+        this.showToast('Something went wrong please try again', 'red');
       }
     });
   }
@@ -156,16 +156,22 @@ export class ProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 
   onFileSelected(event) {
     const file = <File>event.target.files[0];
-    this.uploadingImage = true;
-    this.uploadImageService.uploadImage(file, this.user.uId, this.user.fullName).then((imageUrl) => {
-      this.uploadingImage = false;
-      this.user.profilePicUrl = imageUrl;
-      this.generalForm.markAsTouched();
-    });
+    if (file) {
+      if (file.size <= 2097152) {
+        this.uploadingImage = true;
+        this.uploadImageService.uploadImage(file, this.user.uId, this.user.fullName).then((imageUrl) => {
+          this.uploadingImage = false;
+          this.user.profilePicUrl = imageUrl;
+          this.generalForm.markAsTouched();
+        });
+      } else {
+        this.showToast('Images should be smaller than 2 Mb size!!', 'red', 6000);
+      }
+    }
   }
 
-  showToast(message: string, color: string) {
-    this.toastService.show(message, 4000, color );
+  showToast(message: string, color: string, time: number = 4000) {
+    this.toastService.show(message, time, color );
   }
 
   logOutUser() {
@@ -177,6 +183,9 @@ export class ProfileComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngOnDestroy() {
+    if (this.generalForm.touched) {
+      this.user.profilePicUrl = this.currentUserImage;
+    }
     this.subscriptions.unsubscribe();
   }
 }

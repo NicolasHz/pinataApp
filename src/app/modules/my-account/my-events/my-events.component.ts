@@ -17,7 +17,6 @@ import { ModalService } from '../../../services/modal/modal.service';
 import { ConfirmModalComponent } from '../../../shared/confirm-modal/confirm-modal.component';
 import { EventFormComponent } from '../../event/event-form/event-form.component';
 
-
 @Component({
   selector: 'app-my-events',
   templateUrl: './my-events.component.html',

@@ -101,4 +101,10 @@ export class UtilsService {
     birthday.end = birthday.end.replace( incomingYear, new Date().getFullYear() );
     return birthday;
   }
+
+  isTodayBirthday(birthday: Evento) {
+    const incomingYear = moment(birthday.start).format('YYYY-MM-DD');
+    const now = moment(Date()).format('YYYY-MM-DD');
+    return incomingYear === now;
+  }
 }

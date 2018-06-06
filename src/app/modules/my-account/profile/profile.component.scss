@@ -7,7 +7,7 @@
   height: unset;
   background: linear-gradient(160deg, #feac5e, #c779d0, #4bc0c8); // previsional colors
   &__personal-information {
-    @extend %common-style;
+    @extend %form-common-style;
     &__form {
       &__full-name {
         padding-top: 20px;
@@ -37,7 +37,7 @@
     }
   }
   &__general {
-    @extend %common-style;
+    @extend %form-common-style;
   }
   &__log-out {
     padding: 0 1rem;
@@ -62,12 +62,4 @@ mz-input-container {
 
 .spinner {
   padding: 30px 0!important;
-}
-
-%common-style {
-  margin: 10px 15px!important;
-  background-color: white;
-  margin: 10px 0;
-  border-radius: 10px;
-  box-shadow: 5px 8px 17px 0px rgba(0, 0, 0, 0.2), 5px 6px 18px 0px rgba(0, 0, 0, 0.19);
 }

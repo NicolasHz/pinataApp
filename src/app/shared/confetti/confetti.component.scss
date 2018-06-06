@@ -44,23 +44,18 @@ $colors: (
 
 @keyframes confetti {
   0% {
-    -webkit-transform: rotateZ(15deg) rotateY(0deg) translate(0, 0);
-            transform: rotateZ(15deg) rotateY(0deg) translate(0, 0);
+    transform: rotateZ(15deg) rotateY(0deg) translate(0, 0);
   }
   25% {
-    -webkit-transform: rotateZ(5deg) rotateY(360deg) translate(-5vw, 20vh);
-            transform: rotateZ(5deg) rotateY(360deg) translate(-5vw, 20vh);
+    transform: rotateZ(5deg) rotateY(360deg) translate(-5vw, 20vh);
   }
   50% {
-    -webkit-transform: rotateZ(15deg) rotateY(720deg) translate(5vw, 60vh);
-            transform: rotateZ(15deg) rotateY(720deg) translate(5vw, 60vh);
+    transform: rotateZ(15deg) rotateY(720deg) translate(5vw, 60vh);
   }
   75% {
-    -webkit-transform: rotateZ(5deg) rotateY(1080deg) translate(-10vw, 80vh);
-            transform: rotateZ(5deg) rotateY(1080deg) translate(-10vw, 80vh);
+    transform: rotateZ(5deg) rotateY(1080deg) translate(-10vw, 80vh);
   }
   100% {
-    -webkit-transform: rotateZ(15deg) rotateY(1440deg) translate(10vw, 110vh);
-            transform: rotateZ(15deg) rotateY(1440deg) translate(10vw, 110vh);
+    transform: rotateZ(15deg) rotateY(1440deg) translate(10vw, 110vh);
   }
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 
 @Component({
   selector: 'app-confetti',
@@ -7,13 +7,14 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ConfettiComponent implements OnInit {
   public confettis: any[] = [];
+  @Input() size = 50;
   constructor() { }
 
   ngOnInit() {
-    for (let i = 0; i <= 100; i++) {
+    for (let i = 0; i <= this.size; i++) {
       this.confettis.push({
         animationDelay: ((Math.random() * 10) - 5).toFixed(2) + 's',
-        left: (i * this.confettis.length / i) + '%',
+        left: (i * this.confettis.length / i + 5) + '%',
         backgroundColor: this.getRandomColor()
       });
     }

@@ -1,0 +1,66 @@
+@import 'src/assets/scss/variables';
+
+$colors: (
+  1: #f2d74e,
+  2: #95c3de,
+  3: #ff9a91,
+  4:#f2d74e,
+  5:#95c3de,
+  6:#ff9a91,
+  7:#f2d74e,
+  8:#95c3de,
+  9:#ff9a91,
+  10:#f2d74e,
+  11:#f2d74e,
+  12:#95c3de,
+  13:#ff9a91,
+  14:#f2d74e,
+  15:#95c3de,
+  16:#ff9a91,
+  17:#f2d74e,
+  18:#95c3de,
+  19:#ff9a91,
+  20:#f2d74e
+);
+
+
+.container {
+  overflow: hidden;
+  width: 100%;
+  height: 100%;
+  background: transparent;
+}
+
+.confetti {
+  width: 15px;
+  height: 15px;
+  background-color: #f2d74e;
+  position: absolute;
+  left: 50%;
+  animation: confetti 5s linear -4s infinite;
+  transform-origin: left top;
+}
+
+
+@keyframes confetti {
+  0% {
+    -webkit-transform: rotateZ(15deg) rotateY(0deg) translate(0, 0);
+            transform: rotateZ(15deg) rotateY(0deg) translate(0, 0);
+  }
+  25% {
+    -webkit-transform: rotateZ(5deg) rotateY(360deg) translate(-5vw, 20vh);
+            transform: rotateZ(5deg) rotateY(360deg) translate(-5vw, 20vh);
+  }
+  50% {
+    -webkit-transform: rotateZ(15deg) rotateY(720deg) translate(5vw, 60vh);
+            transform: rotateZ(15deg) rotateY(720deg) translate(5vw, 60vh);
+  }
+  75% {
+    -webkit-transform: rotateZ(5deg) rotateY(1080deg) translate(-10vw, 80vh);
+            transform: rotateZ(5deg) rotateY(1080deg) translate(-10vw, 80vh);
+  }
+  100% {
+    -webkit-transform: rotateZ(15deg) rotateY(1440deg) translate(10vw, 110vh);
+            transform: rotateZ(15deg) rotateY(1440deg) translate(10vw, 110vh);
+  }
+}

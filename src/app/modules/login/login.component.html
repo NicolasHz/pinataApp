@@ -6,7 +6,7 @@
       alt="Cake-boy"
       width="350px">
     <h1>Welcome to Piñata!!</h1>
-    <div class="login__button-login">
+    <div *ngIf="!loading" class="login__button-login">
       <button
         mz-button
         mz-tooltip
@@ -39,6 +39,9 @@
       </div>
     <p *ngIf="!allow" style="color: #5cb85c">Please let us access you calendar for a better experiencie</p>
   </div>
+  <!-- <div class="login__loading">
+    <h1 style="text-align: center">Cargando...</h1>
+  </div> -->
 </div>
 
 

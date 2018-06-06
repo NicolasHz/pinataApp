@@ -23,6 +23,7 @@ import { BirhdayCardComponent } from './birthday-card/birhday-card/birhday-card.
 import { SplicePipe } from './splice/splice.pipe';
 import { FooterComponent } from './footer/footer/footer.component';
 import { UploadImageService } from '../services/upload-image/upload-image.service';
+import { ConfettiComponent } from './confetti/confetti.component';
 
 @NgModule({
   imports: [
@@ -40,7 +41,8 @@ import { UploadImageService } from '../services/upload-image/upload-image.servic
       BirhdayCardComponent,
       SplicePipe,
       EventFormComponent,
-      FooterComponent
+      FooterComponent,
+      ConfettiComponent
   ],
   exports: [
       HeaderComponent,
@@ -48,7 +50,8 @@ import { UploadImageService } from '../services/upload-image/upload-image.servic
       MaterialModule,
       ConfirmModalComponent,
       BirhdayCardComponent,
-      EventFormComponent
+      EventFormComponent,
+      ConfettiComponent
   ],
   providers: [
     EventsService,

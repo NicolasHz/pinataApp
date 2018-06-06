@@ -22,6 +22,7 @@ import { GifsService } from '../services/gifs/gifs.service';
 import { BirhdayCardComponent } from './birthday-card/birhday-card/birhday-card.component';
 import { SplicePipe } from './splice/splice.pipe';
 import { FooterComponent } from './footer/footer/footer.component';
+import { UploadImageService } from '../services/upload-image/upload-image.service';
 
 @NgModule({
   imports: [
@@ -54,7 +55,8 @@ import { FooterComponent } from './footer/footer/footer.component';
     MzInjectionService,
     ModalService,
     UtilsService,
-    GifsService
+    GifsService,
+    UploadImageService
   ]
 })
 export class SharedModule { }

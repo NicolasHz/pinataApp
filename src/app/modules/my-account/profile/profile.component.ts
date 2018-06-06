@@ -18,6 +18,7 @@ import { IsEmptyValidator } from '../../../shared/validators/validators';
 import { UserService } from '../../../services/user/user.service';
 import { MzToastService } from 'ng2-materialize';
 import { UtilsService } from '../../../services/utils/utils.service';
+import { UploadImageService } from '../../../services/upload-image/upload-image.service';
 
 @Component({
   selector: 'app-profile',
@@ -30,6 +31,8 @@ export class ProfileComponent implements OnInit, AfterViewInit, OnDestroy {
   public generalForm: FormGroup;
   public user: User;
   public tooltip = '';
+  private currentUserImage = '';
+  public uploadingImage = false;
   @ViewChild('onBirthdayListChk') onBirthdayList: ElementRef;
   private subscriptions: Subscription = new Subscription();
 
@@ -38,11 +41,13 @@ export class ProfileComponent implements OnInit, AfterViewInit, OnDestroy {
     private router: Router,
     private formBuilder: FormBuilder,
     private util: UtilsService,
+    private uploadImageService: UploadImageService,
     private toastService: MzToastService) { }
 
   ngOnInit() {
     this.subscriptions.add(this.userService.getUser().subscribe((user: User) => {
       this.user = user;
+      this.currentUserImage = this.user.profilePicUrl;
     }));
     this.initForms();
     this.tooltip = !this.util.isGlobantUser(this.user) ? 'Sorry this is not an Globant account!' : 'Join the birthday list form';
@@ -146,11 +151,17 @@ export class ProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 
   cancelForm() {
     this.initForms();
+    this.user.profilePicUrl = this.currentUserImage;
   }
 
   onFileSelected(event) {
     const file = <File>event.target.files[0];
-    console.log(file)
+    this.uploadingImage = true;
+    this.uploadImageService.uploadImage(file, this.user.uId, this.user.fullName).then((imageUrl) => {
+      this.uploadingImage = false;
+      this.user.profilePicUrl = imageUrl;
+      this.generalForm.markAsTouched();
+    });
   }
 
   showToast(message: string, color: string) {

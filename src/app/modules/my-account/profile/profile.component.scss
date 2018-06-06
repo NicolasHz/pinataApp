@@ -16,14 +16,20 @@
         color: white;
         outline: none;
       }
-      &__user-image {
-        margin: 10px 0;
-        width: 50%;
-        max-width: 30%;
-        border-radius: 50%;
-        @media all and (max-width: $app_especific_toggle_menu) {
-          max-width: 45%;
+      &__profile-pic {
+        width: 110px;
+        height: 110px;
+        display: inline-block;
+        button {
+          position: absolute;
+          right: 20px;
+          top: 25%;
         }
+      }
+      &__user-image {
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
       }
       &__birthday-check {
         padding: 2rem 0.75rem;

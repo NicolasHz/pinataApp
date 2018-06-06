@@ -6,7 +6,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./confetti.component.scss']
 })
 export class ConfettiComponent implements OnInit {
-  public confettis: Array<any> = [];
+  public confettis: any[] = [];
   constructor() { }
 
   ngOnInit() {

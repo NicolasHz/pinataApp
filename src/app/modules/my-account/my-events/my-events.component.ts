@@ -24,8 +24,8 @@ import { EventFormComponent } from '../../event/event-form/event-form.component'
   styleUrls: ['./my-events.component.scss']
 })
 export class MyEventsComponent implements OnInit, OnDestroy {
-  public allEvents: Array<Evento>;
-  public events: Array<Evento> = [];
+  public allEvents: Evento[];
+  public events: Evento[] = [];
   public eventsReady = false;
   public user: User;
   public view: 'created' | 'joined' = 'created';
@@ -77,7 +77,7 @@ export class MyEventsComponent implements OnInit, OnDestroy {
   joinEvent(eventData: Evento) {
     eventData.participants.push(this.user);
     this.eventService.addEventToCalendar(eventData)
-    .then((success) => {
+    .then(success => {
       if (success) {
         this.eventService.updateEvent('events', eventData);
         if (this.util.findUser(eventData)) {

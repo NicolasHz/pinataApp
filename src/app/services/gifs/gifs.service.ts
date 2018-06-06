@@ -8,7 +8,7 @@ export class GifsService {
 
   constructor(private httpClient: HttpClient) { }
 
-  getGif(query: String): Observable<any> {
+  getGif(query: string): Observable<any> {
     query = query.trim();
     if (!query || query.length <= 0) {
       return;

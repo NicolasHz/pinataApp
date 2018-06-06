@@ -10,7 +10,7 @@ export class UploadImageService {
 
   uploadImage(image: File, subFolder: string, name: string): Promise<string> {
     const storageRef = this.fs.storage().ref('usersImages/').child(subFolder).child(name);
-    return storageRef.put(image).then((snapshot) => {
+    return storageRef.put(image).then(snapshot => {
       return snapshot.metadata.downloadURLs[0];
     });
   }

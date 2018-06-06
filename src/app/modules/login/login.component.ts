@@ -18,7 +18,7 @@ export class LoginComponent {
 
   logInUser() {
     this.isLoading = true;
-    this.userService.login().then((allow) => {
+    this.userService.login().then(allow => {
       this.isLoading = allow;
       this.allow = allow;
     });

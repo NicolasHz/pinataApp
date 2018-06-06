@@ -62,7 +62,7 @@ export class EventFormComponent extends MzBaseModal implements OnInit {
     } else {
       this.buildForm();
     }
-    this.userService.getUser().subscribe((user) => {
+    this.userService.getUser().subscribe(user => {
       this.user = user;
     });
   }
@@ -131,7 +131,7 @@ export class EventFormComponent extends MzBaseModal implements OnInit {
     const formattedStart = moment(this.eventForm.value.start.eventStartDay + 'T' + this.eventForm.value.start.eventStartHour).format();
     const formattedEnd = moment(this.eventForm.value.end.eventEndDay + 'T' + this.eventForm.value.end.eventEndHour).format();
     if (this.editingEvent) {
-      this.event = <Evento>{
+      this.event = {
         id: this.eventData.id,
         title: this.eventForm.value.title,
         start: formattedStart,
@@ -142,12 +142,12 @@ export class EventFormComponent extends MzBaseModal implements OnInit {
         image: this.eventForm.value.image,
         creator: this.user,
         participants: this.eventData.participants
-      };
+      } as Evento;
       this.eventService.updateEvent('events', this.event);
       this.eventService.updateCalendarEvent(this.util.findCalendarEvent(this.event, this.eventService.calendarEvents).id, this.event);
       this.clear();
     } else {
-      this.event = <Evento>{
+      this.event = {
         title: this.eventForm.value.title,
         start: formattedStart,
         end: formattedEnd,
@@ -156,7 +156,7 @@ export class EventFormComponent extends MzBaseModal implements OnInit {
         image: this.eventForm.value.image,
         creator: this.user,
         participants: []
-      };
+      } as Evento;
       this.eventService.addEvent('events', this.event);
       this.clear();
     }

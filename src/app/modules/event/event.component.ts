@@ -7,7 +7,6 @@ import { User } from '../../interfaces/user';
 import { Evento } from '../../interfaces/evento';
 import { eventInitialState } from './../../interfaces/evento-initial-state';
 
-
 // Services
 import { MzModalService, MzToastService } from 'ng2-materialize';
 import { UtilsService } from '../../services/utils/utils.service';
@@ -24,7 +23,7 @@ import { Subscription } from 'rxjs/Subscription';
   styleUrls: ['./event.component.scss']
 })
 export class EventComponent implements OnInit, AfterViewInit, OnDestroy {
-  public events: Array<Evento> = [];
+  public events: Evento[] = [];
   public eventsReady = false;
   public user: User;
   public selectedEvent: Evento = eventInitialState;
@@ -69,7 +68,7 @@ export class EventComponent implements OnInit, AfterViewInit, OnDestroy {
   joinEvent(eventData: Evento) {
     eventData.participants.push(this.user);
     this.eventService.addEventToCalendar(eventData)
-    .then((success) => {
+    .then(success => {
       if (success) {
         this.eventService.updateEvent('events', eventData);
         if (this.util.findUser(eventData)) {

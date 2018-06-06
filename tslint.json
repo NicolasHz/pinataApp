@@ -1,9 +1,18 @@
 {
+  "defaultSeverity": "error",
+  "extends": [
+    "tslint:recommended"
+  ],
+  "cliOptions": {
+    "exclude": [
+      "src/app/*"
+    ]
+  },
   "rulesDirectory": [
     "node_modules/codelyzer"
   ],
+  "jsRules": {},
   "rules": {
-    "arrow-return-shorthand": true,
     "callable-types": true,
     "class-name": true,
     "comment-format": [
@@ -13,33 +22,28 @@
     "curly": true,
     "eofline": true,
     "forin": true,
+    "max-classes-per-file": false,
+    "interface-name": [false],
     "import-blacklist": [
       true,
       "rxjs"
     ],
     "import-spacing": true,
+    "ordered-imports": false,
     "indent": [
       true,
-      "spaces"
+      "spaces",
+      2
     ],
     "interface-over-type-literal": true,
     "label-position": true,
     "max-line-length": [
       true,
-      140
+      180
     ],
+    "arrow-parens": [true, "ban-single-arg-parens"],
     "member-access": false,
-    "member-ordering": [
-      true,
-      {
-        "order": [
-          "static-field",
-          "instance-field",
-          "static-method",
-          "instance-method"
-        ]
-      }
-    ],
+    "member-ordering": [false],
     "no-arg": true,
     "no-bitwise": true,
     "no-console": [
@@ -52,7 +56,7 @@
     ],
     "no-construct": true,
     "no-debugger": true,
-    "no-duplicate-super": true,
+    "no-duplicate-variable": true,
     "no-empty": false,
     "no-empty-interface": true,
     "no-eval": true,
@@ -60,19 +64,17 @@
       true,
       "ignore-params"
     ],
-    "no-misused-new": true,
-    "no-non-null-assertion": true,
     "no-shadowed-variable": true,
     "no-string-literal": false,
     "no-string-throw": true,
     "no-switch-case-fall-through": true,
     "no-trailing-whitespace": true,
-    "no-unnecessary-initializer": true,
     "no-unused-expression": true,
     "no-unused-variable": true,
     "no-use-before-declare": true,
     "no-var-keyword": true,
     "object-literal-sort-keys": false,
+    "trailing-comma": false,
     "one-line": [
       true,
       "check-open-brace",
@@ -86,10 +88,7 @@
       "single"
     ],
     "radix": true,
-    "semicolon": [
-      true,
-      "always"
-    ],
+    "semicolon": true,
     "triple-equals": [
       true,
       "allow-null-check"
@@ -118,13 +117,13 @@
     "directive-selector": [
       true,
       "attribute",
-      "app",
+      "",
       "camelCase"
     ],
     "component-selector": [
       true,
       "element",
-      "app",
+      "",
       "kebab-case"
     ],
     "use-input-property-decorator": true,

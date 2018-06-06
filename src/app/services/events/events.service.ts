@@ -38,7 +38,7 @@ export class EventsService {
     .then(() => {
       console.log('Document successfully written!');
     })
-    .catch((error) => {
+    .catch(error => {
       console.error('Error writing document: ', error);
     });
   }
@@ -50,7 +50,7 @@ export class EventsService {
     .then(() => {
       console.log('Document successfully written!');
     })
-    .catch((error) => {
+    .catch(error => {
       console.error('Error writing document: ', error);
     });
   }
@@ -61,7 +61,7 @@ export class EventsService {
     .delete()
     .then(() => {
       console.log('Document successfully deleted!');
-    }).catch((error) => {
+    }).catch(error => {
         console.error('Error removing document: ', error);
     });
   }
@@ -73,13 +73,13 @@ export class EventsService {
   getEventsFromCalendar(): Promise<any> {
      return this.userService.getCalendarApi().then(() => {
       return gapi.client.calendar.events.list({
-        'calendarId': 'primary',
-        'timeMin': (new Date(new Date().setMonth(new Date().getMonth() - 2))).toISOString(),
-        'showDeleted': false,
-        'singleEvents': true,
-        'maxResults': 300,
-        'orderBy': 'startTime'
-      }).then((response) => {
+        calendarId: 'primary',
+        timeMin: (new Date(new Date().setMonth(new Date().getMonth() - 2))).toISOString(),
+        showDeleted: false,
+        singleEvents: true,
+        maxResults: 300,
+        orderBy: 'startTime'
+      }).then(response => {
         if (!response) {
           return;
         }
@@ -93,10 +93,10 @@ export class EventsService {
     return this.userService.getCalendarApi()
     .then( () => {
       gapi.client.calendar.events.delete({
-        'calendarId': 'primary',
-        'eventId': id
+        calendarId: 'primary',
+        eventId: id
       })
-      .execute((response) => {
+      .execute(response => {
         if (response.error || response === false) {
           console.log('Error at delete calendar Event');
         }else {
@@ -114,11 +114,11 @@ export class EventsService {
     return this.userService.getCalendarApi()
     .then( () => {
       gapi.client.calendar.events.patch({
-        'calendarId': 'primary',
-        'eventId': id,
-        'resource': calendarEvent
+        calendarId: 'primary',
+        eventId: id,
+        resource: calendarEvent
       })
-      .execute((response) => {
+      .execute(response => {
         if (response.error || response === false) {
           console.log('Error at update calendar Event');
         }else {
@@ -136,10 +136,10 @@ export class EventsService {
     calendarEvent.id = this.util.encode32(eventToAdd.id + this.util.makePlusId(5));
     return this.userService.getCalendarApi().then( () => {
       gapi.client.calendar.events.insert({
-        'calendarId': 'primary',
-        'resource': calendarEvent
+        calendarId: 'primary',
+        resource: calendarEvent
       })
-      .execute((response) => {
+      .execute(response => {
         if (response.error || response === false) {
           return false;
         }else {

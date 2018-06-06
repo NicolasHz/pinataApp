@@ -19,8 +19,8 @@ import { Subscription } from 'rxjs/Subscription';
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit, OnDestroy {
-  public events: Array<Evento> = [];
-  public birthdays: Array<Evento>;
+  public events: Evento[] = [];
+  public birthdays: Evento[];
   public user: User;
   public subscriptions = new Subscription();
   public eventsReady = false;
@@ -37,8 +37,8 @@ export class HomeComponent implements OnInit, OnDestroy {
     .subscribe(response => {
       this.birthdays = Object.keys(response)
       .map(index => response[index])
-      .map((birthday) => this.util.digestYearOfBirthday(birthday))
-      .filter((event) => this.util.deleteOldDatesEvents(event))
+      .map(birthday => this.util.digestYearOfBirthday(birthday))
+      .filter(event => this.util.deleteOldDatesEvents(event))
       .sort((a, b) => this.util.diferenceOfTimeFromNow(b.start) - this.util.diferenceOfTimeFromNow(a.start))
       .slice(0, 3);
       this.birthdayReady = true;
@@ -60,7 +60,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   joinEvent(eventData: Evento) {
     eventData.participants.push(this.user);
     this.eventService.addEventToCalendar(eventData)
-    .then((success) => {
+    .then(success => {
       if (success) {
         this.eventService.updateEvent('events', eventData);
         if (this.util.findUser(eventData)) {
@@ -80,7 +80,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.eventService.deleteCalendarEvent(this.util.findCalendarEvent(eventData, this.eventService.calendarEvents).id);
   }
 
-  ngOnDestroy () {
+  ngOnDestroy() {
     this.subscriptions.unsubscribe();
   }
 }

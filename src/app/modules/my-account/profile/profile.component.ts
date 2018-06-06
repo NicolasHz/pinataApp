@@ -75,7 +75,7 @@ export class ProfileComponent implements OnInit, AfterViewInit, OnDestroy {
   buildBirthdayForm() {
     const userPreferences = [];
     if (this.user.preferences.length > 0) {
-      this.user.preferences.map((preference) => {
+      this.user.preferences.map(preference => {
         const newPreferenceGroup = this.formBuilder.group({
           preference: [preference, [Validators.required, IsEmptyValidator, Validators.maxLength(15)]],
         });
@@ -90,7 +90,7 @@ export class ProfileComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   addPreference(): void {
-    const preferenceControl = <FormArray>this.generalForm.get('preferences');
+    const preferenceControl =  this.generalForm.get('preferences') as FormArray;
     const newPreferenceGroup = this.formBuilder.group({
       preference: ['', [Validators.required, IsEmptyValidator, Validators.maxLength(15)]]
     });
@@ -99,11 +99,11 @@ export class ProfileComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   getPreferences(): AbstractControl[] {
-    return (<FormArray>this.generalForm.get('preferences')).controls;
+    return (this.generalForm.get('preferences') as FormArray).controls;
   }
 
   deletePreference(index: number) {
-    const phoneNumbersControl = <FormArray>this.generalForm.get('preferences');
+    const phoneNumbersControl = this.generalForm.get('preferences') as FormArray;
     phoneNumbersControl.removeAt(index);
     this.generalForm.markAsTouched();
   }
@@ -128,18 +128,18 @@ export class ProfileComponent implements OnInit, AfterViewInit, OnDestroy {
     if (!this.user.onBirthdayList) {
       this.user.fullName = this.generalForm.value.fullName;
     } else {
-      const preferences = [];
-      this.generalForm.value.preferences.map((preference) => {
-        preferences.push(preference.preference);
+      const updatedPreferences = [];
+      this.generalForm.value.preferences.map(preference => {
+        updatedPreferences.push(preference.preference);
       });
       this.user = {
         ...this.user,
         fullName: this.generalForm.value.fullName,
         dateOfBirth: this.generalForm.value.dateOfBirth,
-        preferences: preferences,
+        preferences: updatedPreferences
       };
     }
-    this.userService.addUser(this.user).then((response) => {
+    this.userService.addUser(this.user).then(response => {
       if (response) {
         this.initForms();
       } else {
@@ -155,11 +155,11 @@ export class ProfileComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   onFileSelected(event) {
-    const file = <File>event.target.files[0];
+    const file = event.target.files[0] as File;
     if (file) {
       if (file.size <= 2097152) {
         this.uploadingImage = true;
-        this.uploadImageService.uploadImage(file, this.user.uId, this.user.fullName).then((imageUrl) => {
+        this.uploadImageService.uploadImage(file, this.user.uId, this.user.fullName).then(imageUrl => {
           this.uploadingImage = false;
           this.user.profilePicUrl = imageUrl;
           this.generalForm.markAsTouched();
@@ -179,7 +179,7 @@ export class ProfileComponent implements OnInit, AfterViewInit, OnDestroy {
     .then(() => {
       this.router.navigate(['/login']);
     })
-    .catch((error) => alert(error));
+    .catch(error => alert(error));
   }
 
   ngOnDestroy() {

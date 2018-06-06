@@ -19,7 +19,7 @@ declare let $: any;
   styleUrls: ['./birthday.component.scss']
 })
 export class BirthdayComponent implements OnInit, OnDestroy {
-  public birthdays: Array<Evento>;
+  public birthdays: Evento[];
   public birthdayReady = false;
   public subscriptions: Subscription = new Subscription();
   public isglobantUser = false;
@@ -34,7 +34,7 @@ export class BirthdayComponent implements OnInit, OnDestroy {
     .subscribe(response => {
       this.birthdays = Object.keys(response)
       .map(index => response[index]);
-      this.birthdays.map((birthday) => this.util.digestYearOfBirthday(birthday));
+      this.birthdays.map(birthday => this.util.digestYearOfBirthday(birthday));
       this.createCalendar(this.birthdays);
       this.birthdayReady = true;
     }));

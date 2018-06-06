@@ -75,7 +75,7 @@ export class UtilsService {
   }
 
   getJoinedEvents(event: Evento): boolean {
-    return event.participants.some((participant) => {
+    return event.participants.some(participant => {
       return participant.uId === this.user.uId;
     });
   }

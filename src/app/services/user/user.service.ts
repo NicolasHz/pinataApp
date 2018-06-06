@@ -38,7 +38,7 @@ export class UserService {
         this.user.next(user);
         return true;
     })
-    .catch((error) => {
+    .catch(error => {
         console.error('Error writing user: ', error);
         return false;
     });
@@ -46,7 +46,7 @@ export class UserService {
 
   fetchUser() {
     this.db.collection('users').doc(this.googleUser.uid).ref.get()
-    .then((doc) => {
+    .then(doc => {
       if (doc.exists) {
         const userData = doc.data();
         const user =  {
@@ -82,7 +82,7 @@ export class UserService {
           lastTimeSignedIn: this.googleUser.metadata.lastSignInTime,
           userSince: this.googleUser.metadata.creationTime
         };
-        this.addUser(newUser).then((added) => {
+        this.addUser(newUser).then(added => {
           if (added) {
             this.route.navigate(['my-account']);
           }else {
@@ -90,14 +90,14 @@ export class UserService {
           }
         });
       }
-    }).catch((error) => {
+    }).catch(error => {
         console.log('Error getting user:', error);
     });
   }
 
   login(): Promise<boolean> {
     return gapi.auth2.getAuthInstance().signIn({prompt: 'select_account'})
-    .then((googleUser) => {
+    .then(googleUser => {
       const credential = firebase.auth.GoogleAuthProvider
         .credential(googleUser.getAuthResponse().id_token);
       firebase.auth().signInWithCredential(credential);     // Sign in with credential from the Google user.
@@ -112,7 +112,7 @@ export class UserService {
         return this.afAut.auth.signOut()
         .then(() => {
           this.user.next(userInitialState);
-        return true;
+          return true;
       })
       .catch(
         error => false

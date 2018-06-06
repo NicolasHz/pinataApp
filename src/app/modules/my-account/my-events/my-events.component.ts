@@ -28,7 +28,7 @@ export class MyEventsComponent implements OnInit, OnDestroy {
   public events: Evento[] = [];
   public eventsReady = false;
   public user: User;
-  public view: 'created' | 'joined' = 'created';
+  public view: 'created' | 'joined' = 'joined';
   public selectedEvent: Evento = eventInitialState;
   public subscriptions: Subscription = new Subscription();
   @ViewChild(ConfirmModalComponent) confirmModal: ConfirmModalComponent;
@@ -48,7 +48,7 @@ export class MyEventsComponent implements OnInit, OnDestroy {
       .map(index => response[index])
       .filter((event: Evento) => this.util.deleteOldDatesEvents(event))
       .sort((a, b) => this.util.diferenceOfTimeFromNow(b.start) - this.util.diferenceOfTimeFromNow(a.start));
-      this.onEventsCreated();
+      this.onJoinedEvents();
       this.eventsReady = true;
     }));
     this.subscriptions.add(this.userService.getUser().subscribe((user: User) => {

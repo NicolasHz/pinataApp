@@ -19,84 +19,98 @@
             </mz-input-container>
             </div>
           <div class="row" formGroupName="start">
-              <h6 class="col s12">Starts</h6>
-              <mz-datepicker-container class="col s12 m6">
-                  <i mz-icon-mdi mz-input-prefix
-                  [icon]="'calendar-range'">
-                  </i>
-                  <input mz-datepicker
-                    mz-validation
-                    required
-                    id="datepicker-startTime"
-                    formControlName="eventStartDay"
-                    type="text"
-                    [errorMessageResource]="errorMessageResources.startDate"
-                    [options]="startDatepickerOptions"
-                    [label]="'Events starts'" />
-              </mz-datepicker-container>
-              <mz-timepicker-container class="col s12 m6">
-                  <i mz-icon-mdi mz-input-prefix
-                    [icon]="'clock'">
-                  </i>
-                  <input mz-timepicker
-                    mz-validation 
-                    required
-                    formControlName="eventStartHour"
-                    [errorMessageResource]="errorMessageResources.startHour"
-                    [label]="'Starts at'"
-                    [options]="timepickerOptions"
-                    id="timepicker-startTime"
-                    placeholder="Select a start time"
-                    type="text">
-                </mz-timepicker-container>
+            <h6 class="col s12">Starts</h6>
+            <mz-datepicker-container class="col s12 m6">
+              <i mz-icon-mdi mz-input-prefix
+              [icon]="'calendar-range'">
+              </i>
+              <input mz-datepicker
+                mz-validation
+                required
+                id="datepicker-startTime"
+                formControlName="eventStartDay"
+                type="text"
+                [errorMessageResource]="errorMessageResources.startDate"
+                [options]="startDatepickerOptions"
+                [label]="'Events starts'" />
+            </mz-datepicker-container>
+            <mz-timepicker-container class="col s12 m6">
+              <i mz-icon-mdi mz-input-prefix
+                [icon]="'clock'">
+              </i>
+              <input mz-timepicker
+                mz-validation 
+                required
+                formControlName="eventStartHour"
+                [errorMessageResource]="errorMessageResources.startHour"
+                [label]="'Starts at'"
+                [options]="timepickerOptions"
+                id="timepicker-startTime"
+                placeholder="Select a start time"
+                type="text">
+            </mz-timepicker-container>
           </div>
           <div class="row wow fadeIn" 
             data-wow-duration="1s"
             formGroupName="end"
             *ngIf="endDateAvalible">
-              <h6 class="col s12">Ends</h6>
-              <mz-datepicker-container class="col s12 m6">
-                  <i mz-icon-mdi mz-input-prefix
-                  [icon]="'calendar-range'">
-                  </i>
-                  <input mz-datepicker
-                    mz-validation
-                    required
-                    id="datepicker-endTime"
-                    formControlName="eventEndDay"
-                    type="text"
-                    [errorMessageResource]="errorMessageResources.endDate"
-                    [options]="endDatepickerOptions"
-                    [label]="'Event ends'" />
-                </mz-datepicker-container>
-                <mz-timepicker-container class="col s12 m6">
-                  <i mz-icon-mdi mz-input-prefix
-                    [icon]="'clock'">
-                  </i>
-                  <input mz-timepicker
-                    mz-validation 
-                    required
-                    formControlName="eventEndHour"
-                    [errorMessageResource]="errorMessageResources.endHour"
-                    [label]="'Ends at'"
-                    [options]="timepickerOptions"
-                    id="timepicker-endTime"
-                    placeholder="Select an end time"
-                    type="text">
-                </mz-timepicker-container>
+            <h6 class="col s12">Ends</h6>
+            <mz-datepicker-container class="col s12 m6">
+              <i mz-icon-mdi mz-input-prefix
+              [icon]="'calendar-range'">
+              </i>
+              <input mz-datepicker
+                mz-validation
+                required
+                id="datepicker-endTime"
+                formControlName="eventEndDay"
+                type="text"
+                [errorMessageResource]="errorMessageResources.endDate"
+                [options]="endDatepickerOptions"
+                [label]="'Event ends'" />
+            </mz-datepicker-container>
+            <mz-timepicker-container class="col s12 m6">
+              <i mz-icon-mdi mz-input-prefix
+                [icon]="'clock'">
+              </i>
+              <input mz-timepicker
+                mz-validation 
+                required
+                formControlName="eventEndHour"
+                [errorMessageResource]="errorMessageResources.endHour"
+                [label]="'Ends at'"
+                [options]="timepickerOptions"
+                id="timepicker-endTime"
+                placeholder="Select an end time"
+                type="text">
+            </mz-timepicker-container>
           </div>
           <div class="row">
-              <mz-textarea-container class="col s12">
-                <textarea mz-textarea
-                  mz-validation 
-                  required
-                  id="textarea-description"
-                  formControlName="description"
-                  [errorMessageResource]="errorMessageResources.description"
-                  [label]="'Event description'"
-                  [length]="255">
-                </textarea>
-              </mz-textarea-container>
+            <mz-textarea-container class="col s12 m12 l12">
+              <textarea mz-textarea
+                mz-validation 
+                required
+                id="textarea-description"
+                formControlName="description"
+                [errorMessageResource]="errorMessageResources.description"
+                [label]="'Event description'"
+                [length]="255">
+              </textarea>
+            </mz-textarea-container>
+          </div>
+          <div class="row">
+            <div class="col s12 m12 l12">
+              <h6 class="col s12 participants">Participants</h6>
+              <mz-chip-input
+                [autocompleteOptions]="autocompleteOptions"
+                [placeholder]="'Invite your friends!'"
+                [secondaryPlaceholder]="'+Participant'"
+                id="input-participants"
+                formControlName="participants"
+                (add)="triggerAdd($event)"
+                (delete)="triggerDelete($event)">
+              </mz-chip-input>
+            </div>
           </div>
           <input
             formControlName="image"
@@ -130,14 +144,14 @@
       </form>
   </mz-modal-content>
   <mz-modal-footer>
-      <button mz-button mz-modal-close class="red" 
-        (click)="clear()" 
-        (click)="showToast('Event canceled!', 'black')" 
-        type="button">Cancel</button>
-      <button mz-button mz-modal-close 
-        [disabled]="!eventForm.valid" 
-        (click)="submitForm()" 
-        (click)="showToast('Event submited!', 'green')" 
-        type="submit">Submit</button>
+    <button mz-button mz-modal-close class="red" 
+      (click)="clear()" 
+      (click)="showToast('Event canceled!', 'black')" 
+      type="button">Cancel</button>
+    <button mz-button mz-modal-close 
+      [disabled]="!eventForm.valid" 
+      (click)="submitForm()" 
+      (click)="showToast('Event submited!', 'green')" 
+      type="submit">Submit</button>
   </mz-modal-footer>
 </mz-modal>

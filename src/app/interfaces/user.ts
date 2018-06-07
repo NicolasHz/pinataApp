@@ -3,7 +3,7 @@ export interface User {
     fullName: string;
     profilePicUrl: string;
     uId: string;
-    preferences?: Array<string>;
+    preferences?: string[];
     isNewUser?: boolean;
     dateOfBirth?: string;
     onBirthdayList?: boolean;

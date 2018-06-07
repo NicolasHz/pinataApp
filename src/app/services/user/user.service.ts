@@ -124,6 +124,17 @@ export class UserService {
     return this.user;
   }
 
+  getUsers() {
+    return this.db
+    .collection('users')
+    .snapshotChanges()
+    .map(docArray => {
+      return docArray.map(doc => {
+        return doc.payload.doc.data();
+      });
+    });
+  }
+
   // Calendar interaction
   initClient = (): Promise<any> => {
     return gapi.client.init({
@@ -141,4 +152,3 @@ export class UserService {
     return this.calendarApiClient;
   }
 }
-

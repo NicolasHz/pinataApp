@@ -104,7 +104,23 @@ export class UtilsService {
 
   isTodayBirthday(birthday: Evento) {
     const incomingYear = moment(birthday.start).format('YYYY-MM-DD');
-    const now = moment(Date()).format('YYYY-MM-DD');
+    const now = moment(new Date()).format('YYYY-MM-DD');
     return incomingYear === now;
+  }
+
+  usersToChips(users: User[]): Materialize.ChipDataObject[] {
+    const convertedUsers: Materialize.ChipDataObject[] = [];
+    if (users.length <= 0) {
+      return convertedUsers;
+    }
+    users.map( user => {
+      convertedUsers.push(
+        {
+          tag: user.fullName,
+          image: user.profilePicUrl
+        }
+      );
+    });
+    return convertedUsers;
   }
 }

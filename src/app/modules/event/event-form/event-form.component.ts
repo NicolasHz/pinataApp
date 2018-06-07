@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, FormControl, FormArray } from '@angular/forms';
 
 // Validators
 import { IsEmptyValidator } from '../../../shared/validators/validators';
@@ -33,6 +33,8 @@ export class EventFormComponent extends MzBaseModal implements OnInit {
 
   @Input() editingEvent = false;
   @Input() eventData: Evento;
+  @Input() user: User;
+  @Input() users: User[];
   public modalOptions = MODAL_OPTIONS;
   public timepickerOptions = TIME_PICKER_OPTIONS;
   public startDatepickerOptions = START_DATE_PICKER_OPTIONS;
@@ -42,8 +44,13 @@ export class EventFormComponent extends MzBaseModal implements OnInit {
   public firstSearch = false;
   public endDateAvalible = false;
   private event: Evento;
-  private user: User;
   public eventForm: FormGroup;
+  public participantsChips: Materialize.ChipDataObject[];
+  autocompleteOptions: Materialize.AutoCompleteOptions = {
+    data: {},
+    limit: 10,
+    minLength: 2
+  };
 
   constructor(
     private formBuilder: FormBuilder,
@@ -57,14 +64,18 @@ export class EventFormComponent extends MzBaseModal implements OnInit {
   ngOnInit() {
     this.startDatepickerOptions.onOpen = () => this.endDateAvalible = false;
     this.startDatepickerOptions.onClose = () => this.setAvalibleEndDays();
+    if (this.users) {
+      this.autocompleteOptions.data = this.users.reduce((acc, cur, i) => {
+        acc[cur.fullName] = cur.profilePicUrl;
+        return acc;
+      }, {});
+      this.editingEvent ? this.participantsChips = this.util.usersToChips(this.eventData.participants) : this.participantsChips = [];
+    }
     if (this.editingEvent) {
       this.buildEditForm();
     } else {
       this.buildForm();
     }
-    this.userService.getUser().subscribe(user => {
-      this.user = user;
-    });
   }
 
   buildForm() {
@@ -87,6 +98,7 @@ export class EventFormComponent extends MzBaseModal implements OnInit {
           IsEmptyValidator
         ]
       ],
+      participants: [this.participantsChips],
       image: [
         null
       ],
@@ -117,6 +129,7 @@ export class EventFormComponent extends MzBaseModal implements OnInit {
           Validators.minLength(20)
         ]
       ],
+      participants: [this.participantsChips],
       image: [
         this.eventData.image
       ],
@@ -189,5 +202,26 @@ export class EventFormComponent extends MzBaseModal implements OnInit {
     } else {
       this.endDateAvalible = false;
     }
+  }
+
+  triggerAdd(participant) {
+    const participantIndex = this.participantsChips.indexOf(participant);
+    const user = this.users.find( x => x.fullName === participant.tag);
+    if (participantIndex === -1) {
+      // just to add an image ¯\_(ツ)_/¯ FIX FIX FIX
+      const updatedParticipants = this.eventForm.value.participants.slice();
+      updatedParticipants[updatedParticipants.findIndex( x => x.tag === participant.tag)] = {tag: participant.tag, image: user.profilePicUrl};
+      this.eventForm.controls['participants'].patchValue(updatedParticipants);
+      // just to add an image ¯\_(ツ)_/¯
+      this.participantsChips = this.eventForm.value.participants;
+    }
+  }
+
+  triggerDelete(participant) {
+    const participantIndex = this.participantsChips.indexOf(participant);
+    if (participantIndex > -1) {
+      this.participantsChips.splice(participantIndex, 1);
+    }
+    this.participantsChips = this.participantsChips;
   }
 }

@@ -26,6 +26,7 @@ export class EventComponent implements OnInit, AfterViewInit, OnDestroy {
   public events: Evento[] = [];
   public eventsReady = false;
   public user: User;
+  public users: User[];
   public selectedEvent: Evento = eventInitialState;
   public subscriptions: Subscription = new Subscription();
 
@@ -48,8 +49,14 @@ export class EventComponent implements OnInit, AfterViewInit, OnDestroy {
       .sort((a, b) => this.util.diferenceOfTimeFromNow(b.start) - this.util.diferenceOfTimeFromNow(a.start));
       this.eventsReady = true;
     }));
-    this.subscriptions.add(this.userService.getUser().subscribe((user: User) => {
+    this.subscriptions.add(this.userService.getUser()
+    .subscribe((user: User) => {
       this.user = user;
+    }));
+    this.subscriptions.add(this.userService.getUsers()
+    .subscribe(response => {
+      this.users = Object.keys(response)
+      .map(index => response[index]);
     }));
   }
 
@@ -60,7 +67,7 @@ export class EventComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   openEventForm() {
-    this.modalService.open(EventFormComponent);
+    this.modalService.open(EventFormComponent, {user: this.user, users: this.users});
   }
 
   // Card and Confirm-Modal Interaction
@@ -89,8 +96,7 @@ export class EventComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   editEvent(eventData: Evento) {
-    const editingEvent = true;
-    this.modalService.open(EventFormComponent, {eventData, editingEvent});
+    this.modalService.open(EventFormComponent, {user: this.user, users: this.users, eventData, editingEvent: true});
   }
 
   confirmDelete(eventData: Evento) {

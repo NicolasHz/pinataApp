@@ -27,6 +27,7 @@ export class MyEventsComponent implements OnInit, OnDestroy {
   public events: Evento[] = [];
   public eventsReady = false;
   public user: User;
+  public users: User[];
   public view: 'created' | 'joined' = 'joined';
   public selectedEvent: Evento = eventInitialState;
   public subscriptions: Subscription = new Subscription();
@@ -52,6 +53,9 @@ export class MyEventsComponent implements OnInit, OnDestroy {
     }));
     this.subscriptions.add(this.userService.getUser().subscribe((user: User) => {
       this.user = user;
+    }));
+    this.subscriptions.add(this.userService.getUsers().subscribe((users: User[]) => {
+      this.users = users;
     }));
   }
 
@@ -97,8 +101,7 @@ export class MyEventsComponent implements OnInit, OnDestroy {
   }
 
   editEvent(eventData: Evento) {
-    const editingEvent = true;
-    this.modalService.open(EventFormComponent, {eventData, editingEvent});
+    this.modalService.open(EventFormComponent, {user: this.user, users: this.users, eventData, editingEvent: true});
   }
 
   confirmDelete(eventData: Evento) {

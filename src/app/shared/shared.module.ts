@@ -59,7 +59,7 @@ import { ConfettiComponent } from './confetti/confetti.component';
     ModalService,
     UtilsService,
     GifsService,
-    UploadImageService
+    UploadImageService,
   ]
 })
 export class SharedModule { }

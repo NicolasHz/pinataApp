@@ -22,7 +22,8 @@ import {
     MzProgressModule,
     MzTabModule,
     MzFeatureDiscoveryModule,
-    MzSwitchModule
+    MzSwitchModule,
+    MzChipModule
 } from 'ng2-materialize';
 
 @NgModule({
@@ -48,7 +49,8 @@ import {
         MzProgressModule,
         MzTabModule,
         MzFeatureDiscoveryModule,
-        MzSwitchModule
+        MzSwitchModule,
+        MzChipModule
     ],
     exports: [
         MzInputModule,
@@ -72,7 +74,8 @@ import {
         MzProgressModule,
         MzTabModule,
         MzFeatureDiscoveryModule,
-        MzSwitchModule
+        MzSwitchModule,
+        MzChipModule
     ]
 })
 export class MaterialModule { }

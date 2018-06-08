@@ -205,16 +205,17 @@ export class EventFormComponent extends MzBaseModal implements OnInit {
   }
 
   triggerAdd(participant) {
-    const participantIndex = this.participantsChips.indexOf(participant);
     const user = this.users.find( x => x.fullName === participant.tag);
-    if (participantIndex === -1) {
-      // just to add an image ¯\_(ツ)_/¯ FIX FIX FIX
-      const updatedParticipants = this.eventForm.value.participants.slice();
-      updatedParticipants[updatedParticipants.findIndex( x => x.tag === participant.tag)] = {tag: participant.tag, image: user.profilePicUrl};
-      this.eventForm.controls['participants'].patchValue(updatedParticipants);
-      // just to add an image ¯\_(ツ)_/¯
-      this.participantsChips = this.eventForm.value.participants;
-    }
+    // just to add an image ¯\_(ツ)_/¯
+    const updatedParticipants = this.eventForm.value.participants.slice();
+    updatedParticipants[updatedParticipants.findIndex( x => x.tag === participant.tag)] = {tag: participant.tag, image: user.profilePicUrl};
+    this.eventForm.controls['participants'].setValue(updatedParticipants);
+    this.participantsChips = this.eventForm.value.participants;
+    // just to add an image ¯\_(ツ)_/¯
+  }
+
+  existParticipant(participant) {
+    return this.participantsChips.map(e => e.tag).indexOf(participant.tag);
   }
 
   triggerDelete(participant) {

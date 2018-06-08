@@ -107,7 +107,7 @@
                 [secondaryPlaceholder]="'+Participant'"
                 id="input-participants"
                 formControlName="participants"
-                (add)="triggerAdd($event)"
+                (add)="existParticipant($event) === -1 ? triggerAdd($event) : false"
                 (delete)="triggerDelete($event)">
               </mz-chip-input>
             </div>

@@ -20,6 +20,7 @@ import { Subscription } from 'rxjs/Subscription';
 })
 export class HomeComponent implements OnInit, OnDestroy {
   public events: Evento[] = [];
+  public calendarEvents = [];
   public birthdays: Evento[];
   public user: User;
   public subscriptions = new Subscription();
@@ -55,6 +56,11 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.subscriptions.add(this.userService.getUser().subscribe((user: User) => {
       this.user = user;
     }));
+    this.subscriptions.add(
+      this.eventService.calendarEvents.subscribe(eventsFromCalendar => {
+        this.calendarEvents = eventsFromCalendar;
+      })
+    );
   }
 
   joinEvent(eventData: Evento) {
@@ -77,7 +83,10 @@ export class HomeComponent implements OnInit, OnDestroy {
     if (!this.util.findUser(eventData)) {
       this.toastService.show('Event leaved!', 4000, 'red');
     }
-    this.eventService.deleteCalendarEvent(this.util.findCalendarEvent(eventData, this.eventService.calendarEvents).id);
+    const calendarEventId = this.util.findCalendarEvent(eventData, this.calendarEvents).id;
+    if (calendarEventId) {
+      this.eventService.deleteCalendarEvent(calendarEventId);
+    }
   }
 
   ngOnDestroy() {

@@ -24,6 +24,7 @@ import { EventFormComponent } from '../../event/event-form/event-form.component'
 })
 export class MyEventsComponent implements OnInit, OnDestroy {
   public allEvents: Evento[];
+  public calendarEvents = [];
   public events: Evento[] = [];
   public eventsReady = false;
   public user: User;
@@ -57,6 +58,11 @@ export class MyEventsComponent implements OnInit, OnDestroy {
     this.subscriptions.add(this.userService.getUsers().subscribe((users: User[]) => {
       this.users = users;
     }));
+    this.subscriptions.add(
+      this.eventService.calendarEvents.subscribe(eventsFromCalendar => {
+        this.calendarEvents = eventsFromCalendar;
+      })
+    );
   }
 
   onSwitchEventView() {
@@ -97,7 +103,7 @@ export class MyEventsComponent implements OnInit, OnDestroy {
     if (!this.util.findUser(eventData)) {
       this.toastService.show('Event leaved!', 4000, 'red');
     }
-    this.eventService.deleteCalendarEvent(this.util.findCalendarEvent(eventData, this.eventService.calendarEvents).id);
+    this.eventService.deleteCalendarEvent(this.util.findCalendarEvent(eventData, this.calendarEvents).id);
   }
 
   editEvent(eventData: Evento) {

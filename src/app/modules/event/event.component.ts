@@ -24,6 +24,7 @@ import { Subscription } from 'rxjs/Subscription';
 })
 export class EventComponent implements OnInit, AfterViewInit, OnDestroy {
   public events: Evento[] = [];
+  public calendarEvents = [];
   public eventsReady = false;
   public user: User;
   public users: User[];
@@ -41,6 +42,7 @@ export class EventComponent implements OnInit, AfterViewInit, OnDestroy {
     private toastService: MzToastService) { }
 
   ngOnInit() {
+    this.eventService.getEventsFromCalendar()
     this.subscriptions.add(this.eventService.getEvents('events')
     .subscribe(response => {
       this.events = Object.keys(response)
@@ -58,6 +60,11 @@ export class EventComponent implements OnInit, AfterViewInit, OnDestroy {
       this.users = Object.keys(response)
       .map(index => response[index]);
     }));
+    this.subscriptions.add(
+      this.eventService.calendarEvents.subscribe(eventsFromCalendar => {
+        this.calendarEvents = eventsFromCalendar;
+      })
+    );
   }
 
   ngAfterViewInit() {
@@ -92,11 +99,11 @@ export class EventComponent implements OnInit, AfterViewInit, OnDestroy {
     if (!this.util.findUser(eventData)) {
       this.toastService.show('Event leaved!', 4000, 'red');
     }
-    this.eventService.deleteCalendarEvent(this.util.findCalendarEvent(eventData, this.eventService.calendarEvents).id);
+    this.eventService.deleteCalendarEvent(this.util.findCalendarEvent(eventData, this.calendarEvents).id);
   }
 
   editEvent(eventData: Evento) {
-    this.modalService.open(EventFormComponent, {user: this.user, users: this.users, eventData, editingEvent: true});
+    this.modalService.open(EventFormComponent, {user: this.user, users: this.users, eventData, calendarEvents: this.calendarEvents, editingEvent: true});
   }
 
   confirmDelete(eventData: Evento) {
@@ -106,6 +113,9 @@ export class EventComponent implements OnInit, AfterViewInit, OnDestroy {
 
   deleteEvent(response: boolean) {
     if (response) {
+      if (this.selectedEvent.participants.length > 0 && this.util.findUser(this.selectedEvent)) {
+        this.leaveEvent(this.selectedEvent);
+      }
       this.eventService.deleteEvent('events', this.selectedEvent);
       this.toastService.show('Event Deleted!', 4000, 'green' );
     }else {

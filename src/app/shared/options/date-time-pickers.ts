@@ -89,4 +89,3 @@ export const DATE_OF_BIRTH_PICKER_OPTIONS: Pickadate.DateOptions = {
   format: 'dd/mm/yyyy', // Visible date format (defaulted to formatSubmit if provided otherwise 'd mmmm, yyyy')
   formatSubmit: 'yyyy-mm-dd',   // Return value format (used to set/get value)
 };
-

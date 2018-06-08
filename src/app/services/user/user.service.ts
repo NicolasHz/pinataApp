@@ -20,7 +20,7 @@ export class UserService {
     private db: AngularFirestore,
     public afAut: AngularFireAuth,
     private route: Router) {
-
+    gapi.load('client:auth2', this.initClient);
     this.afAut.authState.subscribe( googleUser => {
       if (!googleUser) {
         return;
@@ -28,7 +28,6 @@ export class UserService {
       this.googleUser = googleUser;
       this.fetchUser();
     });
-    gapi.load('client:auth2', this.initClient);
   }
 
   addUser(user: User): Promise<boolean> {
@@ -136,8 +135,8 @@ export class UserService {
   }
 
   // Calendar interaction
-  initClient = (): Promise<any> => {
-    return gapi.client.init({
+  initClient = () => {
+    gapi.client.init({
       apiKey: this.API_KEY,
       clientId: this.CLIENT_ID,
       discoveryDocs: this.DISCOVERY_DOCS,

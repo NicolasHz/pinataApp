@@ -108,7 +108,7 @@
                 id="input-participants"
                 formControlName="participants"
                 (add)="existParticipant($event) === -1 ? triggerAdd($event) : false"
-                (delete)="triggerDelete($event)">
+                (delete)="existParticipant($event) !== -1 ? triggerDelete($event) : false">
               </mz-chip-input>
             </div>
           </div>

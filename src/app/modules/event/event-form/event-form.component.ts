@@ -204,6 +204,16 @@ export class EventFormComponent extends MzBaseModal implements OnInit {
     }
   }
 
+  createParticipants() {
+    const participants = [];
+    if (this.eventForm.value.participants.length > 0) {
+      this.eventForm.value.participants.map( participant => {
+        participants.push(this.users.find(user => user.fullName === participant.tag));
+      });
+    }
+    return participants;
+  }
+
   triggerAdd(participant) {
     const user = this.users.find( x => x.fullName === participant.tag);
     // just to add an image ¯\_(ツ)_/¯

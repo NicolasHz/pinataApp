@@ -63,8 +63,6 @@ export class EventFormComponent extends MzBaseModal implements OnInit {
   ) { super(); }
 
   ngOnInit() {
-
-    console.log(this.calendarEvents)
     this.startDatepickerOptions.onOpen = () => this.endDateAvalible = false;
     this.startDatepickerOptions.onClose = () => this.setAvalibleEndDays();
     if (this.users) {

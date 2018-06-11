@@ -17,6 +17,7 @@ import { environment } from '../environments/environment';
 import { UserService } from './services/user/user.service';
 import { AuthGuardService } from './services/auth-guard/auth-guard';
 import { NotFoundComponent } from './modules/not-found/not-found.component';
+import { GapiClientService } from './services/gapi-client/gapi-client.service';
 
 @NgModule({
   declarations: [
@@ -34,7 +35,8 @@ import { NotFoundComponent } from './modules/not-found/not-found.component';
     UserService,
     AngularFireAuth,
     AuthGuardService,
-    HttpClient
+    HttpClient,
+    GapiClientService
   ],
   bootstrap: [AppComponent]
 })

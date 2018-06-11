@@ -35,23 +35,23 @@ import { ConfettiComponent } from './confetti/confetti.component';
   ],
   schemas: [NO_ERRORS_SCHEMA],
   declarations: [
-      HeaderComponent,
-      CardComponent,
-      ConfirmModalComponent,
-      BirhdayCardComponent,
-      SplicePipe,
-      EventFormComponent,
-      FooterComponent,
-      ConfettiComponent
+    HeaderComponent,
+    CardComponent,
+    ConfirmModalComponent,
+    BirhdayCardComponent,
+    SplicePipe,
+    EventFormComponent,
+    FooterComponent,
+    ConfettiComponent
   ],
   exports: [
-      HeaderComponent,
-      CardComponent,
-      MaterialModule,
-      ConfirmModalComponent,
-      BirhdayCardComponent,
-      EventFormComponent,
-      ConfettiComponent
+    HeaderComponent,
+    CardComponent,
+    MaterialModule,
+    ConfirmModalComponent,
+    BirhdayCardComponent,
+    EventFormComponent,
+    ConfettiComponent
   ],
   providers: [
     EventsService,

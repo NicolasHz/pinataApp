@@ -42,9 +42,7 @@ export class EventComponent implements OnInit, AfterViewInit, OnDestroy {
     private toastService: MzToastService) { }
 
   ngOnInit() {
-    setTimeout(() => {
-      this.eventService.getEventsFromCalendar();
-    }, 2000);
+    this.eventService.getEventsFromCalendar();
     this.subscriptions.add(this.eventService.getEvents('events')
     .subscribe(response => {
       this.events = Object.keys(response)

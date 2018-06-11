@@ -6,6 +6,7 @@ import { UserService } from './../user/user.service';
 import * as moment from 'moment';
 import { UtilsService } from '../utils/utils.service';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { GapiClientService } from '../gapi-client/gapi-client.service';
 
 declare var gapi: any;
 declare let $: any;
@@ -16,7 +17,8 @@ export class EventsService {
   constructor(
     private db: AngularFirestore,
     private userService: UserService,
-    private util: UtilsService
+    private util: UtilsService,
+    private gapiService: GapiClientService
   ) { db.firestore.settings({ timestampsInSnapshots: true }); }
 
   getEvents(eventsType: string) {
@@ -73,7 +75,7 @@ export class EventsService {
   //
 
   getEventsFromCalendar(): Promise<any> {
-     return this.userService.getCalendarApi().then(() => {
+     return this.gapiService.getCalendarApi().then(() => {
       return gapi.client.calendar.events.list({
         calendarId: 'primary',
         timeMin: (new Date(new Date().setMonth(new Date().getMonth() - 2))).toISOString(),
@@ -92,7 +94,7 @@ export class EventsService {
   }
 
   deleteCalendarEvent(id: string): Promise<boolean> {
-    return this.userService.getCalendarApi()
+    return this.gapiService.getCalendarApi()
     .then( () => {
       gapi.client.calendar.events.delete({
         calendarId: 'primary',
@@ -113,7 +115,7 @@ export class EventsService {
 
   updateCalendarEvent(id: string, eventToUpdate: Evento): Promise<boolean> {
     const calendarEvent = this.createCalendarEvent(eventToUpdate);
-    return this.userService.getCalendarApi()
+    return this.gapiService.getCalendarApi()
     .then( () => {
       gapi.client.calendar.events.patch({
         calendarId: 'primary',
@@ -136,7 +138,7 @@ export class EventsService {
   addEventToCalendar(eventToAdd: Evento): Promise<boolean> {
     const calendarEvent = this.createCalendarEvent(eventToAdd);
     calendarEvent.id = this.util.encode32(eventToAdd.id + this.util.makePlusId(5));
-    return this.userService.getCalendarApi().then( () => {
+    return this.gapiService.getCalendarApi().then( () => {
       gapi.client.calendar.events.insert({
         calendarId: 'primary',
         resource: calendarEvent

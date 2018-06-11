@@ -23,9 +23,15 @@
         <div [ngClass]="[eventsReady ? '' : 'hide']">
             <h5 class="events__upcoming-events">Don't miss these events:</h5>
             <hr>
-            <div class="row event__cards">
+            <div *ngIf="events.length === 0" class="events__no-events center">
+                <img src="/assets/img/no-events.gif" class="wow fadeIn" alt="">
+                <h5>Sorry there are no events yet! go to Events and create one!</h5>
+            </div>
+            <div class="row">
                 <app-card *ngFor="let event of events"
                     [eventData]="event"
+                    (join)="joinEvent($event)"
+                    (leave)="leaveEvent($event)"
                     class="col s12 m4 l4 wow flipInX"
                     data-wow-duration="1.4s">
                 </app-card>

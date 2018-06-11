@@ -1,7 +1,7 @@
 const A = 'abcdefghijklmnopqrstuv0123456789';
 const PAD = '=';
 
-export const ENCODE32 = (s) => {
+export const ENCODE32 = s => {
     const a = A;
     const pad = PAD;
     const len = s.length;
@@ -68,7 +68,7 @@ export const ENCODE32 = (s) => {
     console.log('padlen:' + padlen + ' ,r:' + r + ' ,sh:' + sh + ', w:' + w);
 };
 
-export const DECODE32 = (s) => {
+export const DECODE32 = s => {
     const len = s.length;
     const apad = A + PAD;
     let v, x, r = 0, bits = 0, c, o = '';
@@ -98,7 +98,6 @@ export const DECODE32 = (s) => {
     }
     return o;
 };
-
 
 // export const ENCODE32 = (s) => {
 //     const a = this.a;
@@ -197,4 +196,3 @@ export const DECODE32 = (s) => {
 //     }
 //     return o;
 // };
-

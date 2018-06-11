@@ -13,11 +13,14 @@ import { UserService } from './../../services/user/user.service';
 export class LoginComponent {
   allow = true;
   login = false;
+  isLoading = false;
   constructor( public userService: UserService ) { }
 
   logInUser() {
-    this.userService.login().then((allow) => {
-        this.allow = allow;
+    this.isLoading = true;
+    this.userService.login().then(allow => {
+      this.isLoading = allow;
+      this.allow = allow;
     });
   }
 

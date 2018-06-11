@@ -49,9 +49,9 @@ export class CardComponent implements OnInit {
     }
     if (this.eventData.participants.length > 0) {
       this.participantsTooltip = '';
-      this.eventData.participants.map((res) => {
+      this.eventData.participants.map(res => {
         const avatar = res.profilePicUrl ? res.profilePicUrl : '';
-        this.participantsTooltip = this.participantsTooltip + `<img src="${avatar}"/>  ` + res.fullName.concat('<br/>');
+        this.participantsTooltip = this.participantsTooltip + `<img class="tooltip-image" src="${avatar}"/>  ` + res.fullName.concat('<br/>');
       });
     }
   }

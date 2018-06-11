@@ -5,13 +5,15 @@ import { Routes, RouterModule } from '@angular/router';
 import { MyAccountComponent } from './my-account.component';
 import { ProfileComponent } from './profile/profile.component';
 import { MyEventsComponent } from './my-events/my-events.component';
+import { FeedbackComponent } from './feedback/feedback.component';
 
 const routes: Routes = [
     { path: '',  component: MyAccountComponent,
       children: [
         { path: '',  redirectTo: 'profile', pathMatch: 'full' },
         { path: 'profile',  component: ProfileComponent},
-        { path: 'my-events',  component: MyEventsComponent}
+        { path: 'my-events',  component: MyEventsComponent},
+        { path: 'feedback',  component: FeedbackComponent}
       ]
     },
 ];

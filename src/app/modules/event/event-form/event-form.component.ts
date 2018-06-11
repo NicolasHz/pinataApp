@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, FormControl, FormArray } from '@angular/forms';
 
 // Validators
 import { IsEmptyValidator } from '../../../shared/validators/validators';
@@ -33,6 +33,9 @@ export class EventFormComponent extends MzBaseModal implements OnInit {
 
   @Input() editingEvent = false;
   @Input() eventData: Evento;
+  @Input() user: User;
+  @Input() users: User[];
+  @Input() calendarEvents;
   public modalOptions = MODAL_OPTIONS;
   public timepickerOptions = TIME_PICKER_OPTIONS;
   public startDatepickerOptions = START_DATE_PICKER_OPTIONS;
@@ -42,8 +45,13 @@ export class EventFormComponent extends MzBaseModal implements OnInit {
   public firstSearch = false;
   public endDateAvalible = false;
   private event: Evento;
-  private user: User;
   public eventForm: FormGroup;
+  public participantsChips: Materialize.ChipDataObject[];
+  autocompleteOptions: Materialize.AutoCompleteOptions = {
+    data: {},
+    limit: 10,
+    minLength: 2
+  };
 
   constructor(
     private formBuilder: FormBuilder,
@@ -57,12 +65,18 @@ export class EventFormComponent extends MzBaseModal implements OnInit {
   ngOnInit() {
     this.startDatepickerOptions.onOpen = () => this.endDateAvalible = false;
     this.startDatepickerOptions.onClose = () => this.setAvalibleEndDays();
+    if (this.users) {
+      this.autocompleteOptions.data = this.users.reduce((acc, cur, i) => {
+        acc[cur.fullName] = cur.profilePicUrl;
+        return acc;
+      }, {});
+      this.editingEvent ? this.participantsChips = this.util.usersToChips(this.eventData.participants) : this.participantsChips = [];
+    }
     if (this.editingEvent) {
       this.buildEditForm();
     } else {
       this.buildForm();
     }
-    this.user = this.userService.getUser();
   }
 
   buildForm() {
@@ -85,6 +99,7 @@ export class EventFormComponent extends MzBaseModal implements OnInit {
           IsEmptyValidator
         ]
       ],
+      participants: [this.participantsChips],
       image: [
         null
       ],
@@ -115,6 +130,7 @@ export class EventFormComponent extends MzBaseModal implements OnInit {
           Validators.minLength(20)
         ]
       ],
+      participants: [this.participantsChips],
       image: [
         this.eventData.image
       ],
@@ -129,7 +145,7 @@ export class EventFormComponent extends MzBaseModal implements OnInit {
     const formattedStart = moment(this.eventForm.value.start.eventStartDay + 'T' + this.eventForm.value.start.eventStartHour).format();
     const formattedEnd = moment(this.eventForm.value.end.eventEndDay + 'T' + this.eventForm.value.end.eventEndHour).format();
     if (this.editingEvent) {
-      this.event = <Evento>{
+      this.event = {
         id: this.eventData.id,
         title: this.eventForm.value.title,
         start: formattedStart,
@@ -139,13 +155,16 @@ export class EventFormComponent extends MzBaseModal implements OnInit {
         description: this.eventForm.value.description.trim(),
         image: this.eventForm.value.image,
         creator: this.user,
-        participants: this.eventData.participants
-      };
+        participants: this.createParticipants()
+      } as Evento;
       this.eventService.updateEvent('events', this.event);
-      this.eventService.updateCalendarEvent(this.util.findCalendarEvent(this.event, this.eventService.calendarEvents).id, this.event);
+      const calendarId = this.util.findCalendarEvent(this.event, this.calendarEvents).id;
+      if (calendarId) {
+        this.eventService.updateCalendarEvent(calendarId, this.event);
+      }
       this.clear();
     } else {
-      this.event = <Evento>{
+      this.event = {
         title: this.eventForm.value.title,
         start: formattedStart,
         end: formattedEnd,
@@ -153,9 +172,23 @@ export class EventFormComponent extends MzBaseModal implements OnInit {
         description: this.eventForm.value.description,
         image: this.eventForm.value.image,
         creator: this.user,
-        participants: []
-      };
-      this.eventService.addEvent('events', this.event);
+        participants: this.createParticipants()
+      } as Evento;
+      if (this.event.participants.length > 0 && !this.util.findUser(this.event)) {
+        this.event.participants.push(this.user);
+        this.eventService.addEvent('events', this.event)
+        .then( createdEvent => {
+          this.event.id = createdEvent.id;
+          this.eventService.addEventToCalendar(this.event)
+            .then(success => {
+              if (success) {
+                this.toastService.show('Joined to event!', 4000, 'green');
+              }
+          });
+        });
+      } else {
+        this.eventService.addEvent('events', this.event);
+      }
       this.clear();
     }
   }
@@ -177,6 +210,7 @@ export class EventFormComponent extends MzBaseModal implements OnInit {
   }
 
   setAvalibleEndDays() {
+    window.scrollTo(0, 0);
     if (this.eventForm.value.start.eventStartDay) {
       const minDate = this.eventForm.value.start.eventStartDay.split('-').map(Number);
       minDate[1]--; // Discounting a month because of the date picker restriction behavior
@@ -186,5 +220,37 @@ export class EventFormComponent extends MzBaseModal implements OnInit {
     } else {
       this.endDateAvalible = false;
     }
+  }
+
+  triggerAdd(participant) {
+    const user = this.users.find( x => x.fullName === participant.tag);
+    // just to add an image ¯\_(ツ)_/¯
+    const updatedParticipants = this.eventForm.value.participants.slice();
+    updatedParticipants[updatedParticipants.findIndex( x => x.tag === participant.tag)] = {tag: participant.tag, image: user.profilePicUrl};
+    this.eventForm.controls['participants'].setValue(updatedParticipants);
+    this.participantsChips = this.eventForm.value.participants;
+    // just to add an image ¯\_(ツ)_/¯
+  }
+
+  triggerDelete(participant) {
+    const participantIndex = this.participantsChips.indexOf(participant);
+    if (participantIndex > -1) {
+      this.participantsChips.splice(participantIndex, 1);
+    }
+    this.participantsChips = this.participantsChips;
+  }
+
+  createParticipants() {
+    const participants = [];
+    if (this.eventForm.value.participants.length > 0) {
+      this.eventForm.value.participants.map( participant => {
+        participants.push(this.users.find(user => user.fullName === participant.tag));
+      });
+    }
+    return participants;
+  }
+
+  existParticipant(participant) {
+    return this.participantsChips.map(e => e.tag).indexOf(participant.tag);
   }
 }

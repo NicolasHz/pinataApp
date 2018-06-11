@@ -1,8 +1,10 @@
 import { Router } from '@angular/router';
-import { User } from './../../interfaces/user';
+import { User, userInitialState } from './../../interfaces/user';
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from 'angularfire2/auth';
 import * as firebase from 'firebase/app';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { AngularFirestore } from 'angularfire2/firestore';
 
 declare var gapi: any;
 @Injectable()
@@ -11,32 +13,92 @@ export class UserService {
   private CLIENT_ID = '289697189757-l3muf4hpsin6f3dnt73ka1jvh1ckvnd9.apps.googleusercontent.com';
   private DISCOVERY_DOCS = ['https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest'];
   private SCOPE = 'https://www.googleapis.com/auth/calendar';
-  private user: User;
+  private user: BehaviorSubject<User> = new BehaviorSubject<User>(userInitialState);
   public calendarApiClient;
-
+  public googleUser;
   constructor(
+    private db: AngularFirestore,
     public afAut: AngularFireAuth,
     private route: Router) {
-
-    this.afAut.authState.subscribe( user => {
-      if (!user) {
+    gapi.load('client:auth2', this.initClient);
+    this.afAut.authState.subscribe( googleUser => {
+      if (!googleUser) {
         return;
       }
-      this.user = {
-        email: user.email,
-        fullName: user.displayName,
-        profilePicUrl: user.photoURL,
-        uId: user.uid,
-        isNewUser: user.metadata.creationTime === user.metadata.lastSignInTime
-      };
-      this.route.navigate(['home']);
+      this.googleUser = googleUser;
+      this.fetchUser();
     });
-    gapi.load('client:auth2', this.initClient);
+  }
+
+  addUser(user: User): Promise<boolean> {
+    return this.db.collection('users').doc(user.uId).set(user)
+    .then(() => {
+        console.log( 'User successfully written!');
+        this.user.next(user);
+        return true;
+    })
+    .catch(error => {
+        console.error('Error writing user: ', error);
+        return false;
+    });
+  }
+
+  fetchUser() {
+    this.db.collection('users').doc(this.googleUser.uid).ref.get()
+    .then(doc => {
+      if (doc.exists) {
+        const userData = doc.data();
+        const user: User =  {
+          email: userData.email,
+          fullName: userData.fullName,
+          profilePicUrl: userData.profilePicUrl,
+          uId: userData.uId,
+          isNewUser: userData.isNewUser,
+          preferences: userData.preferences,
+          dateOfBirth: userData.dateOfBirth,
+          onBirthdayList: userData.onBirthdayList,
+          hasPayed: userData.hasPayed,
+          lastTimeSignedIn: userData.lastTimeSignedIn,
+          userSince: userData.userSince,
+          lastTimeModified: userData.lastTimeModified
+        };
+        this.user.next(user);
+        if (this.googleUser.metadata.creationTime !== this.googleUser.metadata.lastSignInTime && userData.isNewUser) {
+          user.isNewUser = false;
+          this.addUser(user);
+        }
+        this.route.navigate(['home']);
+      } else {
+        const newUser: User = {
+          email: this.googleUser.email,
+          fullName: this.googleUser.displayName,
+          profilePicUrl: this.googleUser.photoURL,
+          uId: this.googleUser.uid,
+          isNewUser: this.googleUser.metadata.creationTime === this.googleUser.metadata.lastSignInTime,
+          preferences: [],
+          dateOfBirth: '',
+          onBirthdayList: false,
+          hasPayed: false,
+          lastTimeSignedIn: this.googleUser.metadata.lastSignInTime,
+          userSince: this.googleUser.metadata.creationTime,
+          lastTimeModified: new Date().toISOString()
+        };
+        this.addUser(newUser).then(added => {
+          if (added) {
+            this.route.navigate(['my-account']);
+          }else {
+            console.log('error at save and load user');
+          }
+        });
+      }
+    }).catch(error => {
+        console.log('Error getting user:', error);
+    });
   }
 
   login(): Promise<boolean> {
     return gapi.auth2.getAuthInstance().signIn({prompt: 'select_account'})
-    .then((googleUser) => {
+    .then(googleUser => {
       const credential = firebase.auth.GoogleAuthProvider
         .credential(googleUser.getAuthResponse().id_token);
       firebase.auth().signInWithCredential(credential);     // Sign in with credential from the Google user.
@@ -50,13 +112,8 @@ export class UserService {
       .then(() => {
         return this.afAut.auth.signOut()
         .then(() => {
-          this.user = {
-            email: '',
-            fullName: '',
-            profilePicUrl: '',
-            uId: ''
-          };
-        return true;
+          this.user.next(userInitialState);
+          return true;
       })
       .catch(
         error => false
@@ -68,9 +125,20 @@ export class UserService {
     return this.user;
   }
 
+  getUsers() {
+    return this.db
+    .collection('users')
+    .snapshotChanges()
+    .map(docArray => {
+      return docArray.map(doc => {
+        return doc.payload.doc.data();
+      });
+    });
+  }
+
   // Calendar interaction
-  initClient = (): Promise<any> => {
-    return gapi.client.init({
+  initClient = () => {
+    gapi.client.init({
       apiKey: this.API_KEY,
       clientId: this.CLIENT_ID,
       discoveryDocs: this.DISCOVERY_DOCS,
@@ -85,4 +153,3 @@ export class UserService {
     return this.calendarApiClient;
   }
 }
-

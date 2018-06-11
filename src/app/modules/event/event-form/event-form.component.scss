@@ -15,6 +15,13 @@ mz-modal {
 .gif-search {
     margin-right: 10px;
 }
+.participants {
+    padding: 0;
+}
+
+#input-title, #textarea-description {
+    text-transform: capitalize;
+}
 
 @media all and (max-width: $app_especific_toggle_menu) {
     .addEvent {

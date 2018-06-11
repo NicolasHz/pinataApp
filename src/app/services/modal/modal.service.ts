@@ -4,7 +4,7 @@ import { Subject } from 'rxjs/Subject';
 
 @Injectable()
 export class ModalService {
-  public modalResponse: Subject<boolean> = new Subject;
+  public modalResponse: Subject<boolean> = new Subject();
   constructor(private modalService: MzModalService) { }
 
   openModal(modalComponent, {eventData, buttonText}) {

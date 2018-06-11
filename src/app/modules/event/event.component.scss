@@ -15,6 +15,12 @@
             background-clip: text;
         }
     }
+    &__no-events {
+        filter: grayscale(1) opacity(.3);
+        h5 {
+            color: white;
+        }
+    }
     &__cards {
         margin-bottom: 0;
     }

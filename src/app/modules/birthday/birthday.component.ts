@@ -1,6 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 
 import { Evento } from '../../interfaces/evento';
+import { User } from '../../interfaces/user';
 import 'fullcalendar';
 
 import { EventsService } from '../../services/events/events.service';
@@ -18,9 +19,9 @@ declare let $: any;
   styleUrls: ['./birthday.component.scss']
 })
 export class BirthdayComponent implements OnInit, OnDestroy {
-  public birthdays: Array<Evento>;
+  public birthdays: Evento[];
   public birthdayReady = false;
-  public unsubscribe: Subscription;
+  public subscriptions: Subscription = new Subscription();
   public isglobantUser = false;
   constructor(
     private eventService: EventsService,
@@ -29,15 +30,17 @@ export class BirthdayComponent implements OnInit, OnDestroy {
     private util: UtilsService) { }
 
   ngOnInit() {
-    this.unsubscribe = this.eventService.getEvents('birthdays')
+    this.subscriptions.add(this.eventService.getEvents('birthdays')
     .subscribe(response => {
       this.birthdays = Object.keys(response)
       .map(index => response[index]);
-      this.birthdays.map((birthday) => this.util.digestYearOfBirthday(birthday));
+      this.birthdays.map(birthday => this.util.digestYearOfBirthday(birthday));
       this.createCalendar(this.birthdays);
       this.birthdayReady = true;
-    });
-    this.isglobantUser = /(?:@globant.com)/.test(this.userService.getUser().email);
+    }));
+    this.subscriptions.add(this.userService.getUser().subscribe((user: User) => {
+      this.isglobantUser = this.util.isGlobantUser(user);
+    }));
   }
 
   createCalendar(eventType) {
@@ -69,6 +72,6 @@ export class BirthdayComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.unsubscribe.unsubscribe();
+    this.subscriptions.unsubscribe();
   }
 }

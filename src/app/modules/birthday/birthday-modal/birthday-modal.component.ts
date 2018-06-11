@@ -39,7 +39,7 @@ export class BirthdayModalComponent extends MzBaseModal implements OnInit {
   bookBirthday() {
     const eventData: Evento = this.calEvent;
     this.eventService.addEventToCalendar(eventData)
-    .then((success) => {
+    .then(success => {
       this.birhtdayModal.close();
       success ? this.toastService.show('Birthday booked successfully', 4000, 'green')
       : this.toastService.show('Failed at booking Birthday', 4000, 'red');

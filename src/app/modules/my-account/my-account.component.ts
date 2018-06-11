@@ -14,7 +14,6 @@ export class MyAccountComponent implements OnInit {
     @Inject(DOCUMENT) private doc: Document,
     private util: UtilsService) { }
 
-
   @HostListener('window:scroll', [])
   onWindowScroll() {
     this.scrolled = this.util.scrolled(this.doc);

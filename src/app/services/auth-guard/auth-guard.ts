@@ -18,7 +18,7 @@ export class AuthGuardService implements CanActivate {
 
   canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> {
 
-    return this._loginService.afAut.authState.map((auth) => {
+    return this._loginService.afAut.authState.map(auth => {
       if (auth) {
         return true;
       } else {

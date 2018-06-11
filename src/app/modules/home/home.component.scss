@@ -16,6 +16,12 @@
 }
 .events {
     @extend %common-layout;
+    &__no-events {
+        filter: grayscale(1) opacity(.3);
+        h5 {
+            color: black;
+        }
+    }
 }
 .birthdays {
     @extend %common-layout;

@@ -7,7 +7,6 @@ import { User } from '../../interfaces/user';
 import { Evento } from '../../interfaces/evento';
 import { eventInitialState } from './../../interfaces/evento-initial-state';
 
-
 // Services
 import { MzModalService, MzToastService } from 'ngx-materialize';
 import { UtilsService } from '../../services/utils/utils.service';
@@ -24,11 +23,13 @@ import { Subscription } from 'rxjs/Subscription';
   styleUrls: ['./event.component.scss']
 })
 export class EventComponent implements OnInit, AfterViewInit, OnDestroy {
-  public events: Array<Evento>;
+  public events: Evento[] = [];
+  public calendarEvents = [];
   public eventsReady = false;
   public user: User;
+  public users: User[];
   public selectedEvent: Evento = eventInitialState;
-  public unsubscribe: Subscription;
+  public subscriptions: Subscription = new Subscription();
 
   @ViewChild(ConfirmModalComponent) confirmModal: ConfirmModalComponent;
   @ViewChild('featureDiscovery') firstTimeIn;
@@ -41,15 +42,31 @@ export class EventComponent implements OnInit, AfterViewInit, OnDestroy {
     private toastService: MzToastService) { }
 
   ngOnInit() {
-    this.unsubscribe = this.eventService.getEvents('events')
+    setTimeout(() => {
+      this.eventService.getEventsFromCalendar();
+    }, 2000);
+    this.subscriptions.add(this.eventService.getEvents('events')
     .subscribe(response => {
       this.events = Object.keys(response)
       .map(index => response[index])
-      .filter((event) => this.util.deleteOldDatesEvents(event))
+      .filter((event: Evento) => this.util.deleteOldDatesEvents(event))
       .sort((a, b) => this.util.diferenceOfTimeFromNow(b.start) - this.util.diferenceOfTimeFromNow(a.start));
       this.eventsReady = true;
-    });
-    this.user = this.userService.getUser();
+    }));
+    this.subscriptions.add(this.userService.getUser()
+    .subscribe((user: User) => {
+      this.user = user;
+    }));
+    this.subscriptions.add(this.userService.getUsers()
+    .subscribe(response => {
+      this.users = Object.keys(response)
+      .map(index => response[index]);
+    }));
+    this.subscriptions.add(
+      this.eventService.calendarEvents.subscribe(eventsFromCalendar => {
+        this.calendarEvents = eventsFromCalendar;
+      })
+    );
   }
 
   ngAfterViewInit() {
@@ -59,7 +76,7 @@ export class EventComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   openEventForm() {
-    this.modalService.open(EventFormComponent);
+    this.modalService.open(EventFormComponent, {user: this.user, users: this.users});
   }
 
   // Card and Confirm-Modal Interaction
@@ -67,7 +84,7 @@ export class EventComponent implements OnInit, AfterViewInit, OnDestroy {
   joinEvent(eventData: Evento) {
     eventData.participants.push(this.user);
     this.eventService.addEventToCalendar(eventData)
-    .then((success) => {
+    .then(success => {
       if (success) {
         this.eventService.updateEvent('events', eventData);
         if (this.util.findUser(eventData)) {
@@ -84,12 +101,11 @@ export class EventComponent implements OnInit, AfterViewInit, OnDestroy {
     if (!this.util.findUser(eventData)) {
       this.toastService.show('Event leaved!', 4000, 'red');
     }
-    this.eventService.deleteCalendarEvent(this.util.findCalendarEvent(eventData, this.eventService.calendarEvents).id);
+    this.eventService.deleteCalendarEvent(this.util.findCalendarEvent(eventData, this.calendarEvents).id);
   }
 
   editEvent(eventData: Evento) {
-    const editingEvent = true;
-    this.modalService.open(EventFormComponent, {eventData, editingEvent});
+    this.modalService.open(EventFormComponent, {user: this.user, users: this.users, eventData, calendarEvents: this.calendarEvents, editingEvent: true});
   }
 
   confirmDelete(eventData: Evento) {
@@ -99,6 +115,9 @@ export class EventComponent implements OnInit, AfterViewInit, OnDestroy {
 
   deleteEvent(response: boolean) {
     if (response) {
+      if (this.selectedEvent.participants.length > 0 && this.util.findUser(this.selectedEvent)) {
+        this.leaveEvent(this.selectedEvent);
+      }
       this.eventService.deleteEvent('events', this.selectedEvent);
       this.toastService.show('Event Deleted!', 4000, 'green' );
     }else {
@@ -107,6 +126,6 @@ export class EventComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.unsubscribe.unsubscribe();
+    this.subscriptions.unsubscribe();
   }
 }

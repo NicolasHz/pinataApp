@@ -5,6 +5,7 @@ import { UserService } from './../user/user.service';
 import { CalendarEventI } from './../../interfaces/calendar-event';
 import * as moment from 'moment';
 import { ENCODE32, DECODE32 } from './encode-decode';
+import { take } from 'rxjs/operators';
 @Injectable()
 export class UtilsService {
   private user: User;
@@ -14,7 +15,9 @@ export class UtilsService {
   public decode32 = DECODE32;
 
   constructor( private userService: UserService) {
-    this.user = this.userService.getUser();
+    this.userService.getUser().pipe(take(3)).subscribe((user: User) => {
+      this.user = user;
+    });
    }
 
   scrolled(doc: Document) {
@@ -38,6 +41,10 @@ export class UtilsService {
    }
   }
 
+  isGlobantUser(user: User) {
+    return /(@globant.com)/.test(user.email);
+  }
+
   isEventCreator(eventData: Evento) {
     return eventData.creator.uId === this.user.uId;
   }
@@ -59,8 +66,18 @@ export class UtilsService {
       });
   }
 
-  deleteOldDatesEvents(event: Evento, from = new Date()) {
+  deleteOldDatesEvents(event: Evento, from = new Date()): boolean {
       return event.end >= moment(from).format();
+  }
+
+  getCurrentUserEvents(event: Evento): boolean  {
+    return event.creator.uId === this.user.uId;
+  }
+
+  getJoinedEvents(event: Evento): boolean {
+    return event.participants.some(participant => {
+      return participant.uId === this.user.uId;
+    });
   }
 
   makePlusId(finalLength: number) {
@@ -73,8 +90,11 @@ export class UtilsService {
     return text;
   }
 
-  diferenceOfTimeFromNow(date) {
+  diferenceOfTimeFromNow(date, as: 'hours'|'minutes' = 'hours') {
     const now = new Date();
+    if (as === 'minutes') {
+      return moment.duration(moment(now).diff(moment(date))).asMinutes();
+    }
     return moment.duration(moment(now).diff(moment(date))).asHours();
   }
 
@@ -83,5 +103,27 @@ export class UtilsService {
     birthday.start = birthday.start.replace( incomingYear, new Date().getFullYear() );
     birthday.end = birthday.end.replace( incomingYear, new Date().getFullYear() );
     return birthday;
+  }
+
+  isTodayBirthday(birthday: Evento) {
+    const incomingYear = moment(birthday.start).format('YYYY-MM-DD');
+    const now = moment(new Date()).format('YYYY-MM-DD');
+    return incomingYear === now;
+  }
+
+  usersToChips(users: User[]): Materialize.ChipDataObject[] {
+    const convertedUsers: Materialize.ChipDataObject[] = [];
+    if (users.length <= 0) {
+      return convertedUsers;
+    }
+    users.map( user => {
+      convertedUsers.push(
+        {
+          tag: user.fullName,
+          image: user.profilePicUrl
+        }
+      );
+    });
+    return convertedUsers;
   }
 }

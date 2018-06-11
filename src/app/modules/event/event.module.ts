@@ -1,4 +1,4 @@
-import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
@@ -15,16 +15,14 @@ import { EventFormComponent } from './event-form/event-form.component';
     CommonModule,
     SharedModule,
     EventRoutingModule,
-    MzValidationModule,
-    ReactiveFormsModule
+    FormsModule
   ],
   schemas: [NO_ERRORS_SCHEMA],
   declarations: [
-    EventComponent,
-    EventFormComponent
+    EventComponent
   ],
   providers: [
-    FormBuilder
+    FormBuilder,
   ],
   entryComponents: [
     EventFormComponent

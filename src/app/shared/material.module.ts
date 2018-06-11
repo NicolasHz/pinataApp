@@ -46,7 +46,9 @@ import {
         MzToastModule,
         MzProgressModule,
         MzTabModule,
-        MzFeatureDiscoveryModule
+        MzFeatureDiscoveryModule,
+        MzSwitchModule,
+        MzChipModule
     ],
     exports: [
         MzInputModule,
@@ -69,7 +71,9 @@ import {
         MzToastModule,
         MzProgressModule,
         MzTabModule,
-        MzFeatureDiscoveryModule
+        MzFeatureDiscoveryModule,
+        MzSwitchModule,
+        MzChipModule
     ]
 })
 export class MaterialModule { }

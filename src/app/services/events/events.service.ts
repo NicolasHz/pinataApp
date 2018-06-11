@@ -5,18 +5,19 @@ import { CalendarEventI } from './../../interfaces/calendar-event';
 import { UserService } from './../user/user.service';
 import * as moment from 'moment';
 import { UtilsService } from '../utils/utils.service';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
 declare var gapi: any;
 declare let $: any;
 @Injectable()
 export class EventsService {
-  public calendarEvents: any[];
+  public calendarEvents: BehaviorSubject<any> = new BehaviorSubject<any>([]);
 
   constructor(
     private db: AngularFirestore,
     private userService: UserService,
     private util: UtilsService
-  ) {  }
+  ) { }
 
   getEvents(eventsType: string) {
     return this.db
@@ -32,13 +33,14 @@ export class EventsService {
     });
   }
 
-  addEvent(eventsType: string, event: Evento) {
-    this.db.collection(eventsType)
+  addEvent(eventsType: string, event: Evento): Promise<any> {
+    return this.db.collection(eventsType)
     .add(event)
-    .then(() => {
+    .then(createdEvent => {
       console.log('Document successfully written!');
+      return createdEvent;
     })
-    .catch((error) => {
+    .catch(error => {
       console.error('Error writing document: ', error);
     });
   }
@@ -50,7 +52,7 @@ export class EventsService {
     .then(() => {
       console.log('Document successfully written!');
     })
-    .catch((error) => {
+    .catch(error => {
       console.error('Error writing document: ', error);
     });
   }
@@ -61,7 +63,7 @@ export class EventsService {
     .delete()
     .then(() => {
       console.log('Document successfully deleted!');
-    }).catch((error) => {
+    }).catch(error => {
         console.error('Error removing document: ', error);
     });
   }
@@ -73,17 +75,17 @@ export class EventsService {
   getEventsFromCalendar(): Promise<any> {
      return this.userService.getCalendarApi().then(() => {
       return gapi.client.calendar.events.list({
-        'calendarId': 'primary',
-        'timeMin': (new Date(new Date().setMonth(new Date().getMonth() - 2))).toISOString(),
-        'showDeleted': false,
-        'singleEvents': true,
-        'maxResults': 300,
-        'orderBy': 'startTime'
-      }).then((response) => {
+        calendarId: 'primary',
+        timeMin: (new Date(new Date().setMonth(new Date().getMonth() - 2))).toISOString(),
+        showDeleted: false,
+        singleEvents: true,
+        maxResults: 300,
+        orderBy: 'startTime'
+      }).then(response => {
         if (!response) {
           return;
         }
-        this.calendarEvents = response.result.items;
+        this.calendarEvents.next(response.result.items);
         return response.result.items;
       }).catch(() => console.log('something wrong at fetching events from calendar'));
     });
@@ -93,10 +95,10 @@ export class EventsService {
     return this.userService.getCalendarApi()
     .then( () => {
       gapi.client.calendar.events.delete({
-        'calendarId': 'primary',
-        'eventId': id
+        calendarId: 'primary',
+        eventId: id
       })
-      .execute((response) => {
+      .execute(response => {
         if (response.error || response === false) {
           console.log('Error at delete calendar Event');
         }else {
@@ -114,11 +116,11 @@ export class EventsService {
     return this.userService.getCalendarApi()
     .then( () => {
       gapi.client.calendar.events.patch({
-        'calendarId': 'primary',
-        'eventId': id,
-        'resource': calendarEvent
+        calendarId: 'primary',
+        eventId: id,
+        resource: calendarEvent
       })
-      .execute((response) => {
+      .execute(response => {
         if (response.error || response === false) {
           console.log('Error at update calendar Event');
         }else {
@@ -136,10 +138,10 @@ export class EventsService {
     calendarEvent.id = this.util.encode32(eventToAdd.id + this.util.makePlusId(5));
     return this.userService.getCalendarApi().then( () => {
       gapi.client.calendar.events.insert({
-        'calendarId': 'primary',
-        'resource': calendarEvent
+        calendarId: 'primary',
+        resource: calendarEvent
       })
-      .execute((response) => {
+      .execute(response => {
         if (response.error || response === false) {
           return false;
         }else {
@@ -152,7 +154,7 @@ export class EventsService {
     .catch(() => false);
   }
 
-  createCalendarEvent(eventToAdd): CalendarEventI {
+  createCalendarEvent(eventToAdd: Evento): CalendarEventI {
     return  {
       summary: eventToAdd.title,
       location: eventToAdd.place,
@@ -168,6 +170,7 @@ export class EventsService {
       recurrence: [
         'RRULE:FREQ=DAILY;COUNT=1'
       ],
+      attendees: eventToAdd.participants,
       guestsCanModify: false,
       reminders: {
           useDefault: false,

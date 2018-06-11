@@ -117,6 +117,9 @@ export class MyEventsComponent implements OnInit, OnDestroy {
 
   deleteEvent(response: boolean) {
     if (response) {
+      if (this.selectedEvent.participants.length > 0 && this.util.findUser(this.selectedEvent)) {
+        this.leaveEvent(this.selectedEvent);
+      }
       this.eventService.deleteEvent('events', this.selectedEvent);
       this.toastService.show('Event Deleted!', 4000, 'green' );
     }else {

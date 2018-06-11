@@ -48,7 +48,7 @@ export class UserService {
     .then(doc => {
       if (doc.exists) {
         const userData = doc.data();
-        const user =  {
+        const user: User =  {
           email: userData.email,
           fullName: userData.fullName,
           profilePicUrl: userData.profilePicUrl,
@@ -59,7 +59,8 @@ export class UserService {
           onBirthdayList: userData.onBirthdayList,
           hasPayed: userData.hasPayed,
           lastTimeSignedIn: userData.lastTimeSignedIn,
-          userSince: userData.userSince
+          userSince: userData.userSince,
+          lastTimeModified: userData.lastTimeModified
         };
         this.user.next(user);
         if (this.googleUser.metadata.creationTime !== this.googleUser.metadata.lastSignInTime && userData.isNewUser) {
@@ -68,7 +69,7 @@ export class UserService {
         }
         this.route.navigate(['home']);
       } else {
-        const newUser = {
+        const newUser: User = {
           email: this.googleUser.email,
           fullName: this.googleUser.displayName,
           profilePicUrl: this.googleUser.photoURL,
@@ -79,7 +80,8 @@ export class UserService {
           onBirthdayList: false,
           hasPayed: false,
           lastTimeSignedIn: this.googleUser.metadata.lastSignInTime,
-          userSince: this.googleUser.metadata.creationTime
+          userSince: this.googleUser.metadata.creationTime,
+          lastTimeModified: new Date().toISOString()
         };
         this.addUser(newUser).then(added => {
           if (added) {

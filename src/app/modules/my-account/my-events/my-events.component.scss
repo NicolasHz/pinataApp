@@ -22,6 +22,11 @@
   }
   &__no-events {
     filter: grayscale(1) opacity(.3);
+    @media all and (max-width: $app_especific_toggle_menu) {
+      img {
+        width: 100%;
+      }
+    }
   }
 }
 

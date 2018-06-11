@@ -10,6 +10,7 @@ export interface User {
     hasPayed?: boolean;
     lastTimeSignedIn?: string;
     userSince?: string;
+    lastTimeModified?: string;
 }
 
 export const userInitialState = {
@@ -23,5 +24,6 @@ export const userInitialState = {
     onBirthdayList: false,
     hasPayed: false,
     lastTimeSignedIn: '',
-    userSince: ''
+    userSince: '',
+    lastTimeModified: ''
 };

@@ -1,7 +1,9 @@
+import { Observable } from 'rxjs/Observable';
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpEventType } from '@angular/common/http';
+import { HttpClient, HttpEventType, HttpResponse } from '@angular/common/http';
 import 'firebase/storage';
 import { FirebaseApp } from 'angularfire2';
+import { User } from '../../interfaces/user';
 
 @Injectable()
 export class UploadImageService {
@@ -15,4 +17,11 @@ export class UploadImageService {
     });
   }
 
+  getImage(id: string): Observable<Blob> {
+    return this.http.get(id, {responseType: 'blob'});
+  }
+
+  digestImage(imageBlob) {
+    return new File([imageBlob], 'user-image', {type: imageBlob.type, lastModified: Date.now()});
+  }
 }

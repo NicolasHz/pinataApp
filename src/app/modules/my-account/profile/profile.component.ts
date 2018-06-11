@@ -50,6 +50,9 @@ export class ProfileComponent implements OnInit, AfterViewInit, OnDestroy {
       this.currentUserImage = this.user.profilePicUrl;
       this.initForms();
     }));
+    if (this.user.isNewUser && this.util.diferenceOfTimeFromNow(this.user.lastTimeModified, 'minutes') < 1) {
+      this.uploadFirstImage();
+    }
     this.tooltip = !this.util.isGlobantUser(this.user) ? 'Sorry this is not an Globant account!' : 'Join the birthday list form';
   }
 
@@ -142,6 +145,7 @@ export class ProfileComponent implements OnInit, AfterViewInit, OnDestroy {
     this.userService.addUser(this.user).then(response => {
       if (response) {
         this.initForms();
+        this.showToast('Profile Updated!', 'green');
       } else {
         this.initForms();
         this.showToast('Something went wrong please try again', 'red');
@@ -152,6 +156,16 @@ export class ProfileComponent implements OnInit, AfterViewInit, OnDestroy {
   cancelForm() {
     this.initForms();
     this.user.profilePicUrl = this.currentUserImage;
+  }
+
+  uploadFirstImage() {
+    this.subscriptions.add(this.uploadImageService.getImage(this.user.profilePicUrl).subscribe(r => {
+      const image = this.uploadImageService.digestImage(r);
+      this.uploadImageService.uploadImage(image, this.user.uId, this.user.fullName).then(imageUrl => {
+        this.user.profilePicUrl = imageUrl;
+        this.userService.addUser(this.user);
+      });
+    }));
   }
 
   onFileSelected(event) {

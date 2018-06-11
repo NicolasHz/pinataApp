@@ -43,7 +43,7 @@ export class EventComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ngOnInit() {
     setTimeout(() => {
-      this.eventService.getEventsFromCalendar()
+      this.eventService.getEventsFromCalendar();
     }, 2000);
     this.subscriptions.add(this.eventService.getEvents('events')
     .subscribe(response => {

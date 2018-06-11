@@ -90,8 +90,11 @@ export class UtilsService {
     return text;
   }
 
-  diferenceOfTimeFromNow(date) {
+  diferenceOfTimeFromNow(date, as: 'hours'|'minutes' = 'hours') {
     const now = new Date();
+    if (as === 'minutes') {
+      return moment.duration(moment(now).diff(moment(date))).asMinutes();
+    }
     return moment.duration(moment(now).diff(moment(date))).asHours();
   }
 

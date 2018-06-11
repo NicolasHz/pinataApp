@@ -17,7 +17,7 @@ export class EventsService {
     private db: AngularFirestore,
     private userService: UserService,
     private util: UtilsService
-  ) { }
+  ) { db.firestore.settings({ timestampsInSnapshots: true }); }
 
   getEvents(eventsType: string) {
     return this.db

@@ -20,6 +20,7 @@ export class UserService {
     private db: AngularFirestore,
     public afAut: AngularFireAuth,
     private route: Router) {
+    db.firestore.settings({ timestampsInSnapshots: true });
     gapi.load('client:auth2', this.initClient);
     this.afAut.authState.subscribe( googleUser => {
       if (!googleUser) {
@@ -86,7 +87,7 @@ export class UserService {
         this.addUser(newUser).then(added => {
           if (added) {
             this.route.navigate(['my-account']);
-          }else {
+          } else {
             console.log('error at save and load user');
           }
         });

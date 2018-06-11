@@ -1,4 +1,5 @@
 {
+  "include": ["node_modules/angular-bootstrap-md/**/*.ts",  "src/**/*.ts"],
   "compileOnSave": false,
   "compilerOptions": {
     "outDir": "./dist/out-tsc",
@@ -15,7 +16,6 @@
       "es2016",
       "dom"
     ],
-    "include": ["node_modules/angular-bootstrap-md/**/*.ts",  "src/**/*.ts"],
     "types": [
       "jquery",
       "materialize-css"

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { MzModalService } from 'ng2-materialize';
+import { MzModalService } from 'ngx-materialize';
 import { Subject } from 'rxjs/Subject';
 
 @Injectable()

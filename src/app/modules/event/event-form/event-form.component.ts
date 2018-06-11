@@ -18,7 +18,7 @@ import * as moment from 'moment';
 // Services
 import {
   MzToastService,
-  MzBaseModal} from 'ng2-materialize';
+  MzBaseModal} from 'ngx-materialize';
 import { EventsService } from '../../../services/events/events.service';
 import { UserService } from '../../../services/user/user.service';
 import { GifsService } from '../../../services/gifs/gifs.service';

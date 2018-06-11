@@ -9,7 +9,7 @@ import { eventInitialState } from './../../interfaces/evento-initial-state';
 
 
 // Services
-import { MzModalService, MzToastService } from 'ng2-materialize';
+import { MzModalService, MzToastService } from 'ngx-materialize';
 import { UtilsService } from '../../services/utils/utils.service';
 import { UserService } from '../../services/user/user.service';
 import { EventsService } from '../../services/events/events.service';

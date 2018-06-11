@@ -14,7 +14,7 @@ import { IsEmptyValidator } from '../../../shared/validators/validators';
 
 // Services
 import { UserService } from '../../../services/user/user.service';
-import { MzToastService } from 'ng2-materialize';
+import { MzToastService } from 'ngx-materialize';
 
 @Component({
   selector: 'app-profile',

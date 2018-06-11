@@ -22,7 +22,7 @@ import {
     MzProgressModule,
     MzTabModule,
     MzFeatureDiscoveryModule
-} from 'ng2-materialize';
+} from 'ngx-materialize';
 
 @NgModule({
     imports: [

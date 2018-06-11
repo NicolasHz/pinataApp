@@ -13,7 +13,7 @@ import { RouterModule } from '@angular/router';
 import { MaterialModule } from './material.module';
 
 // Services
-import { MzInjectionService} from 'ng2-materialize';
+import { MzInjectionService} from 'ngx-materialize';
 import { EventsService } from '../services/events/events.service';
 import { ModalService } from '../services/modal/modal.service';
 import { UtilsService } from '../services/utils/utils.service';

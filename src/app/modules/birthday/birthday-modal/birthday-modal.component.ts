@@ -1,9 +1,9 @@
 import { Component, OnInit, Input, ViewChild } from '@angular/core';
-import { MzBaseModal } from 'ng2-materialize';
+import { MzBaseModal } from 'ngx-materialize';
 
 import { Evento } from './../../../interfaces/evento';
 import { EventsService } from '../../../services/events/events.service';
-import { MzToastService } from 'ng2-materialize';
+import { MzToastService } from 'ngx-materialize';
 import * as moment from 'moment';
 @Component({
   selector: 'app-birthday-modal',

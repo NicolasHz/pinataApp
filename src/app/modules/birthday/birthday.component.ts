@@ -4,7 +4,7 @@ import { Evento } from '../../interfaces/evento';
 import 'fullcalendar';
 
 import { EventsService } from '../../services/events/events.service';
-import { MzModalService } from 'ng2-materialize';
+import { MzModalService } from 'ngx-materialize';
 import { BirthdayModalComponent } from './birthday-modal/birthday-modal.component';
 
 import { Subscription } from 'rxjs/Subscription';

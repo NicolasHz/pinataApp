@@ -101,7 +101,7 @@ export class EventsService {
       .execute(response => {
         if (response.error || response === false) {
           console.log('Error at delete calendar Event');
-        }else {
+        } else {
           this.getEventsFromCalendar();
           console.log('Success at delete calendar Event');
         }
@@ -123,7 +123,7 @@ export class EventsService {
       .execute(response => {
         if (response.error || response === false) {
           console.log('Error at update calendar Event');
-        }else {
+        } else {
           this.getEventsFromCalendar();
           console.log('Success at update calendar Event');
         }
@@ -144,7 +144,7 @@ export class EventsService {
       .execute(response => {
         if (response.error || response === false) {
           return false;
-        }else {
+        } else {
           this.getEventsFromCalendar();
           return true;
         }

@@ -10,7 +10,7 @@ import { eventInitialState } from '../../../interfaces/evento-initial-state';
 import { UserService } from '../../../services/user/user.service';
 import { EventsService } from '../../../services/events/events.service';
 import { UtilsService } from '../../../services/utils/utils.service';
-import { MzToastService, MzModalService } from 'ng2-materialize';
+import { MzToastService, MzModalService } from 'ngx-materialize';
 import { ModalService } from '../../../services/modal/modal.service';
 
 // Components
@@ -68,7 +68,7 @@ export class MyEventsComponent implements OnInit, OnDestroy {
   onSwitchEventView() {
     if (this.view === 'created') {
       this.onJoinedEvents();
-    }else {
+    } else {
       this.onEventsCreated();
     }
   }
@@ -122,7 +122,7 @@ export class MyEventsComponent implements OnInit, OnDestroy {
       }
       this.eventService.deleteEvent('events', this.selectedEvent);
       this.toastService.show('Event Deleted!', 4000, 'green' );
-    }else {
+    } else {
       this.toastService.show('Canceled', 4000, 'red' );
     }
   }

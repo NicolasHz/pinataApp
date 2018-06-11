@@ -4,7 +4,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { UserService } from './../../services/user/user.service';
 import { EventsService } from '../../services/events/events.service';
 import { UtilsService } from '../../services/utils/utils.service';
-import { MzToastService } from 'ng2-materialize';
+import { MzToastService } from 'ngx-materialize';
 
 // Interfaces
 import { Evento } from '../../interfaces/evento';

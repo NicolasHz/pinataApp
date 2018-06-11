@@ -21,7 +21,9 @@ import {
     MzToastModule,
     MzProgressModule,
     MzTabModule,
-    MzFeatureDiscoveryModule
+    MzFeatureDiscoveryModule,
+    MzSwitchModule,
+    MzChipModule
 } from 'ngx-materialize';
 
 @NgModule({

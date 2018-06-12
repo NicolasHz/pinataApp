@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
+import { GapiClientService } from './services/gapi-client/gapi-client.service';
 declare var WOW: any;
 
 @Component({
@@ -8,14 +9,18 @@ declare var WOW: any;
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
-  constructor(private router: Router) {}
+  constructor(private router: Router, private gapi: GapiClientService) {}
 
   ngOnInit() {
+    const pepe = 123;
+
     this.router.events.subscribe(evt => {
       if (!(evt instanceof NavigationEnd)) {
           return;
       }
-      window.scrollTo(0, 0);
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+      }, 1000);
   });
     new WOW().init();
   }

@@ -1,5 +1,3 @@
-import { Observable } from 'rxjs/Observable';
-import { User } from './../../interfaces/user';
 import { Router } from '@angular/router';
 import { UserService } from './../../services/user/user.service';
 import { Component, OnInit, HostListener, Inject } from '@angular/core';
@@ -22,7 +20,7 @@ export class HeaderComponent implements OnInit {
     private util: UtilsService) { }
 
   ngOnInit() {
-    this.user = this.userService.getUser()
+    this.user = this.userService.getUser();
   }
 
   @HostListener('window:scroll', [])

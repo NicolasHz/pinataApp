@@ -4,7 +4,6 @@ import { MzBaseModal } from 'ngx-materialize';
 import { Evento } from './../../../interfaces/evento';
 import { EventsService } from '../../../services/events/events.service';
 import { MzToastService } from 'ngx-materialize';
-import * as moment from 'moment';
 @Component({
   selector: 'app-birthday-modal',
   templateUrl: './birthday-modal.component.html',

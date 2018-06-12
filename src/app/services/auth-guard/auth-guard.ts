@@ -1,11 +1,8 @@
-import { AngularFireAuth } from 'angularfire2/auth';
 import { Injectable } from '@angular/core';
 import { Router,
-         RouterModule,
          ActivatedRouteSnapshot,
          RouterStateSnapshot,
-         CanActivate,
-         CanLoad } from '@angular/router';
+         CanActivate } from '@angular/router';
 
 import { UserService } from './../user/user.service';
 import { Observable } from 'rxjs/Observable';

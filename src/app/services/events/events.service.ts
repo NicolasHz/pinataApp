@@ -2,21 +2,18 @@ import { Evento } from './../../interfaces/evento';
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from 'angularfire2/firestore';
 import { CalendarEventI } from './../../interfaces/calendar-event';
-import { UserService } from './../user/user.service';
 import * as moment from 'moment';
 import { UtilsService } from '../utils/utils.service';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { GapiClientService } from '../gapi-client/gapi-client.service';
 
 declare var gapi: any;
-declare let $: any;
 @Injectable()
 export class EventsService {
   public calendarEvents: BehaviorSubject<any> = new BehaviorSubject<any>([]);
 
   constructor(
     private db: AngularFirestore,
-    private userService: UserService,
     private util: UtilsService,
     private gapiService: GapiClientService
   ) { db.firestore.settings({ timestampsInSnapshots: true }); }

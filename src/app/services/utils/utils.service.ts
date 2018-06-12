@@ -35,7 +35,7 @@ export class UtilsService {
     } else {
      if ( bodyTop > 50 ) {
       return true;
-     }else if (this.scrolled && bodyTop < 5) {
+     } else if (this.scrolled && bodyTop < 5) {
       return false;
     }
    }
@@ -60,7 +60,7 @@ export class UtilsService {
           const isId = new RegExp('(?:' + eventData.id + ')').test(decodedId);
           if ( isId ) {
             return true;
-          }else {
+          } else {
             return false;
           }
       });

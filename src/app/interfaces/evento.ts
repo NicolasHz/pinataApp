@@ -20,4 +20,3 @@ export interface Evento {
     description: string;
     image?: string;
 }
-

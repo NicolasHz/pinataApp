@@ -3,9 +3,9 @@ import { calendarInitialState } from './../../interfaces/calendar-event-initial.
 import * as calendarActions from './../../actions/calendar/calendar.actions';
 
 export function reducer(
-  state = calendarInitialState,
+  state = [calendarInitialState],
   action: calendarActions.CalendarActions
-): CalendarEventI {
+): CalendarEventI[] {
   switch (action.type) {
     case calendarActions.SET_CALENDAR: {
       return Object.assign({}, state, action.payload);

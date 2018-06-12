@@ -16,6 +16,8 @@ import { ConfirmModalComponent } from '../../shared/confirm-modal/confirm-modal.
 
 // RxJs
 import { Subscription } from 'rxjs/Subscription';
+import { Store } from '@ngrx/store';
+import * as fromRoot from '../../app.reducer';
 
 @Component({
   selector: 'app-event',
@@ -35,6 +37,7 @@ export class EventComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('featureDiscovery') firstTimeIn;
 
   constructor(
+    private store: Store<fromRoot.State>,
     private eventService: EventsService,
     private modalService: MzModalService,
     private util: UtilsService,
@@ -64,6 +67,7 @@ export class EventComponent implements OnInit, AfterViewInit, OnDestroy {
         this.calendarEvents = eventsFromCalendar;
       })
     );
+    this.store.select('calendar').subscribe(r => console.log(r)); // REMOVE
   }
 
   ngAfterViewInit() {

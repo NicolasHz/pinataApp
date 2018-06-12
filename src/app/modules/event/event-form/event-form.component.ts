@@ -20,7 +20,6 @@ import {
   MzToastService,
   MzBaseModal} from 'ngx-materialize';
 import { EventsService } from '../../../services/events/events.service';
-import { UserService } from '../../../services/user/user.service';
 import { GifsService } from '../../../services/gifs/gifs.service';
 import { UtilsService } from '../../../services/utils/utils.service';
 
@@ -57,7 +56,6 @@ export class EventFormComponent extends MzBaseModal implements OnInit {
     private formBuilder: FormBuilder,
     private toastService: MzToastService,
     private eventService: EventsService,
-    private userService: UserService,
     private gifService: GifsService,
     private util: UtilsService
   ) { super(); }
@@ -66,7 +64,7 @@ export class EventFormComponent extends MzBaseModal implements OnInit {
     this.startDatepickerOptions.onOpen = () => this.endDateAvalible = false;
     this.startDatepickerOptions.onClose = () => this.setAvalibleEndDays();
     if (this.users) {
-      this.autocompleteOptions.data = this.users.reduce((acc, cur, i) => {
+      this.autocompleteOptions.data = this.users.reduce((acc, cur) => {
         acc[cur.fullName] = cur.profilePicUrl;
         return acc;
       }, {});

@@ -1,4 +1,7 @@
 import { Injectable } from '@angular/core';
+import { Store } from '@ngrx/store';
+import * as fromRoot from '../../app.reducer';
+import * as Calendar from '../../actions/calendar/calendar.actions';
 declare var gapi: any;
 
 @Injectable()
@@ -8,10 +11,11 @@ export class GapiClientService {
   private DISCOVERY_DOCS = ['https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest'];
   private SCOPE = 'https://www.googleapis.com/auth/calendar';
   public calendarApiClient;
-  constructor() {
+  constructor(private store: Store<fromRoot.State>) { }
+
+  initGAPIAuth() {
     gapi.load('client:auth2', this.initClient);
   }
-
   // Calendar interaction
   initClient = () => {
     gapi.client.init({
@@ -21,9 +25,29 @@ export class GapiClientService {
       scope: this.SCOPE
     }).then(() => {
       this.calendarApiClient = gapi.auth2.getAuthInstance();
+      this.getEventsFromCalendar();
     })
       .catch(() => console.log('Something Wrong with calendar Api'));
   }
+
+  getEventsFromCalendar(): Promise<any> {
+    return this.calendarApiClient.then(() => {
+     return gapi.client.calendar.events.list({
+       calendarId: 'primary',
+       timeMin: (new Date(new Date().setMonth(new Date().getMonth() - 2))).toISOString(),
+       showDeleted: false,
+       singleEvents: true,
+       maxResults: 300,
+       orderBy: 'startTime'
+     }).then(response => {
+       if (!response) {
+         return;
+       }
+       this.store.dispatch(new Calendar.SetCalendar(response.result.items));
+       return response.result.items;
+     }).catch(() => console.log('something wrong at fetching events from calendar'));
+   });
+ }
 
   getCalendarApi(): Promise<any> {
     return this.calendarApiClient;

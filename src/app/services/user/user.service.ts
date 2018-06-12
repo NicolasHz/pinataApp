@@ -111,9 +111,7 @@ export class UserService {
           this.user.next(userInitialState);
           return true;
       })
-      .catch(
-        error => false
-      );
+      .catch(() => false);
     });
   }
 

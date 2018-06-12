@@ -12,8 +12,7 @@ export class AppComponent implements OnInit {
   constructor(private router: Router, private gapi: GapiClientService) {}
 
   ngOnInit() {
-    const pepe = 123;
-
+    this.gapi.initGAPIAuth();
     this.router.events.subscribe(evt => {
       if (!(evt instanceof NavigationEnd)) {
           return;

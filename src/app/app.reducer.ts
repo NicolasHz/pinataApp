@@ -1,4 +1,4 @@
-import { ActionReducerMap, createFeatureSelector, createSelector } from '@ngrx/store';
+import { ActionReducerMap, createFeatureSelector } from '@ngrx/store';
 
 // Interfaces
 import { Evento } from './interfaces/evento';
@@ -14,7 +14,7 @@ import * as fromUsers from './reducers/users/users.reducer';
 export interface State {
   events: Evento;
   user: User;
-  calendar: CalendarEventI;
+  calendar: CalendarEventI[];
   users: User[];
 }
 
@@ -29,4 +29,3 @@ export const getEventsState = createFeatureSelector<Evento>('events');
 export const getUserState = createFeatureSelector<User>('user');
 export const getCalendarState = createFeatureSelector<CalendarEventI>('calendar');
 export const getUsersState = createFeatureSelector<User[]>('users');
-// export const getEvents = createSelector(getEventsState);

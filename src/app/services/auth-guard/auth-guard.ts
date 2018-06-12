@@ -1,7 +1,5 @@
 import { Injectable } from '@angular/core';
 import { Router,
-         ActivatedRouteSnapshot,
-         RouterStateSnapshot,
          CanActivate } from '@angular/router';
 
 import { UserService } from './../user/user.service';
@@ -13,7 +11,7 @@ export class AuthGuardService implements CanActivate {
   constructor(private _loginService: UserService,
               private router: Router) { }
 
-  canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> {
+  canActivate(): Observable<boolean> {
 
     return this._loginService.afAut.authState.map(auth => {
       if (auth) {

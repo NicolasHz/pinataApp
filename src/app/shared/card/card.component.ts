@@ -1,5 +1,4 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { EventsService } from '../../services/events/events.service';
 import { UtilsService } from '../../services/utils/utils.service';
 import { trigger } from '@angular/animations';
 

@@ -11,7 +11,6 @@ import { UserService } from '../../../services/user/user.service';
 import { EventsService } from '../../../services/events/events.service';
 import { UtilsService } from '../../../services/utils/utils.service';
 import { MzToastService, MzModalService } from 'ngx-materialize';
-import { ModalService } from '../../../services/modal/modal.service';
 
 // Components
 import { ConfirmModalComponent } from '../../../shared/confirm-modal/confirm-modal.component';

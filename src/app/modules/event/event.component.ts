@@ -42,7 +42,6 @@ export class EventComponent implements OnInit, AfterViewInit, OnDestroy {
     private toastService: MzToastService) { }
 
   ngOnInit() {
-    this.eventService.getEventsFromCalendar();
     this.subscriptions.add(this.eventService.getEvents('events')
     .subscribe(response => {
       this.events = Object.keys(response)
@@ -118,7 +117,7 @@ export class EventComponent implements OnInit, AfterViewInit, OnDestroy {
       }
       this.eventService.deleteEvent('events', this.selectedEvent);
       this.toastService.show('Event Deleted!', 4000, 'green' );
-    }else {
+    } else {
       this.toastService.show('Canceled', 4000, 'red' );
     }
   }

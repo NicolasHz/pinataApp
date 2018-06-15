@@ -47,7 +47,7 @@ export class EventsService {
   updateEvent(eventsType: string, event: Evento) {
     this.db.collection(eventsType)
     .doc(event.id)
-    .set(event)
+    .set(JSON.parse( JSON.stringify(event)))
     .then(() => {
       console.log('Document successfully written!');
     })

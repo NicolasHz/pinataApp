@@ -20,6 +20,8 @@ import { MzToastService } from 'ngx-materialize';
 import { UtilsService } from '../../../services/utils/utils.service';
 import { UploadImageService } from '../../../services/upload-image/upload-image.service';
 
+import { Store } from '@ngrx/store';
+import * as fromRoot from '../../../app.reducer';
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.component.html',
@@ -41,11 +43,12 @@ export class ProfileComponent implements OnInit, AfterViewInit, OnDestroy {
     private router: Router,
     private formBuilder: FormBuilder,
     private util: UtilsService,
+    private store: Store<fromRoot.State>,
     private uploadImageService: UploadImageService,
     private toastService: MzToastService) { }
 
   ngOnInit() {
-    this.subscriptions.add(this.userService.getUser().subscribe((user: User) => {
+    this.subscriptions.add(this.store.select('user').subscribe((user: User) => {
       this.user = user;
       this.currentUserImage = this.user.profilePicUrl;
       this.initForms();

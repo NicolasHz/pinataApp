@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
 import { User } from '../../interfaces/user';
 import { Evento } from './../../interfaces/evento';
-import { UserService } from './../user/user.service';
 import { CalendarEventI } from './../../interfaces/calendar-event';
 import * as moment from 'moment';
 import { ENCODE32, DECODE32 } from './encode-decode';
 import { take } from 'rxjs/operators';
+import { Store } from '@ngrx/store';
+import * as fromRoot from '../../../app/app.reducer';
 @Injectable()
 export class UtilsService {
   private user: User;
@@ -14,8 +15,8 @@ export class UtilsService {
   public encode32 = ENCODE32;
   public decode32 = DECODE32;
 
-  constructor( private userService: UserService) {
-    this.userService.getUser().pipe(take(3)).subscribe((user: User) => {
+  constructor( private store: Store<fromRoot.State>) {
+    this.store.select('user').pipe(take(3)).subscribe((user: User) => {
       this.user = user;
     });
    }

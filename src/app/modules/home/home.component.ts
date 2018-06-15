@@ -12,7 +12,8 @@ import { User } from './../../interfaces/user';
 
 // RxJs
 import { Subscription } from 'rxjs/Subscription';
-
+import { Store } from '@ngrx/store';
+import * as fromRoot from '../../app.reducer';
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
@@ -28,7 +29,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   public birthdayReady = false;
 
   constructor(
-    private userService: UserService,
+    private store: Store<fromRoot.State>,
     private toastService: MzToastService,
     private eventService: EventsService,
     private util: UtilsService ) { }
@@ -53,9 +54,11 @@ export class HomeComponent implements OnInit, OnDestroy {
       .slice(0, 3);
       this.eventsReady = true;
     }));
-    this.subscriptions.add(this.userService.getUser().subscribe((user: User) => {
-      this.user = user;
-    }));
+    this.subscriptions.add(this.store.select('user')
+      .subscribe((user: User) => {
+        this.user = user;
+      })
+    );
     this.subscriptions.add(
       this.eventService.calendarEvents.subscribe(eventsFromCalendar => {
         this.calendarEvents = eventsFromCalendar;

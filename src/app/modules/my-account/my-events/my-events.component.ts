@@ -16,6 +16,8 @@ import { MzToastService, MzModalService } from 'ngx-materialize';
 import { ConfirmModalComponent } from '../../../shared/confirm-modal/confirm-modal.component';
 import { EventFormComponent } from '../../event/event-form/event-form.component';
 
+import { Store } from '@ngrx/store';
+import * as fromRoot from '../../../app.reducer';
 @Component({
   selector: 'app-my-events',
   templateUrl: './my-events.component.html',
@@ -34,6 +36,7 @@ export class MyEventsComponent implements OnInit, OnDestroy {
   @ViewChild(ConfirmModalComponent) confirmModal: ConfirmModalComponent;
 
   constructor(
+    private store: Store<fromRoot.State>,
     private userService: UserService,
     private eventService: EventsService,
     private toastService: MzToastService,
@@ -51,9 +54,11 @@ export class MyEventsComponent implements OnInit, OnDestroy {
       this.onJoinedEvents();
       this.eventsReady = true;
     }));
-    this.subscriptions.add(this.userService.getUser().subscribe((user: User) => {
-      this.user = user;
-    }));
+    this.subscriptions.add(this.store.select('user')
+      .subscribe((user: User) => {
+        this.user = user;
+      })
+    );
     this.subscriptions.add(this.userService.getUsers().subscribe((users: User[]) => {
       this.users = users;
     }));

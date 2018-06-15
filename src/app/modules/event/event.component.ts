@@ -45,6 +45,7 @@ export class EventComponent implements OnInit, AfterViewInit, OnDestroy {
     private toastService: MzToastService) { }
 
   ngOnInit() {
+    this.eventService.getEventsFromCalendar();
     this.subscriptions.add(this.eventService.getEvents('events')
     .subscribe(response => {
       this.events = Object.keys(response)
@@ -53,7 +54,7 @@ export class EventComponent implements OnInit, AfterViewInit, OnDestroy {
       .sort((a, b) => this.util.diferenceOfTimeFromNow(b.start) - this.util.diferenceOfTimeFromNow(a.start));
       this.eventsReady = true;
     }));
-    this.subscriptions.add(this.userService.getUser()
+    this.subscriptions.add(this.store.select('user')
     .subscribe((user: User) => {
       this.user = user;
     }));
@@ -111,7 +112,7 @@ export class EventComponent implements OnInit, AfterViewInit, OnDestroy {
 
   confirmDelete(eventData: Evento) {
     this.selectedEvent = eventData;
-    this.confirmModal.confirmModal.open();
+    this.confirmModal.confirmModal.openModal();
   }
 
   deleteEvent(response: boolean) {

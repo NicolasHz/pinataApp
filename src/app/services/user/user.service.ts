@@ -4,15 +4,17 @@ import { userInitialState } from './../../interfaces/user-initial-state';
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from 'angularfire2/auth';
 import * as firebase from 'firebase/app';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { AngularFirestore } from 'angularfire2/firestore';
+import { Store } from '@ngrx/store';
+import * as fromRoot from '../../app.reducer';
+import * as UserActions from '../../actions/user/user.actions';
 
 declare var gapi: any;
 @Injectable()
 export class UserService {
-  private user: BehaviorSubject<User> = new BehaviorSubject<User>(userInitialState);
   public googleUser;
   constructor(
+    private store: Store<fromRoot.State>,
     private db: AngularFirestore,
     public afAut: AngularFireAuth,
     private route: Router) {
@@ -30,7 +32,7 @@ export class UserService {
     return this.db.collection('users').doc(user.uId).set(user)
     .then(() => {
         console.log( 'User successfully written!');
-        this.user.next(user);
+        this.store.dispatch(new UserActions.SetUser(user));
         return true;
     })
     .catch(error => {
@@ -58,10 +60,10 @@ export class UserService {
           userSince: userData.userSince,
           lastTimeModified: userData.lastTimeModified
         };
-        this.user.next(user);
+        this.store.dispatch(new UserActions.SetUser(user));
         if (this.googleUser.metadata.creationTime !== this.googleUser.metadata.lastSignInTime && userData.isNewUser) {
           user.isNewUser = false;
-          this.addUser(user);
+          this.store.dispatch(new UserActions.SetUser(user));
         }
         this.route.navigate(['home']);
       } else {
@@ -108,15 +110,11 @@ export class UserService {
       .then(() => {
         return this.afAut.auth.signOut()
         .then(() => {
-          this.user.next(userInitialState);
+          this.store.dispatch(new UserActions.SetUser(userInitialState));
           return true;
       })
       .catch(() => false);
     });
-  }
-
-  getUser() {
-    return this.user;
   }
 
   getUsers() {

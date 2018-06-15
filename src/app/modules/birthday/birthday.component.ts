@@ -9,8 +9,10 @@ import { MzModalService } from 'ngx-materialize';
 import { BirthdayModalComponent } from './birthday-modal/birthday-modal.component';
 
 import { Subscription } from 'rxjs/Subscription';
-import { UserService } from '../../services/user/user.service';
 import { UtilsService } from '../../services/utils/utils.service';
+
+import { Store } from '@ngrx/store';
+import * as fromRoot from '../../app.reducer';
 
 declare let $: any;
 @Component({
@@ -26,7 +28,7 @@ export class BirthdayComponent implements OnInit, OnDestroy {
   constructor(
     private eventService: EventsService,
     private modalService: MzModalService,
-    private userService: UserService,
+    private store: Store<fromRoot.State>,
     private util: UtilsService) { }
 
   ngOnInit() {
@@ -38,9 +40,11 @@ export class BirthdayComponent implements OnInit, OnDestroy {
       this.createCalendar(this.birthdays);
       this.birthdayReady = true;
     }));
-    this.subscriptions.add(this.userService.getUser().subscribe((user: User) => {
-      this.isglobantUser = this.util.isGlobantUser(user);
-    }));
+    this.subscriptions.add(this.store.select('user')
+      .subscribe((user: User) => {
+        this.isglobantUser = this.util.isGlobantUser(user);
+      })
+    );
   }
 
   createCalendar(eventType) {

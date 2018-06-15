@@ -84,6 +84,7 @@ export class EventsService {
         if (!response) {
           return;
         }
+        // this.store.dispatch(new Calendar.SetCalendar(response.result.items));
         this.calendarEvents.next(response.result.items);
         return response.result.items;
       }).catch(() => console.log('something wrong at fetching events from calendar'));

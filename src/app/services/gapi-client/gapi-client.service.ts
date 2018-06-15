@@ -7,7 +7,7 @@ export class GapiClientService {
   private CLIENT_ID = '289697189757-l3muf4hpsin6f3dnt73ka1jvh1ckvnd9.apps.googleusercontent.com';
   private DISCOVERY_DOCS = ['https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest'];
   private SCOPE = 'https://www.googleapis.com/auth/calendar';
-  public calendarApiClient;
+  private calendarApiClient;
   constructor() { }
 
   initGAPIAuth() {

@@ -8,12 +8,12 @@ import { Observable } from 'rxjs/Observable';
 @Injectable()
 export class AuthGuardService implements CanActivate {
 
-  constructor(private _loginService: UserService,
+  constructor(private userService: UserService,
               private router: Router) { }
 
   canActivate(): Observable<boolean> {
 
-    return this._loginService.afAut.authState.map(auth => {
+    return this.userService.afAut.authState.map(auth => {
       if (auth) {
         return true;
       } else {

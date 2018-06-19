@@ -1,10 +1,16 @@
 import { Injectable } from '@angular/core';
+
+// Interfaces
 import { User } from '../../interfaces/user';
 import { Evento } from './../../interfaces/evento';
 import { CalendarEventI } from './../../interfaces/calendar-event';
+
+// Utils
 import * as moment from 'moment';
 import { ENCODE32, DECODE32 } from './encode-decode';
-import { take } from 'rxjs/operators';
+import { take } from 'rxjs/operators/take';
+
+// NgRx
 import { Store } from '@ngrx/store';
 import * as fromRoot from '../../../app/app.reducer';
 @Injectable()
@@ -50,21 +56,22 @@ export class UtilsService {
     return eventData.creator.uId === this.user.uId;
   }
 
-  findUser(eventData: Evento) {
+  findCurrentUser(eventData: Evento) {
     return eventData.participants.find( o => o.uId === this.user.uId);
   }
 
-  findCalendarEvent(eventData: Evento, calendarEvent: CalendarEventI[]) { // fixMe
+  findCalendarEvent(eventData: Evento, calendarEvent: CalendarEventI[]): CalendarEventI { // fixMe
     return calendarEvent
       .find( calendarObject =>  {
-          const decodedId = this.decode32(calendarObject.id.replace(/_.*/, ''));
-          const isId = new RegExp('(?:' + eventData.id + ')').test(decodedId);
-          if ( isId ) {
-            return true;
-          } else {
-            return false;
-          }
-      });
+        const decodedId = this.decode32(calendarObject.id.replace(/_.*/, ''));
+        const isId = new RegExp('(?:' + eventData.id + ')').test(decodedId);
+        if ( isId ) {
+          return true;
+        } else {
+          return false;
+        }
+      }
+    );
   }
 
   deleteOldDatesEvents(event: Evento, from = new Date()): boolean {

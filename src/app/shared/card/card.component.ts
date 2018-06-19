@@ -41,7 +41,7 @@ export class CardComponent implements OnInit {
     this.preLoaderImg = this.imgSource[Math.floor(Math.random() * this.imgSource.length)];
     this.eventAuthor = this.util.isEventCreator(this.eventData);
     this.participants = this.eventData.participants.length;
-    if (this.util.findUser(this.eventData)) {
+    if (this.util.findCurrentUser(this.eventData)) {
       this.joined = true;
     }
     if (this.eventData.participants.length > 0) {

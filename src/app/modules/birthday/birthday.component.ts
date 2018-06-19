@@ -1,16 +1,23 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 
+// Interfaces
 import { Evento } from '../../interfaces/evento';
 import { User } from '../../interfaces/user';
 import 'fullcalendar';
 
-import { EventsService } from '../../services/events/events.service';
-import { MzModalService } from 'ngx-materialize';
+// Component
 import { BirthdayModalComponent } from './birthday-modal/birthday-modal.component';
 
-import { Subscription } from 'rxjs/Subscription';
+// Services
+import { EventsService } from '../../services/events/events.service';
+import { MzModalService } from 'ngx-materialize';
 import { UtilsService } from '../../services/utils/utils.service';
 
+// rxJs
+import { Subscription } from 'rxjs/Subscription';
+import { take } from 'rxjs/operators/take';
+
+// NgRx
 import { Store } from '@ngrx/store';
 import * as fromRoot from '../../app.reducer';
 
@@ -25,6 +32,7 @@ export class BirthdayComponent implements OnInit, OnDestroy {
   public birthdayReady = false;
   public subscriptions: Subscription = new Subscription();
   public isglobantUser = false;
+  public spreadsheetURL = '/birthdays';
   constructor(
     private eventService: EventsService,
     private modalService: MzModalService,
@@ -32,14 +40,21 @@ export class BirthdayComponent implements OnInit, OnDestroy {
     private util: UtilsService) { }
 
   ngOnInit() {
-    this.subscriptions.add(this.eventService.getEvents('birthdays')
-    .subscribe(response => {
-      this.birthdays = Object.keys(response)
-      .map(index => response[index]);
-      this.birthdays.map(birthday => this.util.digestYearOfBirthday(birthday));
-      this.createCalendar(this.birthdays);
-      this.birthdayReady = true;
-    }));
+    this.subscriptions.add(this.eventService.getFromDatabase('birthdays')
+      .subscribe(response => {
+        this.birthdays = Object.keys(response)
+        .map(index => response[index]);
+        this.birthdays.map(birthday => this.util.digestYearOfBirthday(birthday));
+        this.createCalendar(this.birthdays);
+        this.birthdayReady = true;
+      })
+    );
+    this.subscriptions.add(this.eventService.getFromDatabase('birthdaySpreadsheetLink')
+      .pipe(take(1)).subscribe(response => {
+        this.spreadsheetURL = Object.keys(response)
+        .map(index => response[index])[0].url;
+      })
+    );
     this.subscriptions.add(this.store.select('user')
       .subscribe((user: User) => {
         this.isglobantUser = this.util.isGlobantUser(user);
@@ -72,7 +87,7 @@ export class BirthdayComponent implements OnInit, OnDestroy {
   }
 
   printBDSpreadsheet() {
-    window.open('//docs.google.com/spreadsheets/d/1lKo13ZHTg4mJzX_VuxND5cWaoVuvZQpBXatrEV6BmYo/edit#gid=0', '_blank');
+    window.open(this.spreadsheetURL, '_blank');
   }
 
   ngOnDestroy() {

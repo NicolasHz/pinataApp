@@ -45,8 +45,7 @@ export class EventComponent implements OnInit, AfterViewInit, OnDestroy {
     private toastService: MzToastService) { }
 
   ngOnInit() {
-    this.eventService.getEventsFromCalendar();
-    this.subscriptions.add(this.eventService.getEvents('events')
+    this.subscriptions.add(this.eventService.getFromDatabase('events')
     .subscribe(response => {
       this.events = Object.keys(response)
       .map(index => response[index])
@@ -66,6 +65,7 @@ export class EventComponent implements OnInit, AfterViewInit, OnDestroy {
     this.subscriptions.add(
       this.eventService.calendarEvents.subscribe(eventsFromCalendar => {
         this.calendarEvents = eventsFromCalendar;
+        console.log(this.calendarEvents)
       })
     );
     this.store.select('calendar').subscribe(r => console.log(r)); // REMOVE
@@ -89,7 +89,7 @@ export class EventComponent implements OnInit, AfterViewInit, OnDestroy {
     .then(success => {
       if (success) {
         this.eventService.updateEvent('events', eventData);
-        if (this.util.findUser(eventData)) {
+        if (this.util.findCurrentUser(eventData)) {
           this.toastService.show('Joined to event!', 4000, 'green');
         }
       }
@@ -97,13 +97,16 @@ export class EventComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   leaveEvent(eventData: Evento) {
-    const index = eventData.participants.indexOf(this.util.findUser(eventData));
+    const index = eventData.participants.indexOf(this.util.findCurrentUser(eventData));
     eventData.participants.splice(index, 1);
     this.eventService.updateEvent('events', eventData);
-    if (!this.util.findUser(eventData)) {
+    if (!this.util.findCurrentUser(eventData)) {
       this.toastService.show('Event leaved!', 4000, 'red');
     }
-    this.eventService.deleteCalendarEvent(this.util.findCalendarEvent(eventData, this.calendarEvents).id);
+    const calendarEventId = this.util.findCalendarEvent(eventData, this.calendarEvents).id;
+    if (calendarEventId) {
+      this.eventService.deleteCalendarEvent(calendarEventId);
+    }
   }
 
   editEvent(eventData: Evento) {
@@ -117,7 +120,7 @@ export class EventComponent implements OnInit, AfterViewInit, OnDestroy {
 
   deleteEvent(response: boolean) {
     if (response) {
-      if (this.selectedEvent.participants.length > 0 && this.util.findUser(this.selectedEvent)) {
+      if (this.selectedEvent.participants.length > 0 && this.util.findCurrentUser(this.selectedEvent)) {
         this.leaveEvent(this.selectedEvent);
       }
       this.eventService.deleteEvent('events', this.selectedEvent);

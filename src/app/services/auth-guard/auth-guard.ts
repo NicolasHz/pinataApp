@@ -12,7 +12,6 @@ export class AuthGuardService implements CanActivate {
               private router: Router) { }
 
   canActivate(): Observable<boolean> {
-
     return this.userService.afAut.authState.map(auth => {
       if (auth) {
         return true;

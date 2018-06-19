@@ -65,7 +65,6 @@ export class UserService {
           user.isNewUser = false;
           this.store.dispatch(new UserActions.SetUser(user));
         }
-        this.route.navigate(['home']);
       } else {
         const newUser: User = {
           email: this.googleUser.email,
@@ -99,7 +98,7 @@ export class UserService {
     .then(googleUser => {
       const credential = firebase.auth.GoogleAuthProvider
         .credential(googleUser.getAuthResponse().id_token);
-      firebase.auth().signInWithCredential(credential);     // Sign in with credential from the Google user.
+      firebase.auth().signInWithCredential(credential).then(() => this.route.navigate(['home']));   // Sign in with credential from the Google user.
       return gapi.auth2;
     })
     .catch(() => false);

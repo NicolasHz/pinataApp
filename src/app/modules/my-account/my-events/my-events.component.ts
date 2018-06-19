@@ -45,7 +45,7 @@ export class MyEventsComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
-    this.subscriptions.add(this.eventService.getEvents('events')
+    this.subscriptions.add(this.eventService.getFromDatabase('events')
     .subscribe(response => {
       this.allEvents = Object.keys(response)
       .map(index => response[index])
@@ -93,7 +93,7 @@ export class MyEventsComponent implements OnInit, OnDestroy {
     .then(success => {
       if (success) {
         this.eventService.updateEvent('events', eventData);
-        if (this.util.findUser(eventData)) {
+        if (this.util.findCurrentUser(eventData)) {
           this.toastService.show('Joined to event!', 4000, 'green');
         }
       }
@@ -101,10 +101,10 @@ export class MyEventsComponent implements OnInit, OnDestroy {
   }
 
   leaveEvent(eventData: Evento) {
-    const index = eventData.participants.indexOf(this.util.findUser(eventData));
+    const index = eventData.participants.indexOf(this.util.findCurrentUser(eventData));
     eventData.participants.splice(index, 1);
     this.eventService.updateEvent('events', eventData);
-    if (!this.util.findUser(eventData)) {
+    if (!this.util.findCurrentUser(eventData)) {
       this.toastService.show('Event leaved!', 4000, 'red');
     }
     this.eventService.deleteCalendarEvent(this.util.findCalendarEvent(eventData, this.calendarEvents).id);
@@ -121,7 +121,7 @@ export class MyEventsComponent implements OnInit, OnDestroy {
 
   deleteEvent(response: boolean) {
     if (response) {
-      if (this.selectedEvent.participants.length > 0 && this.util.findUser(this.selectedEvent)) {
+      if (this.selectedEvent.participants.length > 0 && this.util.findCurrentUser(this.selectedEvent)) {
         this.leaveEvent(this.selectedEvent);
       }
       this.eventService.deleteEvent('events', this.selectedEvent);

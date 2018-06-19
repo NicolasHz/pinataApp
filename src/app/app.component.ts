@@ -9,17 +9,17 @@ declare var WOW: any;
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
-  constructor(private router: Router, private gapi: GapiClientService) {}
+  constructor(private router: Router, private gapi: GapiClientService) {
+    this.gapi.initGAPIAuth();
+  }
 
   ngOnInit() {
-    this.gapi.initGAPIAuth();
     this.router.events.subscribe(evt => {
       if (!(evt instanceof NavigationEnd)) {
           return;
       }
-      setTimeout(() => {
-        window.scrollTo(0, 0);
-      }, 1000);
+      window.scrollTo(0, 0);
+
   });
     new WOW().init();
   }

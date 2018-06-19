@@ -156,10 +156,10 @@ export class EventFormComponent extends MzBaseModal implements OnInit {
         participants: this.createParticipants()
       } as Evento;
       this.eventService.updateEvent('events', this.event);
-      const calendarId = this.util.findCalendarEvent(this.event, this.calendarEvents).id;
-      if (calendarId) {
-        this.eventService.updateCalendarEvent(calendarId, this.event);
-      }
+      // const calendarId = this.util.findCalendarEvent(this.event, this.calendarEvents).id;
+      // if (calendarId) {
+      //   this.eventService.updateCalendarEvent(calendarId, this.event);
+      // }
       this.clear();
     } else {
       this.event = {
@@ -172,17 +172,11 @@ export class EventFormComponent extends MzBaseModal implements OnInit {
         creator: this.user,
         participants: this.createParticipants()
       } as Evento;
-      if (this.event.participants.length > 0 && !this.util.findUser(this.event)) {
+      if (this.event.participants.length > 0 && !this.util.findCurrentUser(this.event)) {
         this.event.participants.push(this.user);
         this.eventService.addEvent('events', this.event)
-        .then( createdEvent => {
-          this.event.id = createdEvent.id;
-          this.eventService.addEventToCalendar(this.event)
-            .then(success => {
-              if (success) {
-                this.toastService.show('Joined to event!', 4000, 'green');
-              }
-          });
+        .then( () => {
+            this.toastService.show('Joined to event!', 4000, 'green');
         });
       } else {
         this.eventService.addEvent('events', this.event);

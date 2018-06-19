@@ -1,7 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 
 // Services
-import { UserService } from './../../services/user/user.service';
 import { EventsService } from '../../services/events/events.service';
 import { UtilsService } from '../../services/utils/utils.service';
 import { MzToastService } from 'ngx-materialize';
@@ -35,7 +34,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     private util: UtilsService ) { }
 
   ngOnInit() {
-    this.subscriptions.add(this.eventService.getEvents('birthdays')
+    this.subscriptions.add(this.eventService.getFromDatabase('birthdays')
     .subscribe(response => {
       this.birthdays = Object.keys(response)
       .map(index => response[index])
@@ -45,7 +44,7 @@ export class HomeComponent implements OnInit, OnDestroy {
       .slice(0, 3);
       this.birthdayReady = true;
     }));
-    this.subscriptions.add(this.eventService.getEvents('events')
+    this.subscriptions.add(this.eventService.getFromDatabase('events')
     .subscribe(response => {
       this.events = Object.keys(response)
       .map(index => response[index])
@@ -72,7 +71,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     .then(success => {
       if (success) {
         this.eventService.updateEvent('events', eventData);
-        if (this.util.findUser(eventData)) {
+        if (this.util.findCurrentUser(eventData)) {
           this.toastService.show('Joined to event!', 4000, 'green');
         }
       }
@@ -80,10 +79,10 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   leaveEvent(eventData: Evento) {
-    const index = eventData.participants.indexOf(this.util.findUser(eventData));
+    const index = eventData.participants.indexOf(this.util.findCurrentUser(eventData));
     eventData.participants.splice(index, 1);
     this.eventService.updateEvent('events', eventData);
-    if (!this.util.findUser(eventData)) {
+    if (!this.util.findCurrentUser(eventData)) {
       this.toastService.show('Event leaved!', 4000, 'red');
     }
     const calendarEventId = this.util.findCalendarEvent(eventData, this.calendarEvents).id;

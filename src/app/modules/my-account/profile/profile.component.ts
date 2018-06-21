@@ -51,6 +51,7 @@ export class ProfileComponent implements OnInit, AfterViewInit, OnDestroy {
     this.subscriptions.add(this.store.select('user').subscribe((user: User) => {
       this.user = user;
       this.currentUserImage = this.user.profilePicUrl;
+      console.log(this.user)
       this.initForms();
     }));
     if (this.user.isNewUser && this.util.diferenceOfTimeFromNow(this.user.lastTimeModified, 'minutes') < 1) {

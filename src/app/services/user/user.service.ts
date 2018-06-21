@@ -8,24 +8,17 @@ import { AngularFirestore } from 'angularfire2/firestore';
 import { Store } from '@ngrx/store';
 import * as fromRoot from '../../app.reducer';
 import * as UserActions from '../../actions/user/user.actions';
+import { Observable } from 'rxjs';
 
 declare var gapi: any;
 @Injectable()
 export class UserService {
-  public googleUser;
   constructor(
     private store: Store<fromRoot.State>,
-    private db: AngularFirestore,
     public afAut: AngularFireAuth,
+    private db: AngularFirestore,
     private route: Router) {
     db.firestore.settings({ timestampsInSnapshots: true });
-    this.afAut.authState.subscribe( googleUser => {
-      if (!googleUser) {
-        return;
-      }
-      this.googleUser = googleUser;
-      this.fetchUser();
-    });
   }
 
   addUser(user: User): Promise<boolean> {
@@ -41,8 +34,8 @@ export class UserService {
     });
   }
 
-  fetchUser() {
-    this.db.collection('users').doc(this.googleUser.uid).ref.get()
+  getUser(googleUser): Observable<User> {
+    return Observable.fromPromise(this.db.collection('users').doc(googleUser.uid).ref.get()
     .then(doc => {
       if (doc.exists) {
         const userData = doc.data();
@@ -60,24 +53,24 @@ export class UserService {
           userSince: userData.userSince,
           lastTimeModified: userData.lastTimeModified
         };
-        this.store.dispatch(new UserActions.SetUser(user));
-        if (this.googleUser.metadata.creationTime !== this.googleUser.metadata.lastSignInTime && userData.isNewUser) {
+        console.log('dispatched')
+        if (googleUser.metadata.creationTime !== googleUser.metadata.lastSignInTime && userData.isNewUser) {
           user.isNewUser = false;
-          this.store.dispatch(new UserActions.SetUser(user));
         }
+        return user;
       } else {
         const newUser: User = {
-          email: this.googleUser.email,
-          fullName: this.googleUser.displayName,
-          profilePicUrl: this.googleUser.photoURL,
-          uId: this.googleUser.uid,
-          isNewUser: this.googleUser.metadata.creationTime === this.googleUser.metadata.lastSignInTime,
+          email: googleUser.email,
+          fullName: googleUser.displayName,
+          profilePicUrl: googleUser.photoURL,
+          uId: googleUser.uid,
+          isNewUser: googleUser.metadata.creationTime === googleUser.metadata.lastSignInTime,
           preferences: [],
           dateOfBirth: '',
           onBirthdayList: false,
           hasPayed: false,
-          lastTimeSignedIn: this.googleUser.metadata.lastSignInTime,
-          userSince: this.googleUser.metadata.creationTime,
+          lastTimeSignedIn: googleUser.metadata.lastSignInTime,
+          userSince: googleUser.metadata.creationTime,
           lastTimeModified: new Date().toISOString()
         };
         this.addUser(newUser).then(added => {
@@ -90,7 +83,7 @@ export class UserService {
       }
     }).catch(error => {
         console.log('Error getting user:', error);
-    });
+    }));
   }
 
   login(): Promise<boolean> {

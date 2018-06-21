@@ -1,24 +1,36 @@
 import { Injectable } from '@angular/core';
 import { Router,
          CanActivate } from '@angular/router';
-
-import { UserService } from './../user/user.service';
+import 'rxjs/add/operator/catch';
+import { of } from 'rxjs/observable/of';
 import { Observable } from 'rxjs/Observable';
-
+import { AngularFireAuth } from 'angularfire2/auth';
+import * as fromRoot from '../../app.reducer';
+import * as UserActions from '../../actions/user/user.actions';
+import { Store } from '@ngrx/store';
 @Injectable()
 export class AuthGuardService implements CanActivate {
 
-  constructor(private userService: UserService,
-              private router: Router) { }
+  constructor(
+    private store: Store<fromRoot.State>,
+    public afAut: AngularFireAuth,
+    private router: Router) { }
+
+    getUser(): Observable<any> {
+      return this.afAut.authState.map(googleUser => {
+        if (googleUser) {
+          this.store.dispatch(new UserActions.GetUser(googleUser))
+          return true;
+        } else {
+          this.router.navigate(['/login']);
+          return false;
+        }
+    });
+  }
 
   canActivate(): Observable<boolean> {
-    return this.userService.afAut.authState.map(auth => {
-      if (auth) {
-        return true;
-      } else {
-        this.router.navigate(['/login']);
-        return false;
-      }
-    });
+    return this.getUser()
+      .switchMap(() => of(true))
+      .catch(() => of(false));
   }
 }

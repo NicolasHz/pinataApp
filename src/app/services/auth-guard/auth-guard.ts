@@ -19,13 +19,11 @@ export class AuthGuardService implements CanActivate {
     getUser(): Observable<any> {
       return this.afAut.authState.map(googleUser => {
         if (googleUser) {
-          this.store.dispatch(new UserActions.GetUser(googleUser))
-          return true;
+         this.store.dispatch(new UserActions.GetUser(googleUser))
         } else {
           this.router.navigate(['/login']);
-          return false;
         }
-    });
+      });
   }
 
   canActivate(): Observable<boolean> {

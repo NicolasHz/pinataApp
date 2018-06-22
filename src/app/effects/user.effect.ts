@@ -17,6 +17,13 @@ export class UserEffects {
     .map((action: userActions.GetUser) => action.payload)
     .pipe(switchMap(payload => {
         return this.userService.getUser(payload)
-        .map(user => new userActions.SetUser(user))
+        .map(user => {
+            console.log(user)
+            return new userActions.SetUser(user);
+        })
+        .catch(() => {
+            console.log('you lazy shit, do the fail action');
+            return null;
+        });
     }));
 }

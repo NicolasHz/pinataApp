@@ -34,7 +34,7 @@ export class UserService {
     });
   }
 
-  getUser(googleUser): Observable<User> {
+  getUser(googleUser): Observable<any> {
     return Observable.fromPromise(this.db.collection('users').doc(googleUser.uid).ref.get()
     .then(doc => {
       if (doc.exists) {
@@ -59,27 +59,27 @@ export class UserService {
         }
         return user;
       } else {
-        const newUser: User = {
-          email: googleUser.email,
-          fullName: googleUser.displayName,
-          profilePicUrl: googleUser.photoURL,
-          uId: googleUser.uid,
-          isNewUser: googleUser.metadata.creationTime === googleUser.metadata.lastSignInTime,
-          preferences: [],
-          dateOfBirth: '',
-          onBirthdayList: false,
-          hasPayed: false,
-          lastTimeSignedIn: googleUser.metadata.lastSignInTime,
-          userSince: googleUser.metadata.creationTime,
-          lastTimeModified: new Date().toISOString()
-        };
-        this.addUser(newUser).then(added => {
-          if (added) {
-            this.route.navigate(['my-account']);
-          } else {
-            console.log('error at save and load user');
-          }
-        });
+        // const newUser: User = {
+        //   email: googleUser.email,
+        //   fullName: googleUser.displayName,
+        //   profilePicUrl: googleUser.photoURL,
+        //   uId: googleUser.uid,
+        //   isNewUser: googleUser.metadata.creationTime === googleUser.metadata.lastSignInTime,
+        //   preferences: [],
+        //   dateOfBirth: '',
+        //   onBirthdayList: false,
+        //   hasPayed: false,
+        //   lastTimeSignedIn: googleUser.metadata.lastSignInTime,
+        //   userSince: googleUser.metadata.creationTime,
+        //   lastTimeModified: new Date().toISOString()
+        // };
+        // this.addUser(newUser).then(added => {
+        //   if (added) {
+        //     this.route.navigate(['my-account']);
+        //   } else {
+        //     console.log('error at save and load user');
+        //   }
+        // });
       }
     }).catch(error => {
         console.log('Error getting user:', error);

@@ -19,6 +19,8 @@ import { AuthGuardService } from './services/auth-guard/auth-guard';
 import { GapiClientService } from './services/gapi-client/gapi-client.service';
 import { StoreModule } from '@ngrx/store';
 import { reducers } from './app.reducer';
+import { EffectsModule } from '@ngrx/effects';
+import * as effects from './effects';
 
 @NgModule({
   declarations: [
@@ -31,7 +33,8 @@ import { reducers } from './app.reducer';
     AngularFirestoreModule,
     RoutingModule,
     HttpClientModule,
-    StoreModule.forRoot(reducers)
+    StoreModule.forRoot(reducers),
+    EffectsModule.forRoot(effects.effects)
   ],
   providers: [
     UserService,

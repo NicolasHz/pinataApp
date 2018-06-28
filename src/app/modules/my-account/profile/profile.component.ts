@@ -7,7 +7,6 @@ import {
   FormArray,
   AbstractControl,
   FormControl} from '@angular/forms';
-import { Router } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
 
 // Options-Validators
@@ -41,7 +40,6 @@ export class ProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 
   constructor(
     private userService: UserService,
-    private router: Router,
     private formBuilder: FormBuilder,
     private util: UtilsService,
     private store: Store<fromRoot.State>,
@@ -198,10 +196,6 @@ export class ProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 
   logOutUser() {
     this.userService.logout()
-    .then(() => {
-      this.router.navigate(['/login']);
-    })
-    .catch(error => alert(error));
   }
 
   ngOnDestroy() {

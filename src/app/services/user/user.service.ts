@@ -9,11 +9,13 @@ import { Store } from '@ngrx/store';
 import * as fromRoot from '../../app.reducer';
 import * as UserActions from '../../actions/user/user.actions';
 import { Observable } from 'rxjs';
+import { GoogleAuthService } from 'ng-gapi';
+import { take } from 'rxjs/operators/take';
 
-declare var gapi: any;
 @Injectable()
 export class UserService {
   constructor(
+    private googleAuthService: GoogleAuthService,
     private store: Store<fromRoot.State>,
     public afAut: AngularFireAuth,
     private db: AngularFirestore,
@@ -23,49 +25,51 @@ export class UserService {
 
   addUser(user: User): Observable<any> {
     return Observable.fromPromise(this.db.collection('users').doc(user.uId).set(user)
-    .catch(error => {
+      .catch(error => {
         console.error('Error writing user: ', error);
-    }));
+      }));
   }
 
   getUser(googleUser): Observable<any> {
     return Observable.fromPromise(this.db.collection('users').doc(googleUser.uid).ref.get()
-    .catch(error => {
+      .catch(error => {
         console.log('Error getting user:', error);
-    }));
+      }));
   }
 
-  login(): Promise<boolean> {
-    return gapi.auth2.getAuthInstance().signIn({prompt: 'select_account'})
-    .then(googleUser => {
-      const credential = firebase.auth.GoogleAuthProvider
-        .credential(googleUser.getAuthResponse().id_token);
-      firebase.auth().signInWithCredential(credential).then(() => this.route.navigate(['home']));   // Sign in with credential from the Google user.
-      return gapi.auth2;
-    })
-    .catch(() => false);
+  login() {
+    this.googleAuthService.getAuth().pipe(take(1)).subscribe(auth => {
+      auth.signIn({ prompt: 'select_account' })
+        .then(googleUser => {
+          const credential = firebase.auth.GoogleAuthProvider
+            .credential(googleUser.getAuthResponse().id_token);
+          firebase.auth().signInWithCredential(credential).then(() => this.route.navigate(['/home']));   // Sign in with credential from the Google user.
+        })
+        .catch(r => console.log('something wrong log in', r));
+    });
   }
 
-  logout(): Promise<boolean> {
-    return gapi.auth2.getAuthInstance().signOut()
-      .then(() => {
-        return this.afAut.auth.signOut()
-        .then(() => {
-          this.store.dispatch(new UserActions.GetUserSuccess(userInitialState));
-          return true;
-      })
-      .catch(() => false);
+  logout() {
+    this.googleAuthService.getAuth().pipe(take(1)).subscribe(auth => {
+      auth.signOut().then(() => {
+        this.afAut.auth.signOut()
+          .then(() => {
+            this.store.dispatch(new UserActions.GetUserSuccess(userInitialState));
+            this.route.navigate(['/login']);
+          })
+          .catch(r => console.log('something wrong log out', r));
+      });
     });
   }
 
   getUsers() {
     return this.db
-    .collection('users')
-    .snapshotChanges()
-    .map(docArray => {
-      return docArray.map(doc => {
-        return doc.payload.doc.data();
+      .collection('users')
+      .snapshotChanges()
+      .map(docArray => {
+        return docArray.map(doc => {
+          return doc.payload.doc.data();
+        });
       });
-    });
   }
 }

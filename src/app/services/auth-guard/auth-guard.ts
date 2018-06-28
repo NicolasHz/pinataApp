@@ -20,7 +20,7 @@ export class AuthGuardService implements CanActivate {
   constructor(
     private actions$: Actions,
     private store$: Store<fromRoot.State>,
-    public afAut: AngularFireAuth,
+    private afAut: AngularFireAuth,
     private router: Router) {
     this.user$ = this.store$.select('user');
   }
@@ -30,6 +30,7 @@ export class AuthGuardService implements CanActivate {
       .switchMap(user => {
         let result;
         return this.afAut.authState.switchMap(googleUser => {
+          console.log(user)
           if (user.uId) {
             result = Observable.of(true);
           } else if (!user.uId && googleUser) {

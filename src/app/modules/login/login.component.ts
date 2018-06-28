@@ -18,10 +18,9 @@ export class LoginComponent {
 
   logInUser() {
     this.isLoading = true;
-    this.userService.login().then(allow => {
-      this.isLoading = allow;
-      this.allow = allow;
-    });
+    this.userService.login();
+    this.isLoading = true;
+    this.allow = true;
   }
 
   changeIcon() {

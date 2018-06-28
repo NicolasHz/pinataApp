@@ -16,17 +16,34 @@ import { environment } from '../environments/environment';
 // Services
 import { UserService } from './services/user/user.service';
 import { AuthGuardService } from './services/auth-guard/auth-guard';
-import { GapiClientService } from './services/gapi-client/gapi-client.service';
 import { StoreModule } from '@ngrx/store';
 import { reducers } from './app.reducer';
 import { EffectsModule } from '@ngrx/effects';
 import * as effects from './effects';
 
+import {
+  GoogleApiModule,
+  // GoogleApiService,
+  // GoogleAuthService,
+  NgGapiClientConfig,
+  NG_GAPI_CONFIG,
+  // GoogleApiConfig
+} from 'ng-gapi';
+
+const gapiClientConfig: NgGapiClientConfig = {
+  client_id : '289697189757-l3muf4hpsin6f3dnt73ka1jvh1ckvnd9.apps.googleusercontent.com',
+  discoveryDocs : ['https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest'],
+  scope : 'https://www.googleapis.com/auth/calendar'
+};
 @NgModule({
   declarations: [
     AppComponent,
   ],
   imports: [
+    GoogleApiModule.forRoot({
+      provide: NG_GAPI_CONFIG,
+      useValue: gapiClientConfig
+    }),
     BrowserModule,
     BrowserAnimationsModule,
     AngularFireModule.initializeApp(environment.firebase),
@@ -40,8 +57,7 @@ import * as effects from './effects';
     UserService,
     AngularFireAuth,
     AuthGuardService,
-    HttpClient,
-    GapiClientService
+    HttpClient
   ],
   bootstrap: [AppComponent]
 })

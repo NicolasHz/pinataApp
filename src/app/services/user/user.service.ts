@@ -21,67 +21,16 @@ export class UserService {
     db.firestore.settings({ timestampsInSnapshots: true });
   }
 
-  addUser(user: User): Promise<boolean> {
-    return this.db.collection('users').doc(user.uId).set(user)
-    .then(() => {
-        console.log( 'User successfully written!');
-        this.store.dispatch(new UserActions.SetUser(user));
-        return true;
-    })
+  addUser(user: User): Observable<any> {
+    return Observable.fromPromise(this.db.collection('users').doc(user.uId).set(user)
     .catch(error => {
         console.error('Error writing user: ', error);
-        return false;
-    });
+    }));
   }
 
   getUser(googleUser): Observable<any> {
     return Observable.fromPromise(this.db.collection('users').doc(googleUser.uid).ref.get()
-    .then(doc => {
-      if (doc.exists) {
-        const userData = doc.data();
-        const user: User =  {
-          email: userData.email,
-          fullName: userData.fullName,
-          profilePicUrl: userData.profilePicUrl,
-          uId: userData.uId,
-          isNewUser: userData.isNewUser,
-          preferences: userData.preferences,
-          dateOfBirth: userData.dateOfBirth,
-          onBirthdayList: userData.onBirthdayList,
-          hasPayed: userData.hasPayed,
-          lastTimeSignedIn: userData.lastTimeSignedIn,
-          userSince: userData.userSince,
-          lastTimeModified: userData.lastTimeModified
-        };
-        console.log('dispatched')
-        if (googleUser.metadata.creationTime !== googleUser.metadata.lastSignInTime && userData.isNewUser) {
-          user.isNewUser = false;
-        }
-        return user;
-      } else {
-        // const newUser: User = {
-        //   email: googleUser.email,
-        //   fullName: googleUser.displayName,
-        //   profilePicUrl: googleUser.photoURL,
-        //   uId: googleUser.uid,
-        //   isNewUser: googleUser.metadata.creationTime === googleUser.metadata.lastSignInTime,
-        //   preferences: [],
-        //   dateOfBirth: '',
-        //   onBirthdayList: false,
-        //   hasPayed: false,
-        //   lastTimeSignedIn: googleUser.metadata.lastSignInTime,
-        //   userSince: googleUser.metadata.creationTime,
-        //   lastTimeModified: new Date().toISOString()
-        // };
-        // this.addUser(newUser).then(added => {
-        //   if (added) {
-        //     this.route.navigate(['my-account']);
-        //   } else {
-        //     console.log('error at save and load user');
-        //   }
-        // });
-      }
-    }).catch(error => {
+    .catch(error => {
         console.log('Error getting user:', error);
     }));
   }
@@ -102,7 +51,7 @@ export class UserService {
       .then(() => {
         return this.afAut.auth.signOut()
         .then(() => {
-          this.store.dispatch(new UserActions.SetUser(userInitialState));
+          this.store.dispatch(new UserActions.GetUserSuccess(userInitialState));
           return true;
       })
       .catch(() => false);

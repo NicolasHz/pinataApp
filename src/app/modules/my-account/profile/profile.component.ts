@@ -21,6 +21,7 @@ import { UtilsService } from '../../../services/utils/utils.service';
 import { UploadImageService } from '../../../services/upload-image/upload-image.service';
 
 import { Store } from '@ngrx/store';
+import * as UserActions from '../../../actions/user/user.actions';
 import * as fromRoot from '../../../app.reducer';
 @Component({
   selector: 'app-profile',
@@ -146,15 +147,18 @@ export class ProfileComponent implements OnInit, AfterViewInit, OnDestroy {
         preferences: updatedPreferences
       };
     }
-    this.userService.addUser(this.user).then(response => {
-      if (response) {
-        this.initForms();
-        this.showToast('Profile Updated!', 'green');
-      } else {
-        this.initForms();
-        this.showToast('Something went wrong please try again', 'red');
-      }
-    });
+    this.store.dispatch(new UserActions.AddUser(this.user));
+    this.initForms();
+    this.showToast('Profile Updated!', 'green');
+    // this.userService.addUser(this.user).subscribe(response => {
+    //   if (response) {
+      // this.initForms();
+      // this.showToast('Profile Updated!', 'green');
+    //   } else {
+    //     this.initForms();
+    //     this.showToast('Something went wrong please try again', 'red');
+    //   }
+    // });
   }
 
   cancelForm() {

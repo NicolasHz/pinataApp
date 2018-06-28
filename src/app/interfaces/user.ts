@@ -12,3 +12,12 @@ export interface User {
     userSince?: string;
     lastTimeModified?: string;
 }
+
+export interface GUser {
+    email: string;
+    displayName: string;
+    photoURL: string;
+    uid: string;
+    creationTime: string;
+    lastSignInTime: string;
+}

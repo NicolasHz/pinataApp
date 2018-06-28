@@ -14,6 +14,7 @@ import { take } from 'rxjs/operators/take';
 
 @Injectable()
 export class UserService {
+  private auth;
   constructor(
     private googleAuthService: GoogleAuthService,
     private store: Store<fromRoot.State>,
@@ -21,6 +22,7 @@ export class UserService {
     private db: AngularFirestore,
     private route: Router) {
     db.firestore.settings({ timestampsInSnapshots: true });
+    this.googleAuthService.getAuth().pipe(take(1)).subscribe(auth => this.auth = auth);
   }
 
   addUser(user: User): Observable<any> {
@@ -38,27 +40,23 @@ export class UserService {
   }
 
   login() {
-    this.googleAuthService.getAuth().pipe(take(1)).subscribe(auth => {
-      auth.signIn({ prompt: 'select_account' })
-        .then(googleUser => {
-          const credential = firebase.auth.GoogleAuthProvider
-            .credential(googleUser.getAuthResponse().id_token);
-          firebase.auth().signInWithCredential(credential).then(() => this.route.navigate(['/home']));   // Sign in with credential from the Google user.
-        })
-        .catch(r => console.log('something wrong log in', r));
-    });
+    this.auth.signIn({ prompt: 'select_account' })
+      .then(googleUser => {
+        const credential = firebase.auth.GoogleAuthProvider
+          .credential(googleUser.getAuthResponse().id_token);
+        firebase.auth().signInWithCredential(credential).then(() => this.route.navigate(['/home']));   // Sign in with credential from the Google user.
+      })
+      .catch(r => console.log('something wrong log in', r));
   }
 
   logout() {
-    this.googleAuthService.getAuth().pipe(take(1)).subscribe(auth => {
-      auth.signOut().then(() => {
-        this.afAut.auth.signOut()
-          .then(() => {
-            this.store.dispatch(new UserActions.GetUserSuccess(userInitialState));
-            this.route.navigate(['/login']);
-          })
-          .catch(r => console.log('something wrong log out', r));
-      });
+    this.auth.signOut().then(() => {
+      this.afAut.auth.signOut()
+        .then(() => {
+          this.store.dispatch(new UserActions.GetUserSuccess(userInitialState));
+          this.route.navigate(['/login']);
+        })
+        .catch(r => console.log('something wrong log out', r));
     });
   }
 

@@ -147,16 +147,6 @@ export class ProfileComponent implements OnInit, AfterViewInit, OnDestroy {
     }
     this.store.dispatch(new UserActions.AddUser(this.user));
     this.initForms();
-    this.showToast('Profile Updated!', 'green');
-    // this.userService.addUser(this.user).subscribe(response => {
-    //   if (response) {
-      // this.initForms();
-      // this.showToast('Profile Updated!', 'green');
-    //   } else {
-    //     this.initForms();
-    //     this.showToast('Something went wrong please try again', 'red');
-    //   }
-    // });
   }
 
   cancelForm() {
@@ -195,7 +185,7 @@ export class ProfileComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   logOutUser() {
-    this.userService.logout()
+    this.userService.logout();
   }
 
   ngOnDestroy() {

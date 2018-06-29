@@ -1,3 +1,4 @@
+import { MzToastService } from 'ngx-materialize';
 import { RoutingModule } from './app-routing.module';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
@@ -58,6 +59,7 @@ const gapiClientConfig: NgGapiClientConfig = {
     EffectsModule.forRoot(effects.effects)
   ],
   providers: [
+    MzToastService,
     UserService,
     AngularFireAuth,
     AuthGuardService,

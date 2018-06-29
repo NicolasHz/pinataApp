@@ -6,12 +6,14 @@ import * as userActions from '../actions/user/user.actions';
 import { UserService } from '../services/user/user.service';
 import { switchMap } from 'rxjs/operators';
 import { User } from '../interfaces/user';
+import { MzToastService } from 'ngx-materialize';
 
 @Injectable()
 export class UserEffects {
     constructor(
         private actions$: Actions,
-        private userService: UserService
+        private userService: UserService,
+        private toastService: MzToastService
     ) { }
 
     @Effect()
@@ -51,9 +53,11 @@ export class UserEffects {
                 return this.userService
                     .addUser(payload)
                     .map(() => {
+                        this.toastService.show('Profile Updated!', 4000, 'green');
                         return new userActions.AddUserSuccess(payload);
                     })
                     .catch(err => {
+                        this.toastService.show('Something went wrong please try again', 400, 'red');
                         console.log('you lazy shit, do the addUser fail action', err);
                         return Observable.of(new userActions.AddUserFail());
                     });

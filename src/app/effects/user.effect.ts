@@ -1,3 +1,4 @@
+import { Observable } from 'rxjs/Observable';
 import { Injectable } from '@angular/core';
 import { Effect, Actions } from '@ngrx/effects';
 
@@ -30,13 +31,14 @@ export class UserEffects {
                             }
                             return new userActions.GetUserSuccess(user);
                         } else {
+                            console.log('adding')
                             const user = this.createUser(payload, true);
                             return new userActions.AddUser(user);
                         }
                     })
-                    .catch(() => {
-                        console.log('you lazy shit, do the getUser fail action');
-                        return null;
+                    .catch(err => {
+                        console.log('you lazy shit, do the getUser fail action', err);
+                        return Observable.of(new userActions.GetUserFail());
                     });
             })
         );
@@ -46,19 +48,19 @@ export class UserEffects {
         .map((action: userActions.AddUser) => action.payload)
         .pipe(
             switchMap(payload => {
-                console.log(payload)
-                return this.userService.addUser(payload)
-                    .map(user => {
-                        return new userActions.AddUserSuccess(user);
+                return this.userService
+                    .addUser(payload)
+                    .map(() => {
+                        return new userActions.AddUserSuccess(payload);
                     })
-                    .catch(() => {
-                        console.log('you lazy shit, do the addUser fail action');
-                        return null;
+                    .catch(err => {
+                        console.log('you lazy shit, do the addUser fail action', err);
+                        return Observable.of(new userActions.AddUserFail());
                     });
             })
         );
 
-    createUser(userData, addUser = false) {
+    createUser(userData, addUser = false): User {
         let user: User;
         if (addUser) {
             user = {
@@ -66,13 +68,13 @@ export class UserEffects {
                 fullName: userData.displayName,
                 profilePicUrl: userData.photoURL,
                 uId: userData.uid,
-                isNewUser: userData.metadata.creationTime === userData.metadata.lastSignInTime,
+                isNewUser: userData.creationTime === userData.lastSignInTime,
                 preferences: [],
                 dateOfBirth: '',
                 onBirthdayList: false,
                 hasPayed: false,
-                lastTimeSignedIn: userData.metadata.lastSignInTime,
-                userSince: userData.metadata.creationTime,
+                lastTimeSignedIn: userData.lastSignInTime,
+                userSince: userData.creationTime,
                 lastTimeModified: new Date().toISOString()
             };
         } else {

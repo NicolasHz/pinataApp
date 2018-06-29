@@ -13,9 +13,9 @@ export function reducer(
     case userActions.GET_USER_SUCCESS: {
       return Object.assign({}, state, action.payload);
     }
-    case userActions.GET_USER_FAIL: {
-      return Object.assign({}, state, action.payload);
-    }
+    // case userActions.GET_USER_FAIL: {
+    //   return Object.assign({}, state, action.payload);
+    // }
     // case userActions.ADD_USER: {
     //   return Object.assign({}, state, action.payload);
     // }

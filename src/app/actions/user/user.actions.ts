@@ -19,7 +19,6 @@ constructor(public payload: User) {}
 
 export class GetUserFail implements Action {
   readonly type = GET_USER_FAIL;
-  constructor(public payload: User) {}
   }
 
 export class AddUser implements Action {
@@ -34,7 +33,6 @@ export class AddUserSuccess implements Action {
 
 export class AddUserFail implements Action {
   readonly type = ADD_USER_FAIL;
-  constructor(public payload: User) {}
 }
 
 export type UserActions

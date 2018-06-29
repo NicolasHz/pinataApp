@@ -16,7 +16,7 @@ import { User, GUser } from '../../interfaces/user';
 @Injectable()
 export class AuthGuardService implements CanActivate {
   private user$: Observable<User>;
-  private fetching: boolean;
+  private fetching = false;
   constructor(
     private actions$: Actions,
     private store$: Store<fromRoot.State>,

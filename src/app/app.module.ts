@@ -19,6 +19,7 @@ import { AuthGuardService } from './services/auth-guard/auth-guard';
 import { StoreModule } from '@ngrx/store';
 import { reducers } from './app.reducer';
 import { EffectsModule } from '@ngrx/effects';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import * as effects from './effects';
 
 import {
@@ -51,6 +52,9 @@ const gapiClientConfig: NgGapiClientConfig = {
     RoutingModule,
     HttpClientModule,
     StoreModule.forRoot(reducers),
+    StoreDevtoolsModule.instrument({
+      maxAge: 5
+    }),
     EffectsModule.forRoot(effects.effects)
   ],
   providers: [

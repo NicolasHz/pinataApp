@@ -14,11 +14,13 @@ export class UserEffects {
     ) { }
 
     @Effect()
-    getUser$ = this.actions$.ofType(userActions.GET_USER)
+    getUser$ = this.actions$
+        .ofType(userActions.GET_USER)
         .map((action: userActions.GetUser) => action.payload)
         .pipe(
             switchMap(payload => {
-                return this.userService.getUser(payload)
+                return this.userService
+                    .getUser(payload)
                     .map(doc => {
                         if (doc.exists) {
                             const userData = doc.data();

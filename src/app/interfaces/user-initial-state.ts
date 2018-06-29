@@ -3,7 +3,7 @@ export const userInitialState = {
   fullName: '',
   profilePicUrl: '',
   uId: '',
-  preferences: [],
+  preferences: null,
   isNewUser: true,
   dateOfBirth: '',
   onBirthdayList: false,

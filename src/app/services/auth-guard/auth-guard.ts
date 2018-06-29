@@ -27,11 +27,10 @@ export class AuthGuardService implements CanActivate {
 
   canActivate(): Observable<boolean> {
     return this.user$
-      .switchMap(user => {
-        let result;
+      .mergeMap((user: User) => {
         return this.afAut.authState.switchMap(googleUser => {
+          let result;
           if (user.uId) {
-            console.log('go');
             result = Observable.of(true);
           } else if (googleUser) {
             const gUser: GUser = {
@@ -49,7 +48,6 @@ export class AuthGuardService implements CanActivate {
             result = this.actions$
               .ofType(UserActions.GET_USER_SUCCESS)
               .map(action => {
-                console.log('wadup')
                 this.fetching = false;
                 return action instanceof UserActions.GetUserSuccess;
               });

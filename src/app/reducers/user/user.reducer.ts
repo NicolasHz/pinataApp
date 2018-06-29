@@ -7,18 +7,18 @@ export function reducer(
   action: userActions.UserActions
 ): User {
   switch (action.type) {
-    case userActions.GET_USER: {
-      return Object.assign({}, state, action.payload);
-    }
+    // case userActions.GET_USER: {
+    //   return Object.assign({}, state, action.payload);
+    // }
     case userActions.GET_USER_SUCCESS: {
       return Object.assign({}, state, action.payload);
     }
     case userActions.GET_USER_FAIL: {
       return Object.assign({}, state, action.payload);
     }
-    case userActions.ADD_USER: {
-      return Object.assign({}, state, action.payload);
-    }
+    // case userActions.ADD_USER: {
+    //   return Object.assign({}, state, action.payload);
+    // }
     case userActions.ADD_USER_SUCCESS: {
       return Object.assign({}, state, action.payload);
     }

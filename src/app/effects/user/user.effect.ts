@@ -2,10 +2,10 @@ import { Observable } from 'rxjs/Observable';
 import { Injectable } from '@angular/core';
 import { Effect, Actions } from '@ngrx/effects';
 
-import * as userActions from '../actions/user/user.actions';
-import { UserService } from '../services/user/user.service';
+import * as userActions from '../../actions/user/user.actions';
+import { UserService } from '../../services/user/user.service';
 import { switchMap } from 'rxjs/operators';
-import { User } from '../interfaces/user';
+import { User } from '../../interfaces/user';
 import { MzToastService } from 'ngx-materialize';
 
 @Injectable()

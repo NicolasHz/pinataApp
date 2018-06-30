@@ -63,12 +63,8 @@ export class EventComponent implements OnInit, AfterViewInit, OnDestroy {
       .map(index => response[index]);
     }));
     this.subscriptions.add(
-      this.eventService.calendarEvents.subscribe(eventsFromCalendar => {
-        this.calendarEvents = eventsFromCalendar;
-        console.log(this.calendarEvents)
-      })
+      this.store.select('calendar').subscribe(r => console.log(r))
     );
-    this.store.select('calendar').subscribe(r => console.log(r)); // REMOVE
   }
 
   ngAfterViewInit() {

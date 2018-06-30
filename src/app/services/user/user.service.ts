@@ -42,6 +42,7 @@ export class UserService {
   login() {
     this.auth.signIn({ prompt: 'select_account' })
       .then(googleUser => {
+        console.log(googleUser)
         const credential = firebase.auth.GoogleAuthProvider
           .credential(googleUser.getAuthResponse().id_token);
         firebase.auth().signInWithCredential(credential).then(() => this.route.navigate(['/home']));   // Sign in with credential from the Google user.

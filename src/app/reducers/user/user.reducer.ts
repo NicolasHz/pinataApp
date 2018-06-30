@@ -22,9 +22,9 @@ export function reducer(
     case userActions.ADD_USER_SUCCESS: {
       return Object.assign({}, state, action.payload);
     }
-    case userActions.ADD_USER_FAIL: {
-      return Object.assign({}, state, action.payload);
-    }
+    // case userActions.ADD_USER_FAIL: {
+    //   return Object.assign({}, state, action.payload);
+    // }
     default: {
       return state;
     }

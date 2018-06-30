@@ -11,6 +11,7 @@ import { User } from './../../interfaces/user';
 
 // RxJs
 import { Subscription } from 'rxjs/Subscription';
+import { first } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 import * as fromRoot from '../../app.reducer';
 @Component({
@@ -28,7 +29,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   public birthdayReady = false;
 
   constructor(
-    private store: Store<fromRoot.State>,
+    private store$: Store<fromRoot.State>,
     private toastService: MzToastService,
     private eventService: EventsService,
     private util: UtilsService ) { }
@@ -53,13 +54,13 @@ export class HomeComponent implements OnInit, OnDestroy {
       .slice(0, 3);
       this.eventsReady = true;
     }));
-    this.subscriptions.add(this.store.select('user')
+    this.subscriptions.add(this.store$.select('user')
       .subscribe((user: User) => {
         this.user = user;
       })
     );
     this.subscriptions.add(
-      this.eventService.calendarEvents.subscribe(eventsFromCalendar => {
+      this.store$.select('calendar').subscribe(eventsFromCalendar => {
         this.calendarEvents = eventsFromCalendar;
       })
     );
@@ -68,12 +69,10 @@ export class HomeComponent implements OnInit, OnDestroy {
   joinEvent(eventData: Evento) {
     eventData.participants.push(this.user);
     this.eventService.addEventToCalendar(eventData)
-    .then(success => {
-      if (success) {
-        this.eventService.updateEvent('events', eventData);
-        if (this.util.findCurrentUser(eventData)) {
-          this.toastService.show('Joined to event!', 4000, 'green');
-        }
+    .pipe(first())
+    .subscribe(() => {
+      if (this.util.findCurrentUser(eventData)) {
+        this.toastService.show('Joined to event!', 4000, 'green');
       }
     });
   }

@@ -1,9 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from 'angularfire2/firestore';
 
-import { take } from 'rxjs/operators/take';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-
 import { Evento } from './../../interfaces/evento';
 import { CalendarEventI } from './../../interfaces/calendar-event';
 
@@ -15,12 +12,13 @@ import * as fromRoot from '../../app.reducer';
 import * as CalendarActions from '../../actions/calendar/calendar.actions';
 import { Store } from '@ngrx/store';
 
+import { Observable } from 'rxjs';
+import { first } from 'rxjs/operators';
+
 declare var gapi: any;
 @Injectable()
 export class EventsService {
-  public calendarEvents: BehaviorSubject<any> = new BehaviorSubject<any>([]);
   private calendar;
-  private auth;
   constructor(
     private store$: Store<fromRoot.State>,
     private googleAuthService: GoogleAuthService,
@@ -28,14 +26,16 @@ export class EventsService {
     private util: UtilsService,
   ) {
     db.firestore.settings({ timestampsInSnapshots: true });
-    this.googleAuthService.getAuth().pipe(take(1)).subscribe(() => {
-      gapi.load('client', () => {
-        gapi.client.load('calendar', 'v3', () => {
-          this.calendar = gapi.client.calendar;
-          this.getEventsFromCalendar();
+    this.googleAuthService.getAuth()
+      .pipe(first())
+      .subscribe(() => {
+        gapi.load('client', () => {
+          gapi.client.load('calendar', 'v3', () => {
+            this.calendar = gapi.client.calendar;
+            this.getEventsFromCalendar();
+          });
         });
       });
-    });
   }
 
   getFromDatabase(eventsType: string) {
@@ -103,69 +103,53 @@ export class EventsService {
       if (!response) {
         return;
       }
-      console.log(response.result.items)
       this.store$.dispatch(new CalendarActions.SetCalendar(response.result.items));
     }).catch(() => console.log('something wrong at fetching events from calendar'));
   }
 
-  addEventToCalendar(eventToAdd: Evento): Promise<boolean> {
+  addEventToCalendar(eventToAdd: Evento): Observable<boolean> {
     const calendarEvent = this.createCalendarEvent(eventToAdd);
     calendarEvent.id = this.util.encode32(eventToAdd.id + this.util.makePlusId(5));
-    return this.auth.then(() => {
-      gapi.client.calendar.events.insert({
+    return new Observable(observer => {
+      this.calendar.events.insert({
         calendarId: 'primary',
         resource: calendarEvent
-      })
-        .execute(response => {
-          if (!response.error || response !== false) {
-            this.getEventsFromCalendar();
-          }
-        });
-      return true;
-    })
-      .catch(() => false);
+      }).execute(response => {
+        if (!response.error || response !== false) {
+          this.getEventsFromCalendar();
+          this.updateEvent('events', eventToAdd);
+          observer.next(true);
+        } else { observer.next(false); }
+      });
+    });
   }
 
-  deleteCalendarEvent(id: string): Promise<boolean> {
-    return this.auth
-      .then(() => {
-        gapi.client.calendar.events.delete({
-          calendarId: 'primary',
-          eventId: id
-        })
-          .execute(response => {
-            if (response.error || response === false) {
-              console.log('Error at delete calendar Event');
-            } else {
-              this.getEventsFromCalendar();
-              console.log('Success at delete calendar Event');
-            }
-          });
-        return true;
-      })
-      .catch(() => false);
+  deleteCalendarEvent(id: string) {
+    this.calendar.events.delete({
+      calendarId: 'primary',
+      eventId: id
+    }).execute(response => {
+      if (!response.error || response !== false) {
+        this.getEventsFromCalendar();
+      }
+    });
+
   }
 
-  updateCalendarEvent(id: string, eventToUpdate: Evento): Promise<boolean> {
+  updateCalendarEvent(id: string, eventToUpdate: Evento): Observable<boolean> {
     const calendarEvent = this.createCalendarEvent(eventToUpdate);
-    return this.auth
-      .then(() => {
-        gapi.client.calendar.events.patch({
-          calendarId: 'primary',
-          eventId: id,
-          resource: calendarEvent
-        })
-          .execute(response => {
-            if (response.error || response === false) {
-              console.log('Error at update calendar Event');
-            } else {
-              this.getEventsFromCalendar();
-              console.log('Success at update calendar Event');
-            }
-          });
-        return true;
-      })
-      .catch(() => false);
+    return new Observable(observer => {
+      this.calendar.events.patch({
+        calendarId: 'primary',
+        eventId: id,
+        resource: calendarEvent
+      }).execute(response => {
+        if (!response.error || response !== false) {
+          this.getEventsFromCalendar();
+          observer.next(true);
+        } else { observer.next(false); }
+      });
+    });
   }
 
   createCalendarEvent(eventToAdd: Evento): CalendarEventI {

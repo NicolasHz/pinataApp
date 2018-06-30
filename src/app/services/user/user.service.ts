@@ -1,16 +1,26 @@
-import { Router } from '@angular/router';
-import { User } from './../../interfaces/user';
-import { userInitialState } from './../../interfaces/user-initial-state';
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
+
+// Firebase
+import { AngularFirestore } from 'angularfire2/firestore';
 import { AngularFireAuth } from 'angularfire2/auth';
 import * as firebase from 'firebase/app';
-import { AngularFirestore } from 'angularfire2/firestore';
+
+// Interfaces
+import { userInitialState } from './../../interfaces/user-initial-state';
+import { User } from './../../interfaces/user';
+
+// NgRx
 import { Store } from '@ngrx/store';
 import * as fromRoot from '../../app.reducer';
 import * as UserActions from '../../actions/user/user.actions';
-import { Observable } from 'rxjs';
+
+// Services
 import { GoogleAuthService } from 'ng-gapi';
-import { take } from 'rxjs/operators/take';
+
+// RxJs
+import { Observable } from 'rxjs';
+import { first } from 'rxjs/operators';
 
 @Injectable()
 export class UserService {
@@ -22,7 +32,9 @@ export class UserService {
     private db: AngularFirestore,
     private route: Router) {
     db.firestore.settings({ timestampsInSnapshots: true });
-    this.googleAuthService.getAuth().pipe(take(1)).subscribe(auth => this.auth = auth);
+    this.googleAuthService.getAuth()
+      .pipe(first())
+      .subscribe(auth => this.auth = auth);
   }
 
   addUser(user: User): Observable<any> {
@@ -42,7 +54,6 @@ export class UserService {
   login() {
     this.auth.signIn({ prompt: 'select_account' })
       .then(googleUser => {
-        console.log(googleUser)
         const credential = firebase.auth.GoogleAuthProvider
           .credential(googleUser.getAuthResponse().id_token);
         firebase.auth().signInWithCredential(credential).then(() => this.route.navigate(['/home']));   // Sign in with credential from the Google user.

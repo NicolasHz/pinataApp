@@ -8,7 +8,7 @@ import { CalendarEventI } from './../../interfaces/calendar-event';
 // Utils
 import * as moment from 'moment';
 import { ENCODE32, DECODE32 } from './encode-decode';
-import { take } from 'rxjs/operators/take';
+import { first } from 'rxjs/operators';
 
 // NgRx
 import { Store } from '@ngrx/store';
@@ -21,11 +21,13 @@ export class UtilsService {
   public encode32 = ENCODE32;
   public decode32 = DECODE32;
 
-  constructor( private store: Store<fromRoot.State>) {
-    this.store.select('user').pipe(take(3)).subscribe((user: User) => {
-      this.user = user;
-    });
-   }
+  constructor(private store: Store<fromRoot.State>) {
+    this.store.select('user')
+      .pipe(first())
+      .subscribe((user: User) => {
+        this.user = user;
+      });
+  }
 
   scrolled(doc: Document) {
     const isChrome = navigator.userAgent.indexOf('Chrome/') > -1;
@@ -34,18 +36,18 @@ export class UtilsService {
     const toTop = doc.documentElement.scrollTop;
 
     if (isChrome || isExplorer) {
-     if (toTop > 50) {
-      return true;
-     } else if (this.scrolled && toTop < 5) {
-      return false;
-     }
+      if (toTop > 50) {
+        return true;
+      } else if (this.scrolled && toTop < 5) {
+        return false;
+      }
     } else {
-     if ( bodyTop > 50 ) {
-      return true;
-     } else if (this.scrolled && bodyTop < 5) {
-      return false;
+      if (bodyTop > 50) {
+        return true;
+      } else if (this.scrolled && bodyTop < 5) {
+        return false;
+      }
     }
-   }
   }
 
   isGlobantUser(user: User) {
@@ -57,28 +59,28 @@ export class UtilsService {
   }
 
   findCurrentUser(eventData: Evento) {
-    return eventData.participants.find( o => o.uId === this.user.uId);
+    return eventData.participants.find(o => o.uId === this.user.uId);
   }
 
   findCalendarEvent(eventData: Evento, calendarEvent: CalendarEventI[]): CalendarEventI { // fixMe
     return calendarEvent
-      .find( calendarObject =>  {
+      .find(calendarObject => {
         const decodedId = this.decode32(calendarObject.id.replace(/_.*/, ''));
         const isId = new RegExp('(?:' + eventData.id + ')').test(decodedId);
-        if ( isId ) {
+        if (isId) {
           return true;
         } else {
           return false;
         }
       }
-    );
+      );
   }
 
   deleteOldDatesEvents(event: Evento, from = new Date()): boolean {
-      return event.end >= moment(from).format();
+    return event.end >= moment(from).format();
   }
 
-  getCurrentUserEvents(event: Evento): boolean  {
+  getCurrentUserEvents(event: Evento): boolean {
     return event.creator.uId === this.user.uId;
   }
 
@@ -98,7 +100,7 @@ export class UtilsService {
     return text;
   }
 
-  diferenceOfTimeFromNow(date, as: 'hours'|'minutes' = 'hours') {
+  diferenceOfTimeFromNow(date, as: 'hours' | 'minutes' = 'hours') {
     const now = new Date();
     if (as === 'minutes') {
       return moment.duration(moment(now).diff(moment(date))).asMinutes();
@@ -108,8 +110,8 @@ export class UtilsService {
 
   digestYearOfBirthday(birthday) {
     const incomingYear = moment(birthday.start).format('YYYY');
-    birthday.start = birthday.start.replace( incomingYear, new Date().getFullYear() );
-    birthday.end = birthday.end.replace( incomingYear, new Date().getFullYear() );
+    birthday.start = birthday.start.replace(incomingYear, new Date().getFullYear());
+    birthday.end = birthday.end.replace(incomingYear, new Date().getFullYear());
     return birthday;
   }
 
@@ -124,7 +126,7 @@ export class UtilsService {
     if (users.length <= 0) {
       return convertedUsers;
     }
-    users.map( user => {
+    users.map(user => {
       convertedUsers.push(
         {
           tag: user.fullName,

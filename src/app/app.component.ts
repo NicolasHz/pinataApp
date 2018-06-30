@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
-// import { GoogleApiService } from 'ng-gapi';
 declare var WOW: any;
 
 @Component({
@@ -9,9 +8,7 @@ declare var WOW: any;
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
-  constructor(private router: Router) {
-    // this.gapiService.onLoad().subscribe();
-  }
+  constructor(private router: Router) { }
 
   ngOnInit() {
     this.router.events.subscribe(evt => {

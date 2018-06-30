@@ -16,6 +16,7 @@ import { ConfirmModalComponent } from '../../shared/confirm-modal/confirm-modal.
 
 // RxJs
 import { Subscription } from 'rxjs/Subscription';
+import { first } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 import * as fromRoot from '../../app.reducer';
 
@@ -63,7 +64,11 @@ export class EventComponent implements OnInit, AfterViewInit, OnDestroy {
       .map(index => response[index]);
     }));
     this.subscriptions.add(
-      this.store.select('calendar').subscribe(r => console.log(r))
+      this.store.select('calendar').subscribe(events => {
+        this.calendarEvents = Object.keys(events)
+        .map(index => events[index]);
+        console.log(this.calendarEvents)
+      })
     );
   }
 
@@ -82,12 +87,10 @@ export class EventComponent implements OnInit, AfterViewInit, OnDestroy {
   joinEvent(eventData: Evento) {
     eventData.participants.push(this.user);
     this.eventService.addEventToCalendar(eventData)
-    .then(success => {
-      if (success) {
-        this.eventService.updateEvent('events', eventData);
-        if (this.util.findCurrentUser(eventData)) {
-          this.toastService.show('Joined to event!', 4000, 'green');
-        }
+    .pipe(first())
+    .subscribe(() => {
+      if (this.util.findCurrentUser(eventData)) {
+        this.toastService.show('Joined to event!', 4000, 'green');
       }
     });
   }

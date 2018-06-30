@@ -18,6 +18,7 @@ import { EventFormComponent } from '../../event/event-form/event-form.component'
 
 import { Store } from '@ngrx/store';
 import * as fromRoot from '../../../app.reducer';
+import { first } from 'rxjs/operators';
 @Component({
   selector: 'app-my-events',
   templateUrl: './my-events.component.html',
@@ -36,7 +37,7 @@ export class MyEventsComponent implements OnInit, OnDestroy {
   @ViewChild(ConfirmModalComponent) confirmModal: ConfirmModalComponent;
 
   constructor(
-    private store: Store<fromRoot.State>,
+    private store$: Store<fromRoot.State>,
     private userService: UserService,
     private eventService: EventsService,
     private toastService: MzToastService,
@@ -45,27 +46,33 @@ export class MyEventsComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
-    this.subscriptions.add(this.eventService.getFromDatabase('events')
-    .subscribe(response => {
-      this.allEvents = Object.keys(response)
-      .map(index => response[index])
-      .filter((event: Evento) => this.util.deleteOldDatesEvents(event))
-      .sort((a, b) => this.util.diferenceOfTimeFromNow(b.start) - this.util.diferenceOfTimeFromNow(a.start));
-      this.onJoinedEvents();
-      this.eventsReady = true;
-    }));
-    this.subscriptions.add(this.store.select('user')
+    this.subscriptions.add(
+      this.eventService.getFromDatabase('events')
+        .subscribe(response => {
+          this.allEvents = Object.keys(response)
+            .map(index => response[index])
+            .filter((event: Evento) => this.util.deleteOldDatesEvents(event))
+            .sort((a, b) => this.util.diferenceOfTimeFromNow(b.start) - this.util.diferenceOfTimeFromNow(a.start));
+          this.onJoinedEvents();
+          this.eventsReady = true;
+        })
+    );
+    this.subscriptions.add(this.store$.select('user')
       .subscribe((user: User) => {
         this.user = user;
       })
     );
-    this.subscriptions.add(this.userService.getUsers().subscribe((users: User[]) => {
-      this.users = users;
-    }));
     this.subscriptions.add(
-      this.eventService.calendarEvents.subscribe(eventsFromCalendar => {
-        this.calendarEvents = eventsFromCalendar;
-      })
+      this.userService.getUsers()
+        .subscribe((users: User[]) => {
+          this.users = users;
+        })
+    );
+    this.subscriptions.add(
+      this.store$.select('calendar')
+        .subscribe(eventsFromCalendar => {
+          this.calendarEvents = eventsFromCalendar;
+        })
     );
   }
 
@@ -90,14 +97,12 @@ export class MyEventsComponent implements OnInit, OnDestroy {
   joinEvent(eventData: Evento) {
     eventData.participants.push(this.user);
     this.eventService.addEventToCalendar(eventData)
-    .then(success => {
-      if (success) {
-        this.eventService.updateEvent('events', eventData);
+      .pipe(first())
+      .subscribe(() => {
         if (this.util.findCurrentUser(eventData)) {
           this.toastService.show('Joined to event!', 4000, 'green');
         }
-      }
-    });
+      });
   }
 
   leaveEvent(eventData: Evento) {
@@ -111,7 +116,7 @@ export class MyEventsComponent implements OnInit, OnDestroy {
   }
 
   editEvent(eventData: Evento) {
-    this.modalService.open(EventFormComponent, {user: this.user, users: this.users, eventData, editingEvent: true});
+    this.modalService.open(EventFormComponent, { user: this.user, users: this.users, eventData, editingEvent: true });
   }
 
   confirmDelete(eventData: Evento) {
@@ -125,9 +130,9 @@ export class MyEventsComponent implements OnInit, OnDestroy {
         this.leaveEvent(this.selectedEvent);
       }
       this.eventService.deleteEvent('events', this.selectedEvent);
-      this.toastService.show('Event Deleted!', 4000, 'green' );
+      this.toastService.show('Event Deleted!', 4000, 'green');
     } else {
-      this.toastService.show('Canceled', 4000, 'red' );
+      this.toastService.show('Canceled', 4000, 'red');
     }
   }
 

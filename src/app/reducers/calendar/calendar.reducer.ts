@@ -8,10 +8,7 @@ export function reducer(
 ): CalendarEventI[] {
   switch (action.type) {
     case calendarActions.SET_CALENDAR: {
-      return Object.assign({}, state, action.payload);
-    }
-    case calendarActions.GET_CALENDAR: {
-      return Object.assign({}, state, action.payload);
+      return Object.assign({}, action.payload);
     }
     default: {
       return state;

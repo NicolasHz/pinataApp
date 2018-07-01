@@ -42,6 +42,7 @@ export class EventFormComponent extends MzBaseModal implements OnInit {
   public endDatepickerOptions = END_DATE_PICKER_OPTIONS;
   public errorMessageResources = ERROR_MESSAGES_RESOURCES;
   public cardGif;
+  public gifSelected = false;
   public firstSearch = false;
   public endDateAvalible = false;
   private event: Evento;
@@ -198,11 +199,13 @@ export class EventFormComponent extends MzBaseModal implements OnInit {
   }
 
   getGif(q) {
+    this.gifSelected = false;
     this.cardGif = this.gifService.getGif(q);
     this.firstSearch = true;
   }
 
   setCardImg(imgUrl) {
+    this.gifSelected = true;
     if (!imgUrl) {
       return;
     }

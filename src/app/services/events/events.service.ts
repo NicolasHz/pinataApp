@@ -57,7 +57,7 @@ export class EventsService {
       .add(event)
       .then(createdEvent => {
         console.log('Document successfully written!');
-        return createdEvent;
+        return createdEvent.id;
       })
       .catch(error => {
         console.error('Error writing document: ', error);
@@ -117,7 +117,6 @@ export class EventsService {
       }).execute(response => {
         if (!response.error || response !== false) {
           this.getEventsFromCalendar();
-          this.updateEvent('events', eventToAdd);
           observer.next(true);
         } else { observer.next(false); }
       });

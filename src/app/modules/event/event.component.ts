@@ -67,7 +67,7 @@ export class EventComponent implements OnInit, AfterViewInit, OnDestroy {
       this.store.select('calendar').subscribe(events => {
         this.calendarEvents = Object.keys(events)
         .map(index => events[index]);
-        console.log(this.calendarEvents)
+        // console.log(this.calendarEvents)
       })
     );
   }
@@ -88,9 +88,12 @@ export class EventComponent implements OnInit, AfterViewInit, OnDestroy {
     eventData.participants.push(this.user);
     this.eventService.addEventToCalendar(eventData)
     .pipe(first())
-    .subscribe(() => {
-      if (this.util.findCurrentUser(eventData)) {
-        this.toastService.show('Joined to event!', 4000, 'green');
+    .subscribe(success => {
+      if (success) {
+        this.eventService.updateEvent('events', eventData);
+        if (this.util.findCurrentUser(eventData)) {
+          this.toastService.show('Joined to event!', 4000, 'green');
+        }
       }
     });
   }

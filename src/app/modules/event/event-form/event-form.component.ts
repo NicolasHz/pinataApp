@@ -22,6 +22,7 @@ import {
 import { EventsService } from '../../../services/events/events.service';
 import { GifsService } from '../../../services/gifs/gifs.service';
 import { UtilsService } from '../../../services/utils/utils.service';
+import { first } from 'rxjs/operators';
 
 @Component({
   selector: 'app-event-form',
@@ -175,8 +176,18 @@ export class EventFormComponent extends MzBaseModal implements OnInit {
       if (this.event.participants.length > 0 && !this.util.findCurrentUser(this.event)) {
         this.event.participants.push(this.user);
         this.eventService.addEvent('events', this.event)
-        .then( () => {
-            this.toastService.show('Joined to event!', 4000, 'green');
+        .then( eventId => {
+          this.event.id = eventId;
+          const event: Evento = this.event;
+          this.eventService.addEventToCalendar(event)
+          .pipe(first())
+          .subscribe(success => {
+            if (success) {
+              if (this.util.findCurrentUser(event)) {
+                this.toastService.show('Joined to event!', 4000, 'green');
+              }
+            }
+          });
         });
       } else {
         this.eventService.addEvent('events', this.event);

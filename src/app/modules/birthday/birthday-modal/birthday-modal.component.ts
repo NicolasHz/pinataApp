@@ -4,6 +4,7 @@ import { MzBaseModal } from 'ngx-materialize';
 import { Evento } from './../../../interfaces/evento';
 import { EventsService } from '../../../services/events/events.service';
 import { MzToastService } from 'ngx-materialize';
+import { first } from 'rxjs/operators';
 @Component({
   selector: 'app-birthday-modal',
   templateUrl: './birthday-modal.component.html',
@@ -38,8 +39,9 @@ export class BirthdayModalComponent extends MzBaseModal implements OnInit {
   bookBirthday() {
     const eventData: Evento = this.calEvent;
     this.eventService.addEventToCalendar(eventData)
-    .then(success => {
-      this.birhtdayModal.close();
+    .pipe(first())
+    .subscribe(success => {
+      this.birhtdayModal.closeModal();
       success ? this.toastService.show('Birthday booked successfully', 4000, 'green')
       : this.toastService.show('Failed at booking Birthday', 4000, 'red');
     });

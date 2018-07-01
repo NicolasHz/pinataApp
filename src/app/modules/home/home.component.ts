@@ -70,9 +70,12 @@ export class HomeComponent implements OnInit, OnDestroy {
     eventData.participants.push(this.user);
     this.eventService.addEventToCalendar(eventData)
     .pipe(first())
-    .subscribe(() => {
-      if (this.util.findCurrentUser(eventData)) {
-        this.toastService.show('Joined to event!', 4000, 'green');
+    .subscribe(success => {
+      if (success) {
+        this.eventService.updateEvent('events', eventData);
+        if (this.util.findCurrentUser(eventData)) {
+          this.toastService.show('Joined to event!', 4000, 'green');
+        }
       }
     });
   }

@@ -51,14 +51,18 @@ export class UserService {
       }));
   }
 
-  login() {
-    this.auth.signIn({ prompt: 'select_account' })
+  login(): Observable<any> {
+    return Observable.fromPromise(this.auth.signIn({ prompt: 'select_account' })
       .then(googleUser => {
         const credential = firebase.auth.GoogleAuthProvider
           .credential(googleUser.getAuthResponse().id_token);
-        firebase.auth().signInWithCredential(credential).then(() => this.route.navigate(['/home']));   // Sign in with credential from the Google user.
+        return firebase.auth().signInWithCredential(credential).then(() => {
+          this.route.navigate(['/home']);
+          return true;
+        });   // Sign in with credential from the Google user.
       })
-      .catch(r => console.log('something wrong log in', r));
+      .catch(r => r.error)
+    );
   }
 
   logout() {

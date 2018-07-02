@@ -14,7 +14,7 @@ export class BirthdayModalComponent extends MzBaseModal implements OnInit {
   public imageReady = false;
   public showSvg = false;
   public preferences = false;
-  @Input() calEvent;
+  @Input() calEvent: Evento;
   @ViewChild('BirhtdayModal') birhtdayModal;
 
   public modalOptions: Materialize.ModalOptions = {
@@ -31,7 +31,7 @@ export class BirthdayModalComponent extends MzBaseModal implements OnInit {
     if (this.calEvent.image === '' || this.calEvent.image === null) {
       this.showSvg = true;
     }
-    if (this.calEvent.preferences.length <= 0) {
+    if (this.calEvent.preferences.length > 0) {
       this.preferences = true;
     }
   }

@@ -33,7 +33,6 @@ export class UserEffects {
                             }
                             return new userActions.GetUserSuccess(user);
                         } else {
-                            console.log('adding')
                             const user = this.createUser(payload, true);
                             return new userActions.AddUser(user);
                         }

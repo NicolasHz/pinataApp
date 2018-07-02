@@ -28,7 +28,7 @@ declare let $: any;
   styleUrls: ['./birthday.component.scss']
 })
 export class BirthdayComponent implements OnInit, OnDestroy {
-  public birthdays: Evento[];
+  public birthdays: Evento[] = [];
   public birthdayReady = false;
   public subscriptions: Subscription = new Subscription();
   public isglobantUser = false;
@@ -40,15 +40,29 @@ export class BirthdayComponent implements OnInit, OnDestroy {
     private util: UtilsService) { }
 
   ngOnInit() {
-    this.subscriptions.add(this.eventService.getFromDatabase('birthdays')
-      .subscribe(response => {
-        this.birthdays = Object.keys(response)
-        .map(index => response[index]);
-        this.birthdays.map(birthday => this.util.digestYearOfBirthday(birthday));
-        this.createCalendar(this.birthdays);
-        this.birthdayReady = true;
-      })
-    );
+    // this.subscriptions.add(this.eventService.getFromDatabase('birthdays')
+    //   .subscribe(response => {
+    //     this.birthdays = Object.keys(response)
+    //     .map(index => response[index]);
+    //     this.birthdays.map(birthday => this.util.digestYearOfBirthday(birthday));
+    //     this.createCalendar(this.birthdays);
+    //     this.birthdayReady = true;
+    //   })
+    // );
+    this.subscriptions.add(this.eventService.getFromDatabase('users')
+    .subscribe(response => {
+      const users = Object.keys(response)
+      .map(index => response[index]);
+      users.map((user: User) => {
+        if (user.onBirthdayList) {
+          this.userToBirthday(user);
+        }
+      });
+      this.birthdays.map(birthday => this.util.digestYearOfBirthday(birthday));
+      this.createCalendar(this.birthdays);
+      this.birthdayReady = true;
+    })
+  );
     this.subscriptions.add(this.eventService.getFromDatabase('birthdaySpreadsheetLink')
       .pipe(take(1)).subscribe(response => {
         this.spreadsheetURL = Object.keys(response)
@@ -88,6 +102,21 @@ export class BirthdayComponent implements OnInit, OnDestroy {
 
   printBDSpreadsheet() {
     window.open(this.spreadsheetURL, '_blank');
+  }
+
+  userToBirthday(user: User) {
+    const userToBirthday: Evento = {
+      description: '',
+      creator: user,
+      editable: false,
+      end: user.dateOfBirth + 'T23:59:59-03:00',
+      id: user.uId,
+      image: user.profilePicUrl,
+      preferences: user.preferences,
+      start: user.dateOfBirth + 'T00:00:01-03:00',
+      title: user.fullName
+    };
+    this.birthdays.push(userToBirthday);
   }
 
   ngOnDestroy() {

@@ -52,7 +52,9 @@ export class UserEffects {
                 return this.userService
                     .addUser(payload)
                     .map(() => {
-                        this.toastService.show('Profile Updated!', 4000, 'green');
+                        this.toastService.show('Profile Updated!', 4000, 'green', () => {
+                            this.toastService.show('Now, you should go to your profile and update it!', 4000, 'green', );
+                        });
                         return new userActions.AddUserSuccess(payload);
                     })
                     .catch(err => {

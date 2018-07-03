@@ -29,6 +29,7 @@ export class EventComponent implements OnInit, AfterViewInit, OnDestroy {
   public events: Evento[] = [];
   public calendarEvents = [];
   public eventsReady = false;
+  public disableButton = false;
   public user: User;
   public users: User[];
   public selectedEvent: Evento = eventInitialState;
@@ -85,6 +86,7 @@ export class EventComponent implements OnInit, AfterViewInit, OnDestroy {
   // Card and Confirm-Modal Interaction
 
   joinEvent(eventData: Evento) {
+    this.disableButton = true;
     eventData.participants.push(this.user);
     this.eventService.addEventToCalendar(eventData)
     .pipe(first())
@@ -95,10 +97,12 @@ export class EventComponent implements OnInit, AfterViewInit, OnDestroy {
           this.toastService.show('Joined to event!', 4000, 'green');
         }
       }
+      this.disableButton = false;
     });
   }
 
   leaveEvent(eventData: Evento) {
+    this.disableButton = true;
     const index = eventData.participants.indexOf(this.util.findCurrentUser(eventData));
     eventData.participants.splice(index, 1);
     this.eventService.updateEvent('events', eventData);
@@ -109,6 +113,7 @@ export class EventComponent implements OnInit, AfterViewInit, OnDestroy {
     if (calendarEventId) {
       this.eventService.deleteCalendarEvent(calendarEventId);
     }
+    this.disableButton = false;
   }
 
   editEvent(eventData: Evento) {

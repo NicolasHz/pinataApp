@@ -27,6 +27,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   public subscriptions = new Subscription();
   public eventsReady = false;
   public birthdayReady = false;
+  public disableButton = false;
 
   constructor(
     private store$: Store<fromRoot.State>,
@@ -67,6 +68,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   joinEvent(eventData: Evento) {
+    this.disableButton = true;
     eventData.participants.push(this.user);
     this.eventService.addEventToCalendar(eventData)
     .pipe(first())
@@ -77,10 +79,12 @@ export class HomeComponent implements OnInit, OnDestroy {
           this.toastService.show('Joined to event!', 4000, 'green');
         }
       }
+      this.disableButton = false;
     });
   }
 
   leaveEvent(eventData: Evento) {
+    this.disableButton = true;
     const index = eventData.participants.indexOf(this.util.findCurrentUser(eventData));
     eventData.participants.splice(index, 1);
     this.eventService.updateEvent('events', eventData);
@@ -91,6 +95,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     if (calendarEventId) {
       this.eventService.deleteCalendarEvent(calendarEventId);
     }
+    this.disableButton = false;
   }
 
   ngOnDestroy() {

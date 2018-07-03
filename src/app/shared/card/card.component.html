@@ -92,8 +92,8 @@
             </i>
             {{participants}}
         </p>
-      <button *ngIf="!joined" mz-button class="green col s4 m5 l4 right wow flipInX" data-wow-duration="1.5s" (click)="joinEvent()" type="button">Join!</button>
-      <button *ngIf="joined" mz-button class="red col s4 m5 l4 right wow flipInX" data-wow-duration="1.5s" (click)="leaveEvent()" type="button">Leave!</button>
+      <button *ngIf="!joined" mz-button class="green col s4 m5 l4 right wow flipInX" data-wow-duration="1.5s" [disabled]="disableButton" (click)="joinEvent()" type="button">Join!</button>
+      <button *ngIf="joined" mz-button class="red col s4 m5 l4 right wow flipInX" data-wow-duration="1.5s" [disabled]="disableButton" (click)="leaveEvent()" type="button">Leave!</button>
     </div>
   </div>
 

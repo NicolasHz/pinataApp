@@ -68,7 +68,6 @@ export class EventComponent implements OnInit, AfterViewInit, OnDestroy {
       this.store.select('calendar').subscribe(events => {
         this.calendarEvents = Object.keys(events)
         .map(index => events[index]);
-        // console.log(this.calendarEvents)
       })
     );
   }

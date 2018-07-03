@@ -62,8 +62,8 @@ export class UtilsService {
     return eventData.participants.find(o => o.uId === this.user.uId);
   }
 
-  findCalendarEvent(eventData: Evento, calendarEvent: CalendarEventI[]): CalendarEventI { // fixMe
-    return calendarEvent
+  findCalendarEvent(eventData: Evento, calendarEvents: CalendarEventI[]): CalendarEventI { // fixMe
+    return calendarEvents
       .find(calendarObject => {
         const decodedId = this.decode32(calendarObject.id.replace(/_.*/, ''));
         const isId = new RegExp('(?:' + eventData.id + ')').test(decodedId);

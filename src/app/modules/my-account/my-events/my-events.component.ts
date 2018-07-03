@@ -29,6 +29,7 @@ export class MyEventsComponent implements OnInit, OnDestroy {
   public calendarEvents = [];
   public events: Evento[] = [];
   public eventsReady = false;
+  public disableButton = false;
   public user: User;
   public users: User[];
   public view: 'created' | 'joined' = 'joined';
@@ -95,6 +96,7 @@ export class MyEventsComponent implements OnInit, OnDestroy {
   }
 
   joinEvent(eventData: Evento) {
+    this.disableButton = true;
     eventData.participants.push(this.user);
     this.eventService.addEventToCalendar(eventData)
       .pipe(first())
@@ -105,10 +107,12 @@ export class MyEventsComponent implements OnInit, OnDestroy {
             this.toastService.show('Joined to event!', 4000, 'green');
           }
         }
+        this.disableButton = false;
       });
   }
 
   leaveEvent(eventData: Evento) {
+    this.disableButton = true;
     const index = eventData.participants.indexOf(this.util.findCurrentUser(eventData));
     eventData.participants.splice(index, 1);
     this.eventService.updateEvent('events', eventData);
@@ -116,6 +120,7 @@ export class MyEventsComponent implements OnInit, OnDestroy {
       this.toastService.show('Event leaved!', 4000, 'red');
     }
     this.eventService.deleteCalendarEvent(this.util.findCalendarEvent(eventData, this.calendarEvents).id);
+    this.disableButton = false;
   }
 
   editEvent(eventData: Evento) {

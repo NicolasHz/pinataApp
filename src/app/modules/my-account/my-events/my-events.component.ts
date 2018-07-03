@@ -129,7 +129,7 @@ export class MyEventsComponent implements OnInit, OnDestroy {
 
   confirmDelete(eventData: Evento) {
     this.selectedEvent = eventData;
-    this.confirmModal.confirmModal.open();
+    this.confirmModal.confirmModal.openModal();
   }
 
   deleteEvent(response: boolean) {

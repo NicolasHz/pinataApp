@@ -49,24 +49,25 @@ export class BirthdayComponent implements OnInit, OnDestroy {
     //     this.birthdayReady = true;
     //   })
     // );
-    this.subscriptions.add(this.eventService.getFromDatabase('users')
-    .subscribe(response => {
-      const users = Object.keys(response)
-      .map(index => response[index]);
-      users.map((user: User) => {
-        if (user.onBirthdayList) {
-          this.userToBirthday(user);
-        }
-      });
-      this.birthdays.map(birthday => this.util.digestYearOfBirthday(birthday));
-      this.createCalendar(this.birthdays);
-      this.birthdayReady = true;
-    })
-  );
+    this.subscriptions.add(
+      this.eventService.getFromDatabase('users')
+        .subscribe(response => {
+          const users = Object.keys(response)
+            .map(index => response[index]);
+          users.map((user: User) => {
+            if (user.onBirthdayList) {
+              this.birthdays.push(this.userToBirthday(user));
+            }
+          });
+          this.birthdays.map(birthday => this.util.digestYearOfBirthday(birthday));
+          this.createCalendar(this.birthdays);
+          this.birthdayReady = true;
+        })
+    );
     this.subscriptions.add(this.eventService.getFromDatabase('birthdaySpreadsheetLink')
       .pipe(take(1)).subscribe(response => {
         this.spreadsheetURL = Object.keys(response)
-        .map(index => response[index])[0].url;
+          .map(index => response[index])[0].url;
       })
     );
     this.subscriptions.add(this.store.select('user')
@@ -80,9 +81,9 @@ export class BirthdayComponent implements OnInit, OnDestroy {
     $('#calendar').fullCalendar({
       schedulerLicenseKey: 'GPL-My-Project-Is-Open-Source',
       header: {
-      right: 'prev,next today',
-      center: 'title',
-      left: 'month,agendaWeek,agendaDay'
+        right: 'prev,next today',
+        center: 'title',
+        left: 'month,agendaWeek,agendaDay'
       },
       themeSystem: 'bootstrap3',
       selectable: false,
@@ -90,10 +91,10 @@ export class BirthdayComponent implements OnInit, OnDestroy {
       editable: false,
       eventLimit: true,
       events: eventType,
-      nowIndicator: true ,
+      nowIndicator: true,
       displayEventTime: false,
       eventClick: (calEvent, jsEvent, view) => {
-        this.modalService.open(BirthdayModalComponent, {calEvent, jsEvent, view});
+        this.modalService.open(BirthdayModalComponent, { calEvent, jsEvent, view });
         // console.log(jsEvent.currentTarget.style) if you want to look for style options.....
         // jsEvent.currentTarget.style.borderColor = 'red';
       }
@@ -116,7 +117,7 @@ export class BirthdayComponent implements OnInit, OnDestroy {
       start: user.dateOfBirth + 'T00:00:01-03:00',
       title: user.fullName
     };
-    this.birthdays.push(userToBirthday);
+    return userToBirthday;
   }
 
   ngOnDestroy() {

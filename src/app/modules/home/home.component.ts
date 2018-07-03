@@ -22,7 +22,7 @@ import * as fromRoot from '../../app.reducer';
 export class HomeComponent implements OnInit, OnDestroy {
   public events: Evento[] = [];
   public calendarEvents = [];
-  public birthdays: Evento[];
+  public birthdays: Evento[] = [];
   public user: User;
   public subscriptions = new Subscription();
   public eventsReady = false;
@@ -33,32 +33,52 @@ export class HomeComponent implements OnInit, OnDestroy {
     private store$: Store<fromRoot.State>,
     private toastService: MzToastService,
     private eventService: EventsService,
-    private util: UtilsService ) { }
+    private util: UtilsService) { }
 
   ngOnInit() {
-    this.subscriptions.add(this.eventService.getFromDatabase('birthdays')
-    .subscribe(response => {
-      this.birthdays = Object.keys(response)
-      .map(index => response[index])
-      .map(birthday => this.util.digestYearOfBirthday(birthday))
-      .filter(event => this.util.deleteOldDatesEvents(event))
-      .sort((a, b) => this.util.diferenceOfTimeFromNow(b.start) - this.util.diferenceOfTimeFromNow(a.start))
-      .slice(0, 3);
-      this.birthdayReady = true;
-    }));
-    this.subscriptions.add(this.eventService.getFromDatabase('events')
-    .subscribe(response => {
-      this.events = Object.keys(response)
-      .map(index => response[index])
-      .filter((event: Evento) => this.util.deleteOldDatesEvents(event))
-      .sort((a, b) => this.util.diferenceOfTimeFromNow(b.start) - this.util.diferenceOfTimeFromNow(a.start))
-      .slice(0, 3);
-      this.eventsReady = true;
-    }));
-    this.subscriptions.add(this.store$.select('user')
-      .subscribe((user: User) => {
-        this.user = user;
-      })
+    this.subscriptions.add(
+      this.eventService.getFromDatabase('users')
+        .subscribe(response => {
+          const users = Object.keys(response)
+            .map(index => response[index]);
+          users.map((user: User) => {
+            if (user.onBirthdayList) {
+              this.birthdays.push(this.userToBirthday(user));
+            }
+          });
+          this.birthdays = this.birthdays.map(birthday => this.util.digestYearOfBirthday(birthday))
+            .filter(event => this.util.deleteOldDatesEvents(event))
+            .sort((a, b) => this.util.diferenceOfTimeFromNow(b.start) - this.util.diferenceOfTimeFromNow(a.start))
+            .slice(0, 3);
+          this.birthdayReady = true;
+        })
+    );
+    // this.subscriptions.add(this.eventService.getFromDatabase('birthdays')
+    // .subscribe(response => {
+    //   this.birthdays = Object.keys(response)
+    //   .map(index => response[index])
+    //   .map(birthday => this.util.digestYearOfBirthday(birthday))
+    //   .filter(event => this.util.deleteOldDatesEvents(event))
+    //   .sort((a, b) => this.util.diferenceOfTimeFromNow(b.start) - this.util.diferenceOfTimeFromNow(a.start))
+    //   .slice(0, 3);
+    //   this.birthdayReady = true;
+    // }));
+    this.subscriptions.add(
+      this.eventService.getFromDatabase('events')
+        .subscribe(response => {
+          this.events = Object.keys(response)
+            .map(index => response[index])
+            .filter((event: Evento) => this.util.deleteOldDatesEvents(event))
+            .sort((a, b) => this.util.diferenceOfTimeFromNow(b.start) - this.util.diferenceOfTimeFromNow(a.start))
+            .slice(0, 3);
+          this.eventsReady = true;
+        })
+    );
+    this.subscriptions.add(
+      this.store$.select('user')
+        .subscribe((user: User) => {
+          this.user = user;
+        })
     );
     this.subscriptions.add(
       this.store$.select('calendar').subscribe(eventsFromCalendar => {
@@ -67,20 +87,35 @@ export class HomeComponent implements OnInit, OnDestroy {
     );
   }
 
+  userToBirthday(user: User) {
+    const userToBirthday: Evento = {
+      description: user.fullName + ' Birthday',
+      creator: user,
+      editable: false,
+      end: user.dateOfBirth + 'T23:59:59-03:00',
+      id: user.uId,
+      image: user.profilePicUrl,
+      preferences: user.preferences,
+      start: user.dateOfBirth + 'T00:00:01-03:00',
+      title: user.fullName
+    };
+    return userToBirthday;
+  }
+
   joinEvent(eventData: Evento) {
     this.disableButton = true;
     eventData.participants.push(this.user);
     this.eventService.addEventToCalendar(eventData)
-    .pipe(first())
-    .subscribe(success => {
-      if (success) {
-        this.eventService.updateEvent('events', eventData);
-        if (this.util.findCurrentUser(eventData)) {
-          this.toastService.show('Joined to event!', 4000, 'green');
+      .pipe(first())
+      .subscribe(success => {
+        if (success) {
+          this.eventService.updateEvent('events', eventData);
+          if (this.util.findCurrentUser(eventData)) {
+            this.toastService.show('Joined to event!', 4000, 'green');
+          }
         }
-      }
-      this.disableButton = false;
-    });
+        this.disableButton = false;
+      });
   }
 
   leaveEvent(eventData: Evento) {

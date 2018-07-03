@@ -38,7 +38,7 @@ export class BirthdayModalComponent extends MzBaseModal implements OnInit {
 
   bookBirthday() {
     const eventData: Evento = this.calEvent;
-    this.eventService.addEventToCalendar(eventData)
+    this.eventService.addEventToCalendar(eventData, true)
     .pipe(first())
     .subscribe(success => {
       this.birhtdayModal.closeModal();

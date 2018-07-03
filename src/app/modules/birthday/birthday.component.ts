@@ -106,7 +106,7 @@ export class BirthdayComponent implements OnInit, OnDestroy {
 
   userToBirthday(user: User) {
     const userToBirthday: Evento = {
-      description: '',
+      description: user.fullName + ' Birthday',
       creator: user,
       editable: false,
       end: user.dateOfBirth + 'T23:59:59-03:00',

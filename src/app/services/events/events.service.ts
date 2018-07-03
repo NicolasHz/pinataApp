@@ -107,9 +107,13 @@ export class EventsService {
     }).catch(() => console.log('something wrong at fetching events from calendar'));
   }
 
-  addEventToCalendar(eventToAdd: Evento): Observable<boolean> {
+  addEventToCalendar(eventToAdd: Evento, isBirthday = false): Observable<boolean> {
     const calendarEvent = this.createCalendarEvent(eventToAdd);
-    calendarEvent.id = this.util.encode32(eventToAdd.id + this.util.makePlusId(5));
+    if (isBirthday) {
+      calendarEvent.id = this.util.encode32(eventToAdd.id + this.util.makePlusId(2));
+    } else {
+      calendarEvent.id = this.util.encode32(eventToAdd.id + this.util.makePlusId(5));
+    }
     return new Observable(observer => {
       this.calendar.events.insert({
         calendarId: 'primary',

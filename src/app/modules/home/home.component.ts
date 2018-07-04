@@ -128,7 +128,6 @@ export class HomeComponent implements OnInit, OnDestroy {
       this.toastService.show('Event leaved!', 4000, 'red');
     }
     this.disableButton = false;
-    console.log(this.calendarEvents)
     const calendarEventId = this.util.findCalendarEvent(eventData, this.calendarEvents).id;
     if (calendarEventId) {
       this.eventService.deleteCalendarEvent(calendarEventId);

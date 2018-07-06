@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, FormControl, FormArray } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 // Validators
 import { IsEmptyValidator } from '../../../shared/validators/validators';
@@ -20,9 +20,9 @@ import {
   MzToastService,
   MzBaseModal} from 'ngx-materialize';
 import { EventsService } from '../../../services/events/events.service';
-import { UserService } from '../../../services/user/user.service';
 import { GifsService } from '../../../services/gifs/gifs.service';
 import { UtilsService } from '../../../services/utils/utils.service';
+import { first } from 'rxjs/operators';
 
 @Component({
   selector: 'app-event-form',
@@ -42,6 +42,7 @@ export class EventFormComponent extends MzBaseModal implements OnInit {
   public endDatepickerOptions = END_DATE_PICKER_OPTIONS;
   public errorMessageResources = ERROR_MESSAGES_RESOURCES;
   public cardGif;
+  public gifSelected = false;
   public firstSearch = false;
   public endDateAvalible = false;
   private event: Evento;
@@ -57,7 +58,6 @@ export class EventFormComponent extends MzBaseModal implements OnInit {
     private formBuilder: FormBuilder,
     private toastService: MzToastService,
     private eventService: EventsService,
-    private userService: UserService,
     private gifService: GifsService,
     private util: UtilsService
   ) { super(); }
@@ -66,7 +66,7 @@ export class EventFormComponent extends MzBaseModal implements OnInit {
     this.startDatepickerOptions.onOpen = () => this.endDateAvalible = false;
     this.startDatepickerOptions.onClose = () => this.setAvalibleEndDays();
     if (this.users) {
-      this.autocompleteOptions.data = this.users.reduce((acc, cur, i) => {
+      this.autocompleteOptions.data = this.users.reduce((acc, cur) => {
         acc[cur.fullName] = cur.profilePicUrl;
         return acc;
       }, {});
@@ -158,10 +158,10 @@ export class EventFormComponent extends MzBaseModal implements OnInit {
         participants: this.createParticipants()
       } as Evento;
       this.eventService.updateEvent('events', this.event);
-      const calendarId = this.util.findCalendarEvent(this.event, this.calendarEvents).id;
-      if (calendarId) {
-        this.eventService.updateCalendarEvent(calendarId, this.event);
-      }
+      // const calendarId = this.util.findCalendarEvent(this.event, this.calendarEvents).id;
+      // if (calendarId) {
+      //   this.eventService.updateCalendarEvent(calendarId, this.event);
+      // }
       this.clear();
     } else {
       this.event = {
@@ -174,16 +174,21 @@ export class EventFormComponent extends MzBaseModal implements OnInit {
         creator: this.user,
         participants: this.createParticipants()
       } as Evento;
-      if (this.event.participants.length > 0 && !this.util.findUser(this.event)) {
-        this.event.participants.push(this.user);
+      if (this.event.participants.length > 0 && !this.util.findCurrentUser(this.event) || this.util.findCurrentUser(this.event)) {
+        if (!this.util.findCurrentUser(this.event)) {
+          this.event.participants.push(this.user);
+        }
         this.eventService.addEvent('events', this.event)
-        .then( createdEvent => {
-          this.event.id = createdEvent.id;
+        .then( eventId => {
+          this.event.id = eventId;
           this.eventService.addEventToCalendar(this.event)
-            .then(success => {
-              if (success) {
+          .pipe(first())
+          .subscribe(success => {
+            if (success) {
+              if (this.util.findCurrentUser(this.event)) {
                 this.toastService.show('Joined to event!', 4000, 'green');
               }
+            }
           });
         });
       } else {
@@ -194,11 +199,13 @@ export class EventFormComponent extends MzBaseModal implements OnInit {
   }
 
   getGif(q) {
+    this.gifSelected = false;
     this.cardGif = this.gifService.getGif(q);
     this.firstSearch = true;
   }
 
   setCardImg(imgUrl) {
+    this.gifSelected = true;
     if (!imgUrl) {
       return;
     }

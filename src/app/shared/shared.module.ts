@@ -8,6 +8,9 @@ import { HeaderComponent } from './header/header.component';
 import { CardComponent } from './card/card.component';
 import { ConfirmModalComponent } from './confirm-modal/confirm-modal.component';
 import { EventFormComponent } from '../modules/event/event-form/event-form.component';
+import { BirhdayCardComponent } from './birthday-card/birhday-card/birhday-card.component';
+import { FooterComponent } from './footer/footer/footer.component';
+import { ConfettiComponent } from './confetti/confetti.component';
 
 // Materialize
 import { RouterModule } from '@angular/router';
@@ -19,11 +22,8 @@ import { EventsService } from '../services/events/events.service';
 import { ModalService } from '../services/modal/modal.service';
 import { UtilsService } from '../services/utils/utils.service';
 import { GifsService } from '../services/gifs/gifs.service';
-import { BirhdayCardComponent } from './birthday-card/birhday-card/birhday-card.component';
 import { SplicePipe } from './splice/splice.pipe';
-import { FooterComponent } from './footer/footer/footer.component';
 import { UploadImageService } from '../services/upload-image/upload-image.service';
-import { ConfettiComponent } from './confetti/confetti.component';
 
 @NgModule({
   imports: [
@@ -35,23 +35,23 @@ import { ConfettiComponent } from './confetti/confetti.component';
   ],
   schemas: [NO_ERRORS_SCHEMA],
   declarations: [
-      HeaderComponent,
-      CardComponent,
-      ConfirmModalComponent,
-      BirhdayCardComponent,
-      SplicePipe,
-      EventFormComponent,
-      FooterComponent,
-      ConfettiComponent
+    HeaderComponent,
+    CardComponent,
+    ConfirmModalComponent,
+    BirhdayCardComponent,
+    SplicePipe,
+    EventFormComponent,
+    FooterComponent,
+    ConfettiComponent
   ],
   exports: [
-      HeaderComponent,
-      CardComponent,
-      MaterialModule,
-      ConfirmModalComponent,
-      BirhdayCardComponent,
-      EventFormComponent,
-      ConfettiComponent
+    HeaderComponent,
+    CardComponent,
+    MaterialModule,
+    ConfirmModalComponent,
+    BirhdayCardComponent,
+    EventFormComponent,
+    ConfettiComponent
   ],
   providers: [
     EventsService,

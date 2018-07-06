@@ -13,6 +13,7 @@
             <app-card *ngFor="let event of events"
                 [eventData]="event"
                 [enableEdit]="true"
+                [disableButton]="disableButton"
                 (join)="joinEvent($event)"
                 (leave)="leaveEvent($event)"
                 (edit)="editEvent($event)"

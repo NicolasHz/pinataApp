@@ -1,9 +1,8 @@
 import { Observable } from 'rxjs/Observable';
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpEventType, HttpResponse } from '@angular/common/http';
+import { HttpClient, } from '@angular/common/http';
 import 'firebase/storage';
 import { FirebaseApp } from 'angularfire2';
-import { User } from '../../interfaces/user';
 
 @Injectable()
 export class UploadImageService {

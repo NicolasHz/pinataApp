@@ -6,8 +6,8 @@ import {
   Validators,
   FormArray,
   AbstractControl,
-  FormControl} from '@angular/forms';
-import { Router } from '@angular/router';
+  FormControl
+} from '@angular/forms';
 import { Subscription } from 'rxjs/Subscription';
 
 // Options-Validators
@@ -20,6 +20,10 @@ import { MzToastService } from 'ngx-materialize';
 import { UtilsService } from '../../../services/utils/utils.service';
 import { UploadImageService } from '../../../services/upload-image/upload-image.service';
 
+import { Store } from '@ngrx/store';
+import * as UserActions from '../../../actions/user/user.actions';
+import * as fromRoot from '../../../app.reducer';
+import { first } from 'rxjs/operators';
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.component.html',
@@ -38,18 +42,22 @@ export class ProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 
   constructor(
     private userService: UserService,
-    private router: Router,
     private formBuilder: FormBuilder,
     private util: UtilsService,
+    private store: Store<fromRoot.State>,
     private uploadImageService: UploadImageService,
     private toastService: MzToastService) { }
 
   ngOnInit() {
-    this.subscriptions.add(this.userService.getUser().subscribe((user: User) => {
-      this.user = user;
-      this.currentUserImage = this.user.profilePicUrl;
-      this.initForms();
-    }));
+    this.subscriptions.add(
+      this.store.select('user')
+        .subscribe((user: User) => {
+          this.user = user;
+          this.currentUserImage = this.user.profilePicUrl;
+          // console.log(this.user)
+          this.initForms();
+        })
+    );
     if (this.user.isNewUser && this.util.diferenceOfTimeFromNow(this.user.lastTimeModified, 'minutes') < 1) {
       this.uploadFirstImage();
     }
@@ -93,7 +101,7 @@ export class ProfileComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   addPreference(): void {
-    const preferenceControl =  this.generalForm.get('preferences') as FormArray;
+    const preferenceControl = this.generalForm.get('preferences') as FormArray;
     const newPreferenceGroup = this.formBuilder.group({
       preference: ['', [Validators.required, IsEmptyValidator, Validators.maxLength(15)]]
     });
@@ -142,15 +150,8 @@ export class ProfileComponent implements OnInit, AfterViewInit, OnDestroy {
         preferences: updatedPreferences
       };
     }
-    this.userService.addUser(this.user).then(response => {
-      if (response) {
-        this.initForms();
-        this.showToast('Profile Updated!', 'green');
-      } else {
-        this.initForms();
-        this.showToast('Something went wrong please try again', 'red');
-      }
-    });
+    this.store.dispatch(new UserActions.AddUser(this.user));
+    this.initForms();
   }
 
   cancelForm() {
@@ -159,13 +160,17 @@ export class ProfileComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   uploadFirstImage() {
-    this.subscriptions.add(this.uploadImageService.getImage(this.user.profilePicUrl).subscribe(r => {
-      const image = this.uploadImageService.digestImage(r);
-      this.uploadImageService.uploadImage(image, this.user.uId, this.user.fullName).then(imageUrl => {
-        this.user.profilePicUrl = imageUrl;
-        this.userService.addUser(this.user);
+    this.uploadImageService.getImage(this.user.profilePicUrl)
+      .pipe(first())
+      .subscribe(r => {
+        const image = this.uploadImageService.digestImage(r);
+        this.uploadImageService.uploadImage(image, this.user.uId, this.user.fullName)
+          .then(imageUrl => {
+            this.user.profilePicUrl = imageUrl;
+            this.userService.addUser(this.user);
+          });
       });
-    }));
+
   }
 
   onFileSelected(event) {
@@ -185,15 +190,11 @@ export class ProfileComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   showToast(message: string, color: string, time: number = 4000) {
-    this.toastService.show(message, time, color );
+    this.toastService.show(message, time, color);
   }
 
   logOutUser() {
-    this.userService.logout()
-    .then(() => {
-      this.router.navigate(['/login']);
-    })
-    .catch(error => alert(error));
+    this.userService.logout();
   }
 
   ngOnDestroy() {

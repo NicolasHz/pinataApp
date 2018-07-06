@@ -20,6 +20,7 @@ mz-navbar-item  a {
   width: 30px;
   height: 30px;
   border-radius: 50%;
+  margin-right: 5px;
 }
 
 .waves-effect {
@@ -35,6 +36,7 @@ mz-navbar-item  a {
     display: none;
   }
   .toogle_menu {
+    transition: all 300ms linear;
     display: block!important;
     margin-top: 10px;
     padding: 0;
@@ -61,6 +63,6 @@ mz-navbar-item  a {
     max-height: 32px;
   }
   .toogle_menu {
-    margin-top: 0;
+    margin-top: 3px;
   }
 }

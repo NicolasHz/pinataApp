@@ -16,6 +16,9 @@ import { ConfirmModalComponent } from '../../shared/confirm-modal/confirm-modal.
 
 // RxJs
 import { Subscription } from 'rxjs/Subscription';
+import { first } from 'rxjs/operators';
+import { Store } from '@ngrx/store';
+import * as fromRoot from '../../app.reducer';
 
 @Component({
   selector: 'app-event',
@@ -26,6 +29,7 @@ export class EventComponent implements OnInit, AfterViewInit, OnDestroy {
   public events: Evento[] = [];
   public calendarEvents = [];
   public eventsReady = false;
+  public disableButton = false;
   public user: User;
   public users: User[];
   public selectedEvent: Evento = eventInitialState;
@@ -35,6 +39,7 @@ export class EventComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('featureDiscovery') firstTimeIn;
 
   constructor(
+    private store: Store<fromRoot.State>,
     private eventService: EventsService,
     private modalService: MzModalService,
     private util: UtilsService,
@@ -42,10 +47,7 @@ export class EventComponent implements OnInit, AfterViewInit, OnDestroy {
     private toastService: MzToastService) { }
 
   ngOnInit() {
-    setTimeout(() => {
-      this.eventService.getEventsFromCalendar();
-    }, 2000);
-    this.subscriptions.add(this.eventService.getEvents('events')
+    this.subscriptions.add(this.eventService.getFromDatabase('events')
     .subscribe(response => {
       this.events = Object.keys(response)
       .map(index => response[index])
@@ -53,7 +55,7 @@ export class EventComponent implements OnInit, AfterViewInit, OnDestroy {
       .sort((a, b) => this.util.diferenceOfTimeFromNow(b.start) - this.util.diferenceOfTimeFromNow(a.start));
       this.eventsReady = true;
     }));
-    this.subscriptions.add(this.userService.getUser()
+    this.subscriptions.add(this.store.select('user')
     .subscribe((user: User) => {
       this.user = user;
     }));
@@ -63,8 +65,9 @@ export class EventComponent implements OnInit, AfterViewInit, OnDestroy {
       .map(index => response[index]);
     }));
     this.subscriptions.add(
-      this.eventService.calendarEvents.subscribe(eventsFromCalendar => {
-        this.calendarEvents = eventsFromCalendar;
+      this.store.select('calendar').subscribe(events => {
+        this.calendarEvents = Object.keys(events)
+        .map(index => events[index]);
       })
     );
   }
@@ -82,26 +85,34 @@ export class EventComponent implements OnInit, AfterViewInit, OnDestroy {
   // Card and Confirm-Modal Interaction
 
   joinEvent(eventData: Evento) {
+    this.disableButton = true;
     eventData.participants.push(this.user);
     this.eventService.addEventToCalendar(eventData)
-    .then(success => {
+    .pipe(first())
+    .subscribe(success => {
       if (success) {
         this.eventService.updateEvent('events', eventData);
-        if (this.util.findUser(eventData)) {
+        if (this.util.findCurrentUser(eventData)) {
           this.toastService.show('Joined to event!', 4000, 'green');
         }
       }
+      this.disableButton = false;
     });
   }
 
   leaveEvent(eventData: Evento) {
-    const index = eventData.participants.indexOf(this.util.findUser(eventData));
+    this.disableButton = true;
+    const index = eventData.participants.indexOf(this.util.findCurrentUser(eventData));
     eventData.participants.splice(index, 1);
     this.eventService.updateEvent('events', eventData);
-    if (!this.util.findUser(eventData)) {
+    if (!this.util.findCurrentUser(eventData)) {
       this.toastService.show('Event leaved!', 4000, 'red');
     }
-    this.eventService.deleteCalendarEvent(this.util.findCalendarEvent(eventData, this.calendarEvents).id);
+    this.disableButton = false;
+    const calendarEventId = this.util.findCalendarEvent(eventData, this.calendarEvents).id;
+    if (calendarEventId) {
+      this.eventService.deleteCalendarEvent(calendarEventId);
+    }
   }
 
   editEvent(eventData: Evento) {
@@ -110,17 +121,17 @@ export class EventComponent implements OnInit, AfterViewInit, OnDestroy {
 
   confirmDelete(eventData: Evento) {
     this.selectedEvent = eventData;
-    this.confirmModal.confirmModal.open();
+    this.confirmModal.confirmModal.openModal();
   }
 
   deleteEvent(response: boolean) {
     if (response) {
-      if (this.selectedEvent.participants.length > 0 && this.util.findUser(this.selectedEvent)) {
+      if (this.selectedEvent.participants.length > 0 && this.util.findCurrentUser(this.selectedEvent)) {
         this.leaveEvent(this.selectedEvent);
       }
       this.eventService.deleteEvent('events', this.selectedEvent);
       this.toastService.show('Event Deleted!', 4000, 'green' );
-    }else {
+    } else {
       this.toastService.show('Canceled', 4000, 'red' );
     }
   }

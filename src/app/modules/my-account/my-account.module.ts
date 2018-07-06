@@ -13,7 +13,6 @@ import { MyAccountNavComponent } from './my-account-nav/my-account-nav.component
 import { FeedbackComponent } from './feedback/feedback.component';
 import { EventFormComponent } from '../event/event-form/event-form.component';
 
-
 @NgModule({
   imports: [
     CommonModule,

@@ -13,17 +13,11 @@ export interface User {
     lastTimeModified?: string;
 }
 
-export const userInitialState = {
-    email: '',
-    fullName: '',
-    profilePicUrl: '',
-    uId: '',
-    preferences: [],
-    isNewUser: true,
-    dateOfBirth: '',
-    onBirthdayList: false,
-    hasPayed: false,
-    lastTimeSignedIn: '',
-    userSince: '',
-    lastTimeModified: ''
-};
+export interface GUser {
+    email: string;
+    displayName: string;
+    photoURL: string;
+    uid: string;
+    creationTime: string;
+    lastSignInTime: string;
+}

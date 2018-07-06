@@ -1,7 +1,6 @@
-import { Component, OnInit, Input, OnDestroy, Output, EventEmitter } from '@angular/core';
-import { EventsService } from '../../services/events/events.service';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { UtilsService } from '../../services/utils/utils.service';
-import { trigger, style, state, animate, transition } from '@angular/animations';
+import { trigger } from '@angular/animations';
 
 import { eventInitialState } from './../../interfaces/evento-initial-state';
 import { Evento } from '../../interfaces/evento';
@@ -17,6 +16,7 @@ import { Evento } from '../../interfaces/evento';
 export class CardComponent implements OnInit {
   @Input() eventData = eventInitialState;
   @Input() enableEdit = false;
+  @Input() disableButton = false;
   @Output() join: EventEmitter<Evento> = new EventEmitter<Evento>();
   @Output() leave: EventEmitter<Evento> = new EventEmitter<Evento>();
   @Output() edit: EventEmitter<Evento> = new EventEmitter<Evento>();
@@ -36,15 +36,13 @@ export class CardComponent implements OnInit {
     '../../assets/img/party2.gif'];
     participantsTooltip = 'Join and be the first!';
 
-  constructor(
-    private eventService: EventsService,
-    private util: UtilsService) { }
+  constructor(private util: UtilsService) { }
 
   ngOnInit() {
     this.preLoaderImg = this.imgSource[Math.floor(Math.random() * this.imgSource.length)];
     this.eventAuthor = this.util.isEventCreator(this.eventData);
     this.participants = this.eventData.participants.length;
-    if (this.util.findUser(this.eventData)) {
+    if (this.util.findCurrentUser(this.eventData)) {
       this.joined = true;
     }
     if (this.eventData.participants.length > 0) {

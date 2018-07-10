@@ -109,9 +109,9 @@ export class EventComponent implements OnInit, AfterViewInit, OnDestroy {
       this.toastService.show('Event leaved!', 4000, 'red');
     }
     this.disableButton = false;
-    const calendarEventId = this.util.findCalendarEvent(eventData, this.calendarEvents).id;
-    if (calendarEventId) {
-      this.eventService.deleteCalendarEvent(calendarEventId);
+    const calendarEvent = this.util.findCalendarEvent(eventData, this.calendarEvents);
+    if (calendarEvent) {
+      this.eventService.deleteCalendarEvent(calendarEvent.id);
     }
   }
 

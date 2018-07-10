@@ -119,7 +119,10 @@ export class MyEventsComponent implements OnInit, OnDestroy {
     if (!this.util.findCurrentUser(eventData)) {
       this.toastService.show('Event leaved!', 4000, 'red');
     }
-    this.eventService.deleteCalendarEvent(this.util.findCalendarEvent(eventData, this.calendarEvents).id);
+    const calendarEvent = this.util.findCalendarEvent(eventData, this.calendarEvents);
+    if (calendarEvent) {
+      this.eventService.deleteCalendarEvent(calendarEvent.id);
+    }
     this.disableButton = false;
   }
 

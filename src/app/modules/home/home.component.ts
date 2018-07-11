@@ -83,7 +83,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.subscriptions.add(
       this.store$.select('calendar').subscribe(eventsFromCalendar => {
         this.calendarEvents = Object.keys(eventsFromCalendar)
-        .map(index => eventsFromCalendar[index]);
+          .map(index => eventsFromCalendar[index]);
       })
     );
   }
@@ -110,10 +110,13 @@ export class HomeComponent implements OnInit, OnDestroy {
       .pipe(first())
       .subscribe(success => {
         if (success) {
-          this.eventService.updateEvent('events', eventData);
-          if (this.util.findCurrentUser(eventData)) {
-            this.toastService.show('Joined to event!', 4000, 'green');
-          }
+          this.eventService.updateEvent('events', eventData)
+            .pipe(first())
+            .subscribe(updated => {
+              if (updated && this.util.findCurrentUser(eventData)) {
+                this.toastService.show('Joined to event!', 4000, 'green');
+              }
+            });
         }
         this.disableButton = false;
       });
@@ -123,11 +126,14 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.disableButton = true;
     const index = eventData.participants.indexOf(this.util.findCurrentUser(eventData));
     eventData.participants.splice(index, 1);
-    this.eventService.updateEvent('events', eventData);
-    if (!this.util.findCurrentUser(eventData)) {
-      this.toastService.show('Event leaved!', 4000, 'red');
-    }
-    this.disableButton = false;
+    this.eventService.updateEvent('events', eventData)
+      .pipe(first())
+      .subscribe(updated => {
+        if (updated && !this.util.findCurrentUser(eventData)) {
+          this.toastService.show('Event leaved!', 4000, 'red');
+        }
+        this.disableButton = false;
+      });
     const calendarEvent = this.util.findCalendarEvent(eventData, this.calendarEvents);
     if (calendarEvent) {
       this.eventService.deleteCalendarEvent(calendarEvent.id);

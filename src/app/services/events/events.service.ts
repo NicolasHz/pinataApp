@@ -64,27 +64,34 @@ export class EventsService {
       });
   }
 
-  updateEvent(eventsType: string, event: Evento) {
-    this.db.collection(eventsType)
+  updateEvent(eventsType: string, event: Evento): Observable<boolean> {
+    return Observable.fromPromise(
+      this.db.collection(eventsType)
       .doc(event.id)
       .set(JSON.parse(JSON.stringify(event)))
       .then(() => {
         console.log('Document successfully written!');
+        return true;
       })
       .catch(error => {
         console.error('Error writing document: ', error);
-      });
+        return false;
+      }));
   }
 
-  deleteEvent(eventsType: string, event: Evento) {
+  deleteEvent(eventsType: string, event: Evento): Observable<boolean> {
+    return Observable.fromPromise(
     this.db.collection(eventsType)
       .doc(event.id)
       .delete()
       .then(() => {
         console.log('Document successfully deleted!');
+        return true;
       }).catch(error => {
         console.error('Error removing document: ', error);
-      });
+        return false;
+      })
+    );
   }
 
   //

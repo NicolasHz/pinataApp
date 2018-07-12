@@ -1,3 +1,4 @@
+@import 'src/assets/scss/variables';
 .simple-modal {
   position: fixed;
   top: 0;
@@ -22,6 +23,12 @@
       img {
         width: 30%;
         border-radius: 100%;
+        @media all and (max-width: $app_especific_toggle_menu) {
+         width: 50%; 
+        }
+        @media only screen and (max-width: $app_especific_toggle_menu) and (orientation : landscape) {
+          width: 22%;
+        }
       }
     }
   }

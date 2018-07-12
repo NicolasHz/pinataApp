@@ -24,6 +24,7 @@ import { UtilsService } from '../services/utils/utils.service';
 import { GifsService } from '../services/gifs/gifs.service';
 import { SplicePipe } from './splice/splice.pipe';
 import { UploadImageService } from '../services/upload-image/upload-image.service';
+import { SimpleModalComponent } from './simple-modal/simple-modal.component';
 
 @NgModule({
   imports: [
@@ -42,7 +43,8 @@ import { UploadImageService } from '../services/upload-image/upload-image.servic
     SplicePipe,
     EventFormComponent,
     FooterComponent,
-    ConfettiComponent
+    ConfettiComponent,
+    SimpleModalComponent
   ],
   exports: [
     HeaderComponent,
@@ -51,7 +53,8 @@ import { UploadImageService } from '../services/upload-image/upload-image.servic
     ConfirmModalComponent,
     BirhdayCardComponent,
     EventFormComponent,
-    ConfettiComponent
+    ConfettiComponent,
+    SimpleModalComponent
   ],
   providers: [
     EventsService,

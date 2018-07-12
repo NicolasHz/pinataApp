@@ -1,0 +1,9 @@
+<div class="simple-modal">
+    <div class="simple-modal__container">
+        <div class="simple-modal__container__content">
+            <img [src]="modalData?.image" alt="Modal Image" *ngIf="modalData?.image">
+            <h3 [innerHTML]="modalData?.title"></h3>
+            <p>{{modalData?.message}}</p>
+        </div>
+    </div>
+</div>

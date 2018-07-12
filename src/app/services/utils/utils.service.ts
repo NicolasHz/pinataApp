@@ -115,8 +115,8 @@ export class UtilsService {
     return birthday;
   }
 
-  isTodayBirthday(birthday: Evento) {
-    const incomingYear = moment(birthday.start).format('YYYY-MM-DD');
+  isTodayBirthday(user: User): boolean {
+    const incomingYear = moment(user.dateOfBirth).format('YYYY-MM-DD');
     const now = moment(new Date()).format('YYYY-MM-DD');
     return incomingYear === now;
   }

@@ -1,11 +1,13 @@
-import { MzToastService } from 'ngx-materialize';
 import { RoutingModule } from './app-routing.module';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 
+// Components
 import { AppComponent } from './app.component';
+import { SimpleModalComponent } from './shared/simple-modal/simple-modal.component';
+import { ConfettiComponent } from './shared/confetti/confetti.component';
 
 // Firebase
 import { AngularFireModule } from 'angularfire2';
@@ -25,21 +27,23 @@ import * as effects from './effects';
 
 import {
   GoogleApiModule,
-  // GoogleApiService,
-  // GoogleAuthService,
   NgGapiClientConfig,
   NG_GAPI_CONFIG,
-  // GoogleApiConfig
 } from 'ng-gapi';
+import { SimpleModalService } from './shared/simple-modal/simple-modal.service';
+import { UtilsService } from './services/utils/utils.service';
+import { MzToastService, MzSpinnerModule } from 'ngx-materialize';
 
 const gapiClientConfig: NgGapiClientConfig = {
-  client_id : '289697189757-l3muf4hpsin6f3dnt73ka1jvh1ckvnd9.apps.googleusercontent.com',
-  discoveryDocs : ['https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest'],
-  scope : 'https://www.googleapis.com/auth/calendar'
+  client_id: '289697189757-l3muf4hpsin6f3dnt73ka1jvh1ckvnd9.apps.googleusercontent.com',
+  discoveryDocs: ['https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest'],
+  scope: 'https://www.googleapis.com/auth/calendar'
 };
 @NgModule({
   declarations: [
     AppComponent,
+    ConfettiComponent,
+    SimpleModalComponent
   ],
   imports: [
     GoogleApiModule.forRoot({
@@ -56,15 +60,19 @@ const gapiClientConfig: NgGapiClientConfig = {
     StoreDevtoolsModule.instrument({
       maxAge: 5
     }),
-    EffectsModule.forRoot(effects.effects)
+    EffectsModule.forRoot(effects.effects),
+    MzSpinnerModule
   ],
   providers: [
     MzToastService,
     UserService,
     AngularFireAuth,
     AuthGuardService,
-    HttpClient
+    HttpClient,
+    SimpleModalService,
+    UtilsService
   ],
+  entryComponents: [SimpleModalComponent],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -1,4 +1,3 @@
-import { SimpleModal } from './../../interfaces/simple-modal';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 
 // Services
@@ -25,7 +24,6 @@ export class HomeComponent implements OnInit, OnDestroy {
   public calendarEvents = [];
   public birthdays: Evento[] = [];
   public user: User;
-  public modalData: SimpleModal;
   public subscriptions = new Subscription();
   public eventsReady = false;
   public birthdayReady = false;
@@ -80,13 +78,6 @@ export class HomeComponent implements OnInit, OnDestroy {
       this.store$.select('user')
         .subscribe((user: User) => {
           this.user = user;
-          if (true) {
-            this.modalData = {
-              title: `Happy Birthday!! <br> ${user.fullName}`,
-              message: 'Hope have a nice day!',
-              image: user.profilePicUrl
-            };
-          }
         })
     );
     this.subscriptions.add(

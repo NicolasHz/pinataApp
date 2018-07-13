@@ -83,6 +83,33 @@ export class UserEffects {
             })
         );
 
+    @Effect()
+    updateUser$ = this.actions$.ofType(userActions.UPDATE_USER)
+        .map((action: userActions.UpdateUser) => action.payload)
+        .pipe(
+            switchMap(user => {
+                return this.userService
+                    .addUser(user)
+                    .map(() => {
+                        this.toastService.show('Profile Updated!', 4000, 'green');
+                        if (user.dateOfBirth && this.util.isTodayBirthday(user)) {
+                            const modalData = {
+                                title: `Happy Birthday!! <br> ${user.fullName}`,
+                                message: 'Have a really nice day!',
+                                image: user.profilePicUrl
+                            };
+                            this.simpleModalService.openModal(modalData);
+                        }
+                        return new userActions.UpdateUserSuccess(user);
+                    })
+                    .catch(err => {
+                        this.toastService.show('Something went wrong please try again', 400, 'red');
+                        console.log('you lazy shit, do the addUser fail action', err);
+                        return Observable.of(new userActions.UpdateUserFail());
+                    });
+            })
+        );
+
     createUser(userData, addUser = false): User {
         let user: User;
         if (addUser) {

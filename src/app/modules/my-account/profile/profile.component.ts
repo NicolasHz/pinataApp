@@ -150,7 +150,7 @@ export class ProfileComponent implements OnInit, AfterViewInit, OnDestroy {
         preferences: updatedPreferences
       };
     }
-    this.store.dispatch(new UserActions.AddUser(this.user));
+    this.store.dispatch(new UserActions.UpdateUser(this.user));
     this.initForms();
   }
 

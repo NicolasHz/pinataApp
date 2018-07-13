@@ -71,8 +71,8 @@
           </button>
         </div>
       </div>
-      <img class="wow fadeIn" data-wow-duration="1s" [ngClass]="[actualImgReady ? '' : 'hidden']" (load)="showImage()" src="{{ eventData?.image }}" alt="Card Img">
-      <img [src]="preLoaderImg" alt="" *ngIf="!actualImgReady">
+      <img class="wow fadeIn" data-wow-duration="1s" [ngClass]="[actualImgReady ? '' : 'hidden']" #userImage src="{{ eventData?.image }}" alt="Card Img">
+      <img [src]="preLoaderImg" alt="" [ngClass]="[actualImgReady ? 'hidden' : '']">
       <span class="card-title">{{eventData.title}}</span>
     </div>
     <div class="card-content">

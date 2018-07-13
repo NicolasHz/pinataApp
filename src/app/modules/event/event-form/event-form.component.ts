@@ -158,9 +158,9 @@ export class EventFormComponent extends MzBaseModal implements OnInit {
         participants: this.createParticipants()
       } as Evento;
       this.eventService.updateEvent('events', this.event);
-      // const calendarId = this.util.findCalendarEvent(this.event, this.calendarEvents).id;
-      // if (calendarId) {
-      //   this.eventService.updateCalendarEvent(calendarId, this.event);
+      // const calendarEvent = this.util.findCalendarEvent(this.event, this.calendarEvents);
+      // if (calendarEvent) {
+      //   this.eventService.updateCalendarEvent(calendarEvent.id, this.event);
       // }
       this.clear();
     } else {

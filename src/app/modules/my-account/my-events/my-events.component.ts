@@ -102,10 +102,13 @@ export class MyEventsComponent implements OnInit, OnDestroy {
       .pipe(first())
       .subscribe(success => {
         if (success) {
-          this.eventService.updateEvent('events', eventData);
-          if (this.util.findCurrentUser(eventData)) {
-            this.toastService.show('Joined to event!', 4000, 'green');
-          }
+          this.eventService.updateEvent('events', eventData)
+            .pipe(first())
+            .subscribe(updated => {
+              if (updated && this.util.findCurrentUser(eventData)) {
+                this.toastService.show('Joined to event!', 4000, 'green');
+              }
+            });
         }
         this.disableButton = false;
       });
@@ -115,12 +118,18 @@ export class MyEventsComponent implements OnInit, OnDestroy {
     this.disableButton = true;
     const index = eventData.participants.indexOf(this.util.findCurrentUser(eventData));
     eventData.participants.splice(index, 1);
-    this.eventService.updateEvent('events', eventData);
-    if (!this.util.findCurrentUser(eventData)) {
-      this.toastService.show('Event leaved!', 4000, 'red');
+    this.eventService.updateEvent('events', eventData)
+      .pipe(first())
+      .subscribe(updated => {
+        if (updated && !this.util.findCurrentUser(eventData)) {
+          this.toastService.show('Event leaved!', 4000, 'red');
+        }
+        this.disableButton = false;
+      });
+    const calendarEvent = this.util.findCalendarEvent(eventData, this.calendarEvents);
+    if (calendarEvent) {
+      this.eventService.deleteCalendarEvent(calendarEvent.id);
     }
-    this.eventService.deleteCalendarEvent(this.util.findCalendarEvent(eventData, this.calendarEvents).id);
-    this.disableButton = false;
   }
 
   editEvent(eventData: Evento) {
@@ -137,8 +146,11 @@ export class MyEventsComponent implements OnInit, OnDestroy {
       if (this.selectedEvent.participants.length > 0 && this.util.findCurrentUser(this.selectedEvent)) {
         this.leaveEvent(this.selectedEvent);
       }
-      this.eventService.deleteEvent('events', this.selectedEvent);
-      this.toastService.show('Event Deleted!', 4000, 'green');
+      this.eventService.deleteEvent('events', this.selectedEvent)
+      .pipe(first())
+      .subscribe(deleted => {
+        deleted ? this.toastService.show('Event Deleted!', 4000, 'green') : this.toastService.show('Please try again', 4000, 'black');
+      });
     } else {
       this.toastService.show('Canceled', 4000, 'red');
     }

@@ -48,26 +48,26 @@ export class EventComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ngOnInit() {
     this.subscriptions.add(this.eventService.getFromDatabase('events')
-    .subscribe(response => {
-      this.events = Object.keys(response)
-      .map(index => response[index])
-      .filter((event: Evento) => this.util.deleteOldDatesEvents(event))
-      .sort((a, b) => this.util.diferenceOfTimeFromNow(b.start) - this.util.diferenceOfTimeFromNow(a.start));
-      this.eventsReady = true;
-    }));
+      .subscribe(response => {
+        this.events = Object.keys(response)
+          .map(index => response[index])
+          .filter((event: Evento) => this.util.deleteOldDatesEvents(event))
+          .sort((a, b) => this.util.diferenceOfTimeFromNow(b.start) - this.util.diferenceOfTimeFromNow(a.start));
+        this.eventsReady = true;
+      }));
     this.subscriptions.add(this.store.select('user')
-    .subscribe((user: User) => {
-      this.user = user;
-    }));
+      .subscribe((user: User) => {
+        this.user = user;
+      }));
     this.subscriptions.add(this.userService.getUsers()
-    .subscribe(response => {
-      this.users = Object.keys(response)
-      .map(index => response[index]);
-    }));
+      .subscribe(response => {
+        this.users = Object.keys(response)
+          .map(index => response[index]);
+      }));
     this.subscriptions.add(
       this.store.select('calendar').subscribe(events => {
         this.calendarEvents = Object.keys(events)
-        .map(index => events[index]);
+          .map(index => events[index]);
       })
     );
   }
@@ -79,7 +79,7 @@ export class EventComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   openEventForm() {
-    this.modalService.open(EventFormComponent, {user: this.user, users: this.users});
+    this.modalService.open(EventFormComponent, { user: this.user, users: this.users });
   }
 
   // Card and Confirm-Modal Interaction
@@ -88,35 +88,41 @@ export class EventComponent implements OnInit, AfterViewInit, OnDestroy {
     this.disableButton = true;
     eventData.participants.push(this.user);
     this.eventService.addEventToCalendar(eventData)
-    .pipe(first())
-    .subscribe(success => {
-      if (success) {
-        this.eventService.updateEvent('events', eventData);
-        if (this.util.findCurrentUser(eventData)) {
-          this.toastService.show('Joined to event!', 4000, 'green');
+      .pipe(first())
+      .subscribe(success => {
+        if (success) {
+          this.eventService.updateEvent('events', eventData)
+            .pipe(first())
+            .subscribe(updated => {
+              if (updated && this.util.findCurrentUser(eventData)) {
+                this.toastService.show('Joined to event!', 4000, 'green');
+              }
+            });
         }
-      }
-      this.disableButton = false;
-    });
+        this.disableButton = false;
+      });
   }
 
   leaveEvent(eventData: Evento) {
     this.disableButton = true;
     const index = eventData.participants.indexOf(this.util.findCurrentUser(eventData));
     eventData.participants.splice(index, 1);
-    this.eventService.updateEvent('events', eventData);
-    if (!this.util.findCurrentUser(eventData)) {
-      this.toastService.show('Event leaved!', 4000, 'red');
-    }
-    this.disableButton = false;
-    const calendarEventId = this.util.findCalendarEvent(eventData, this.calendarEvents).id;
-    if (calendarEventId) {
-      this.eventService.deleteCalendarEvent(calendarEventId);
+    this.eventService.updateEvent('events', eventData)
+      .pipe(first())
+      .subscribe(updated => {
+        if (updated && !this.util.findCurrentUser(eventData)) {
+          this.toastService.show('Event leaved!', 4000, 'red');
+        }
+        this.disableButton = false;
+      });
+    const calendarEvent = this.util.findCalendarEvent(eventData, this.calendarEvents);
+    if (calendarEvent) {
+      this.eventService.deleteCalendarEvent(calendarEvent.id);
     }
   }
 
   editEvent(eventData: Evento) {
-    this.modalService.open(EventFormComponent, {user: this.user, users: this.users, eventData, calendarEvents: this.calendarEvents, editingEvent: true});
+    this.modalService.open(EventFormComponent, { user: this.user, users: this.users, eventData, calendarEvents: this.calendarEvents, editingEvent: true });
   }
 
   confirmDelete(eventData: Evento) {
@@ -129,10 +135,13 @@ export class EventComponent implements OnInit, AfterViewInit, OnDestroy {
       if (this.selectedEvent.participants.length > 0 && this.util.findCurrentUser(this.selectedEvent)) {
         this.leaveEvent(this.selectedEvent);
       }
-      this.eventService.deleteEvent('events', this.selectedEvent);
-      this.toastService.show('Event Deleted!', 4000, 'green' );
+      this.eventService.deleteEvent('events', this.selectedEvent)
+      .pipe(first())
+      .subscribe(deleted => {
+        deleted ? this.toastService.show('Event Deleted!', 4000, 'green') : this.toastService.show('Please try again', 4000, 'black');
+      });
     } else {
-      this.toastService.show('Canceled', 4000, 'red' );
+      this.toastService.show('Canceled', 4000, 'red');
     }
   }
 

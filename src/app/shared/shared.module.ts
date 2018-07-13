@@ -10,7 +10,6 @@ import { ConfirmModalComponent } from './confirm-modal/confirm-modal.component';
 import { EventFormComponent } from '../modules/event/event-form/event-form.component';
 import { BirhdayCardComponent } from './birthday-card/birhday-card/birhday-card.component';
 import { FooterComponent } from './footer/footer/footer.component';
-import { ConfettiComponent } from './confetti/confetti.component';
 
 // Materialize
 import { RouterModule } from '@angular/router';
@@ -20,7 +19,6 @@ import { MaterialModule } from './material.module';
 import { MzInjectionService, MzValidationModule} from 'ngx-materialize';
 import { EventsService } from '../services/events/events.service';
 import { ModalService } from '../services/modal/modal.service';
-import { UtilsService } from '../services/utils/utils.service';
 import { GifsService } from '../services/gifs/gifs.service';
 import { SplicePipe } from './splice/splice.pipe';
 import { UploadImageService } from '../services/upload-image/upload-image.service';
@@ -41,8 +39,7 @@ import { UploadImageService } from '../services/upload-image/upload-image.servic
     BirhdayCardComponent,
     SplicePipe,
     EventFormComponent,
-    FooterComponent,
-    ConfettiComponent
+    FooterComponent
   ],
   exports: [
     HeaderComponent,
@@ -50,16 +47,14 @@ import { UploadImageService } from '../services/upload-image/upload-image.servic
     MaterialModule,
     ConfirmModalComponent,
     BirhdayCardComponent,
-    EventFormComponent,
-    ConfettiComponent
+    EventFormComponent
   ],
   providers: [
     EventsService,
     MzInjectionService,
     ModalService,
-    UtilsService,
     GifsService,
-    UploadImageService,
+    UploadImageService
   ]
 })
 export class SharedModule { }

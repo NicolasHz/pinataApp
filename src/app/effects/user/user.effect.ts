@@ -7,13 +7,17 @@ import { UserService } from '../../services/user/user.service';
 import { switchMap } from 'rxjs/operators';
 import { User } from '../../interfaces/user';
 import { MzToastService } from 'ngx-materialize';
+import { SimpleModalService } from '../../shared/simple-modal/simple-modal.service';
+import { UtilsService } from '../../services/utils/utils.service';
 
 @Injectable()
 export class UserEffects {
     constructor(
+        private simpleModalService: SimpleModalService,
         private actions$: Actions,
         private userService: UserService,
-        private toastService: MzToastService
+        private toastService: MzToastService,
+        private util: UtilsService
     ) { }
 
     @Effect()
@@ -30,6 +34,14 @@ export class UserEffects {
                             const user = this.createUser(userData);
                             if (payload.creationTime !== payload.lastSignInTime && userData.isNewUser) {
                                 user.isNewUser = false;
+                            }
+                            if (user.dateOfBirth && this.util.isTodayBirthday(user)) {
+                                const modalData = {
+                                    title: `Happy Birthday!! <br> ${user.fullName}`,
+                                    message: 'Have a really nice day!',
+                                    image: user.profilePicUrl
+                                };
+                                this.simpleModalService.openModal(modalData);
                             }
                             return new userActions.GetUserSuccess(user);
                         } else {
@@ -48,19 +60,52 @@ export class UserEffects {
     addUser$ = this.actions$.ofType(userActions.ADD_USER)
         .map((action: userActions.AddUser) => action.payload)
         .pipe(
-            switchMap(payload => {
+            switchMap(user => {
                 return this.userService
-                    .addUser(payload)
+                    .addUser(user)
                     .map(() => {
                         this.toastService.show('Profile Updated!', 4000, 'green', () => {
                             this.toastService.show('Now, you should go to your profile and update it!', 4000, 'green', );
                         });
-                        return new userActions.AddUserSuccess(payload);
+                        const modalData = {
+                            title: `Welcome to Piñata!! <br> ${user.fullName}`,
+                            message: 'Have a really nice day!',
+                            image: user.profilePicUrl
+                        };
+                        this.simpleModalService.openModal(modalData);
+                        return new userActions.AddUserSuccess(user);
                     })
                     .catch(err => {
                         this.toastService.show('Something went wrong please try again', 400, 'red');
                         console.log('you lazy shit, do the addUser fail action', err);
                         return Observable.of(new userActions.AddUserFail());
+                    });
+            })
+        );
+
+    @Effect()
+    updateUser$ = this.actions$.ofType(userActions.UPDATE_USER)
+        .map((action: userActions.UpdateUser) => action.payload)
+        .pipe(
+            switchMap(user => {
+                return this.userService
+                    .addUser(user)
+                    .map(() => {
+                        this.toastService.show('Profile Updated!', 4000, 'green');
+                        if (user.dateOfBirth && this.util.isTodayBirthday(user)) {
+                            const modalData = {
+                                title: `Happy Birthday!! <br> ${user.fullName}`,
+                                message: 'Have a really nice day!',
+                                image: user.profilePicUrl
+                            };
+                            this.simpleModalService.openModal(modalData);
+                        }
+                        return new userActions.UpdateUserSuccess(user);
+                    })
+                    .catch(err => {
+                        this.toastService.show('Something went wrong please try again', 400, 'red');
+                        console.log('you lazy shit, do the addUser fail action', err);
+                        return Observable.of(new userActions.UpdateUserFail());
                     });
             })
         );

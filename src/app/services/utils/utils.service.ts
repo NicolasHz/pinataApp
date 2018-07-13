@@ -108,17 +108,19 @@ export class UtilsService {
     return moment.duration(moment(now).diff(moment(date))).asHours();
   }
 
-  digestYearOfBirthday(birthday) {
+  digestYearOfBirthday(birthday): Evento {
     const incomingYear = moment(birthday.start).format('YYYY');
     birthday.start = birthday.start.replace(incomingYear, new Date().getFullYear());
     birthday.end = birthday.end.replace(incomingYear, new Date().getFullYear());
     return birthday;
   }
 
-  isTodayBirthday(birthday: Evento) {
-    const incomingYear = moment(birthday.start).format('YYYY-MM-DD');
+  isTodayBirthday(user: User): boolean {
+    const incomingYear = moment(user.dateOfBirth).format('YYYY');
+    const updatedBirthDay = user.dateOfBirth.replace(incomingYear, new Date().getFullYear().toString());
+    const birthDay = moment(updatedBirthDay).format('YYYY-MM-DD');
     const now = moment(new Date()).format('YYYY-MM-DD');
-    return incomingYear === now;
+    return birthDay === now;
   }
 
   usersToChips(users: User[]): Materialize.ChipDataObject[] {

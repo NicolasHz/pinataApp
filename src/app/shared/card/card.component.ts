@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
 import { UtilsService } from '../../services/utils/utils.service';
 import { trigger } from '@angular/animations';
 
@@ -13,7 +13,7 @@ import { Evento } from '../../interfaces/evento';
   templateUrl: './card.component.html',
   styleUrls: ['./card.component.scss']
 })
-export class CardComponent implements OnInit {
+export class CardComponent implements OnInit, AfterViewInit {
   @Input() eventData = eventInitialState;
   @Input() enableEdit = false;
   @Input() disableButton = false;
@@ -21,6 +21,7 @@ export class CardComponent implements OnInit {
   @Output() leave: EventEmitter<Evento> = new EventEmitter<Evento>();
   @Output() edit: EventEmitter<Evento> = new EventEmitter<Evento>();
   @Output() delete: EventEmitter<Evento> = new EventEmitter<Evento>();
+  @ViewChild('userImage') image: ElementRef;
 
   public actualImgReady = false;
   public optionsOpened = false;
@@ -54,12 +55,14 @@ export class CardComponent implements OnInit {
     }
   }
 
-  toggleClass() {
-    this.showEventTime = !this.showEventTime;
+  ngAfterViewInit() {
+    this.image.nativeElement.onload = () => {
+      this.actualImgReady = true;
+    };
   }
 
-  showImage() {
-    this.actualImgReady = true;
+  toggleClass() {
+    this.showEventTime = !this.showEventTime;
   }
 
   joinEvent() {

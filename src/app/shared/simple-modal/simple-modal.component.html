@@ -1,0 +1,16 @@
+<app-confetti style="position:fixed; top:0; z-index: 980;" [ngClass]="[closeModal ? 'hidde' : '']"></app-confetti>
+<div class="simple-modal" (click)="modalClose()" [ngClass]="[closeModal ? 'hidde' : '']">
+    <div class="simple-modal__container">
+        <div class="simple-modal__container__content">
+            <img [src]="modalData?.image" alt="Modal Image" *ngIf="modalData?.image" [ngClass]="[imageReady ? '' : 'hidden']" #userImage>
+                <mz-spinner
+                    [ngClass]="[imageReady ? 'hidden' : '']"
+                    class="col center s12 m12 l12 spinner"
+                    [color]="'blue'"
+                    [size]="'big'">
+                </mz-spinner>
+            <h3 [innerHTML]="modalData?.title"></h3>
+            <p>{{modalData?.message}}</p>
+        </div>
+    </div>
+</div>

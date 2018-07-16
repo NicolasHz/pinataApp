@@ -86,12 +86,12 @@ export class MyEventsComponent implements OnInit, OnDestroy {
   }
 
   onJoinedEvents() {
-    this.events = this.allEvents.slice().filter((event: Evento) => this.util.getJoinedEvents(event));
+    this.events = this.allEvents.slice().filter((event: Evento) => this.util.getJoinedEvents(event, this.user));
     this.view = 'joined';
   }
 
   onEventsCreated() {
-    this.events = this.allEvents.slice().filter((event: Evento) => this.util.getCurrentUserEvents(event));
+    this.events = this.allEvents.slice().filter((event: Evento) => this.util.getCurrentUserEvents(event, this.user));
     this.view = 'created';
   }
 
@@ -105,7 +105,7 @@ export class MyEventsComponent implements OnInit, OnDestroy {
           this.eventService.updateEvent('events', eventData)
             .pipe(first())
             .subscribe(updated => {
-              if (updated && this.util.findCurrentUser(eventData)) {
+              if (updated && this.util.findCurrentUser(eventData, this.user)) {
                 this.toastService.show('Joined to event!', 4000, 'green');
               }
             });
@@ -116,12 +116,12 @@ export class MyEventsComponent implements OnInit, OnDestroy {
 
   leaveEvent(eventData: Evento) {
     this.disableButton = true;
-    const index = eventData.participants.indexOf(this.util.findCurrentUser(eventData));
+    const index = eventData.participants.indexOf(this.util.findCurrentUser(eventData, this.user));
     eventData.participants.splice(index, 1);
     this.eventService.updateEvent('events', eventData)
       .pipe(first())
       .subscribe(updated => {
-        if (updated && !this.util.findCurrentUser(eventData)) {
+        if (updated && !this.util.findCurrentUser(eventData, this.user)) {
           this.toastService.show('Event leaved!', 4000, 'red');
         }
         this.disableButton = false;
@@ -143,7 +143,7 @@ export class MyEventsComponent implements OnInit, OnDestroy {
 
   deleteEvent(response: boolean) {
     if (response) {
-      if (this.selectedEvent.participants.length > 0 && this.util.findCurrentUser(this.selectedEvent)) {
+      if (this.selectedEvent.participants.length > 0 && this.util.findCurrentUser(this.selectedEvent, this.user)) {
         this.leaveEvent(this.selectedEvent);
       }
       this.eventService.deleteEvent('events', this.selectedEvent)

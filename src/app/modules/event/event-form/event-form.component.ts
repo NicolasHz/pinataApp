@@ -174,8 +174,8 @@ export class EventFormComponent extends MzBaseModal implements OnInit {
         creator: this.user,
         participants: this.createParticipants()
       } as Evento;
-      if (this.event.participants.length > 0 && !this.util.findCurrentUser(this.event) || this.util.findCurrentUser(this.event)) {
-        if (!this.util.findCurrentUser(this.event)) {
+      if (this.event.participants.length > 0 && !this.util.findCurrentUser(this.event, this.user) || this.util.findCurrentUser(this.event, this.user)) {
+        if (!this.util.findCurrentUser(this.event, this.user)) {
           this.event.participants.push(this.user);
         }
         this.eventService.addEvent('events', this.event)
@@ -185,7 +185,7 @@ export class EventFormComponent extends MzBaseModal implements OnInit {
           .pipe(first())
           .subscribe(success => {
             if (success) {
-              if (this.util.findCurrentUser(this.event)) {
+              if (this.util.findCurrentUser(this.event, this.user)) {
                 this.toastService.show('Joined to event!', 4000, 'green');
               }
             }

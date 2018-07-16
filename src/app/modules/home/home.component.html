@@ -31,6 +31,7 @@
                 <app-card *ngFor="let event of events"
                     [eventData]="event"
                     [disableButton]="disableButton"
+                    [user]="user"
                     (join)="joinEvent($event)"
                     (leave)="leaveEvent($event)"
                     class="col s12 m4 l4 wow fadeIn"

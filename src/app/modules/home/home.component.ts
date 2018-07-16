@@ -113,7 +113,7 @@ export class HomeComponent implements OnInit, OnDestroy {
           this.eventService.updateEvent('events', eventData)
             .pipe(first())
             .subscribe(updated => {
-              if (updated && this.util.findCurrentUser(eventData)) {
+              if (updated && this.util.findCurrentUser(eventData, this.user)) {
                 this.toastService.show('Joined to event!', 4000, 'green');
               }
             });
@@ -124,12 +124,12 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   leaveEvent(eventData: Evento) {
     this.disableButton = true;
-    const index = eventData.participants.indexOf(this.util.findCurrentUser(eventData));
+    const index = eventData.participants.indexOf(this.util.findCurrentUser(eventData, this.user));
     eventData.participants.splice(index, 1);
     this.eventService.updateEvent('events', eventData)
       .pipe(first())
       .subscribe(updated => {
-        if (updated && !this.util.findCurrentUser(eventData)) {
+        if (updated && !this.util.findCurrentUser(eventData, this.user)) {
           this.toastService.show('Event leaved!', 4000, 'red');
         }
         this.disableButton = false;

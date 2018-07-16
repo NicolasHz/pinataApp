@@ -8,26 +8,15 @@ import { CalendarEventI } from './../../interfaces/calendar-event';
 // Utils
 import * as moment from 'moment';
 import { ENCODE32, DECODE32 } from './encode-decode';
-import { first } from 'rxjs/operators';
 
-// NgRx
-import { Store } from '@ngrx/store';
-import * as fromRoot from '../../../app/app.reducer';
 @Injectable()
 export class UtilsService {
-  private user: User;
   // private a = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ234567';
 
   public encode32 = ENCODE32;
   public decode32 = DECODE32;
 
-  constructor(private store: Store<fromRoot.State>) {
-    this.store.select('user')
-      .pipe(first())
-      .subscribe((user: User) => {
-        this.user = user;
-      });
-  }
+  constructor() { }
 
   scrolled(doc: Document) {
     const isOpera = navigator.userAgent.indexOf('Opera/') > -1;
@@ -57,12 +46,12 @@ export class UtilsService {
     return /(@globant.com)/.test(user.email);
   }
 
-  isEventCreator(eventData: Evento) {
-    return eventData.creator.uId === this.user.uId;
+  isEventCreator(eventData: Evento, user: User) {
+    return eventData.creator.uId === user.uId;
   }
 
-  findCurrentUser(eventData: Evento) {
-    return eventData.participants.find(o => o.uId === this.user.uId);
+  findCurrentUser(eventData: Evento, user: User) {
+    return eventData.participants.find(o => o.uId === user.uId);
   }
 
   findCalendarEvent(eventData: Evento, calendarEvents: CalendarEventI[]): CalendarEventI { // fixMe
@@ -83,13 +72,13 @@ export class UtilsService {
     return event.end >= moment(from).format();
   }
 
-  getCurrentUserEvents(event: Evento): boolean {
-    return event.creator.uId === this.user.uId;
+  getCurrentUserEvents(event: Evento, user: User): boolean {
+    return event.creator.uId === user.uId;
   }
 
-  getJoinedEvents(event: Evento): boolean {
+  getJoinedEvents(event: Evento, user: User): boolean {
     return event.participants.some(participant => {
-      return participant.uId === this.user.uId;
+      return participant.uId === user.uId;
     });
   }
 

@@ -10,8 +10,12 @@ mz-navbar-item  a {
 }
 
 .logo {
+  background: url(/assets/img/glb-no-bg.png) no-repeat center;
+  background-size: contain;
+  width: 46px!important;
   display: flex;
-  max-height:46px;
+  max-height: 46px;
+  height: 46px;
   margin: 6px 0;
   transition: max-height 300ms linear;
 }

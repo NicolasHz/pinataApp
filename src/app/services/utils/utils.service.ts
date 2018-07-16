@@ -30,12 +30,15 @@ export class UtilsService {
   }
 
   scrolled(doc: Document) {
+    const isOpera = navigator.userAgent.indexOf('Opera/') > -1;
     const isChrome = navigator.userAgent.indexOf('Chrome/') > -1;
+    const isFirefox = navigator.userAgent.indexOf('Firefox/') > -1;
     const isExplorer = navigator.userAgent.indexOf('Trident/') > -1;
+    const isSafari = navigator.userAgent.indexOf('Safari/') > -1;
     const bodyTop = doc.body.scrollTop;
     const toTop = doc.documentElement.scrollTop;
 
-    if (isChrome || isExplorer) {
+    if (isChrome || isExplorer || isFirefox || isOpera || isSafari) {
       if (toTop > 50) {
         return true;
       } else if (this.scrolled && toTop < 5) {

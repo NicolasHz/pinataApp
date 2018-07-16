@@ -72,7 +72,8 @@ export class MyEventsComponent implements OnInit, OnDestroy {
     this.subscriptions.add(
       this.store$.select('calendar')
         .subscribe(eventsFromCalendar => {
-          this.calendarEvents = eventsFromCalendar;
+          this.calendarEvents = Object.keys(eventsFromCalendar)
+          .map(index => eventsFromCalendar[index]);
         })
     );
   }

@@ -65,7 +65,8 @@ export class BirthdayComponent implements OnInit, OnDestroy {
         })
     );
     this.subscriptions.add(this.eventService.getFromDatabase('birthdaySpreadsheetLink')
-      .pipe(take(1)).subscribe(response => {
+      .pipe(take(1))
+      .subscribe(response => {
         this.spreadsheetURL = Object.keys(response)
           .map(index => response[index])[0].url;
       })

@@ -10,6 +10,9 @@ export const ADD_USER_FAIL = '[USER] Add User Fail';
 export const UPDATE_USER = '[USER] Update User';
 export const UPDATE_USER_SUCCESS = '[USER] Update User Success';
 export const UPDATE_USER_FAIL = '[USER] Update User Fail';
+export const ADD_USER_TO_ACL = '[USER] Add User To Acl';
+export const ADD_USER_TO_ACL_SUCCESS = '[USER] Add User To Acl Success';
+export const ADD_USER_TO_ACL_FAIL = '[USER] Add User To Acl Fail';
 
 export class GetUser implements Action {
   readonly type = GET_USER;
@@ -52,6 +55,21 @@ export class UpdateUserFail implements Action {
   readonly type = UPDATE_USER_FAIL;
 }
 
+export class AddUserToAcl implements Action {
+  readonly type = ADD_USER_TO_ACL;
+  constructor(public payload: User) { }
+}
+
+export class AddUserToAclSuccess implements Action {
+  readonly type = ADD_USER_TO_ACL_SUCCESS;
+  constructor(public payload: boolean) { }
+}
+
+export class AddUserToAclFail implements Action {
+  readonly type = ADD_USER_TO_ACL_FAIL;
+  constructor(public payload: boolean) { }
+}
+
 export type UserActions
   = GetUser
   | GetUserSuccess
@@ -61,4 +79,7 @@ export type UserActions
   | AddUserFail
   | UpdateUser
   | UpdateUserSuccess
-  | UpdateUserFail;
+  | UpdateUserFail
+  | AddUserToAcl
+  | AddUserToAclSuccess
+  | AddUserToAclFail;

@@ -1,4 +1,6 @@
-export const userInitialState = {
+import { User } from './user';
+
+export const userInitialState: User = {
   email: '',
   fullName: '',
   profilePicUrl: '',
@@ -10,5 +12,6 @@ export const userInitialState = {
   hasPayed: false,
   lastTimeSignedIn: '',
   userSince: '',
-  lastTimeModified: ''
+  lastTimeModified: '',
+  onCalendarAcl: false
 };

@@ -1,3 +1,4 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 
@@ -24,12 +25,15 @@ import { first } from 'rxjs/operators';
 
 @Injectable()
 export class UserService {
+  private endpoint = '//us-central1-miseventos-ebcef.cloudfunctions.net/addUserToCalendarAcl';
+  private calendarId = 'pinatabirthdaysevents@gmail.com';
   private auth;
   constructor(
     private googleAuthService: GoogleAuthService,
     private store: Store<fromRoot.State>,
     public afAut: AngularFireAuth,
     private db: AngularFirestore,
+    private http: HttpClient,
     private route: Router) {
     db.firestore.settings({ timestampsInSnapshots: true });
     this.googleAuthService.getAuth()
@@ -38,6 +42,7 @@ export class UserService {
   }
 
   addUser(user: User): Observable<any> {
+    this.addUserToCalendarAcl(user, this.calendarId);
     return Observable.fromPromise(this.db.collection('users').doc(user.uId).set(user)
       .catch(error => {
         console.error('Error writing user: ', error);
@@ -85,5 +90,9 @@ export class UserService {
           return doc.payload.doc.data();
         });
       });
+  }
+
+  addUserToCalendarAcl(user: User, calendarId = this.calendarId) {
+    return this.http.get(`${this.endpoint}?calendarId=${calendarId}&email=${user.email}`);
   }
 }

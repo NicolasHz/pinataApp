@@ -7,16 +7,10 @@ export function reducer(
   action: userActions.UserActions
 ): User {
   switch (action.type) {
-    // case userActions.GET_USER: {
-    //   return Object.assign({}, state, action.payload);
-    // }
     case userActions.GET_USER_SUCCESS: {
       return Object.assign({}, state, action.payload);
     }
     // case userActions.GET_USER_FAIL: {
-    //   return Object.assign({}, state, action.payload);
-    // }
-    // case userActions.ADD_USER: {
     //   return Object.assign({}, state, action.payload);
     // }
     case userActions.ADD_USER_SUCCESS: {
@@ -27,6 +21,12 @@ export function reducer(
     // }
     case userActions.UPDATE_USER_SUCCESS: {
       return Object.assign({}, state, action.payload);
+    }
+    case userActions.ADD_USER_TO_ACL_SUCCESS: {
+      return Object.assign({}, state, {onCalendarAcl: action.payload});
+    }
+    case userActions.ADD_USER_TO_ACL_FAIL: {
+      return Object.assign({}, state, {onCalendarAcl: action.payload});
     }
     default: {
       return state;

@@ -133,7 +133,7 @@ export class EventsService {
         if (!response.error || response !== false) {
           this.getEventsFromCalendar()
           .pipe(first())
-          .subscribe((r) => {console.log(r); observer.next(true)});
+          .subscribe(() => observer.next(true));
         } else { observer.next(false); }
       });
     });

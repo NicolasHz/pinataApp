@@ -105,9 +105,9 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   joinEvent(eventData: Evento) {
     this.disableButton = true;
-    eventData.participants.push(this.user);
     const calendarEvent = this.util.findCalendarEvent(eventData, this.calendarEvents);
     if (calendarEvent) {
+      eventData.participants.push(this.user);
       this.eventService.updateCalendarEvent(calendarEvent.id, eventData)
         .pipe(first())
         .subscribe(success => {
@@ -124,6 +124,10 @@ export class HomeComponent implements OnInit, OnDestroy {
           }
           this.disableButton = false;
         });
+    } else {
+      this.toastService.show('Please try again!', 4000, 'black');
+      this.eventService.getEventsFromCalendar();
+      this.disableButton = false;
     }
   }
 
@@ -149,6 +153,10 @@ export class HomeComponent implements OnInit, OnDestroy {
           }
           this.disableButton = false;
         });
+    } else {
+      this.toastService.show('Please try again!', 4000, 'black');
+      this.eventService.getEventsFromCalendar();
+      this.disableButton = false;
     }
   }
 

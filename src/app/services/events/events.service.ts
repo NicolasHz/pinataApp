@@ -19,6 +19,7 @@ declare var gapi: any;
 @Injectable()
 export class EventsService {
   private calendar;
+  private masterCalendarId = 'pinatabirthdaysevents@gmail.com';
   constructor(
     private store$: Store<fromRoot.State>,
     private googleAuthService: GoogleAuthService,
@@ -98,20 +99,23 @@ export class EventsService {
   // Start calendar API interaction.
   //
 
-  getEventsFromCalendar() {
-    this.calendar.events.list({
-      calendarId: 'pinatabirthdaysevents@gmail.com',
-      timeMin: new Date().toISOString(),
-      showDeleted: false,
-      singleEvents: true,
-      maxResults: 300,
-      orderBy: 'startTime'
-    }).then(response => {
-      if (!response) {
-        return;
-      }
-      this.store$.dispatch(new CalendarActions.SetCalendar(response.result.items));
-    }).catch(() => console.log('something wrong at fetching events from calendar'));
+  getEventsFromCalendar(): Observable<boolean> {
+    return Observable.fromPromise(
+      this.calendar.events.list({
+        calendarId: this.masterCalendarId,
+        timeMin: new Date().toISOString(),
+        showDeleted: false,
+        singleEvents: true,
+        maxResults: 300,
+        orderBy: 'startTime'
+      }).then(response => {
+        if (!response) {
+          return false;
+        }
+        this.store$.dispatch(new CalendarActions.SetCalendar(response.result.items));
+        return true;
+      }).catch(() => console.log('something wrong at fetching events from calendar'))
+    );
   }
 
   addEventToCalendar(eventToAdd: Evento, isBirthday = false): Observable<boolean> {
@@ -123,12 +127,13 @@ export class EventsService {
     }
     return new Observable(observer => {
       this.calendar.events.insert({
-        calendarId: 'pinatabirthdaysevents@gmail.com',
+        calendarId: this.masterCalendarId,
         resource: calendarEvent
       }).execute(response => {
         if (!response.error || response !== false) {
-          this.getEventsFromCalendar();
-          observer.next(true);
+          this.getEventsFromCalendar()
+          .pipe(first())
+          .subscribe((r) => {console.log(r); observer.next(true)});
         } else { observer.next(false); }
       });
     });
@@ -137,7 +142,7 @@ export class EventsService {
   deleteCalendarEvent(id: string): Observable<boolean> {
     return new Observable(observer => {
       this.calendar.events.delete({
-        calendarId: 'pinatabirthdaysevents@gmail.com',
+        calendarId: this.masterCalendarId,
         eventId: id
       }).execute(response => {
         if (!response.error || response !== false) {
@@ -152,7 +157,7 @@ export class EventsService {
     const calendarEvent = this.createCalendarEvent(eventToUpdate);
     return new Observable(observer => {
       this.calendar.events.patch({
-        calendarId: 'pinatabirthdaysevents@gmail.com',
+        calendarId: this.masterCalendarId,
         eventId: id,
         resource: calendarEvent
       }).execute(response => {

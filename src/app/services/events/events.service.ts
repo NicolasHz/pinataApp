@@ -67,30 +67,30 @@ export class EventsService {
   updateEvent(eventsType: string, event: Evento): Observable<boolean> {
     return Observable.fromPromise(
       this.db.collection(eventsType)
-      .doc(event.id)
-      .set(JSON.parse(JSON.stringify(event)))
-      .then(() => {
-        console.log('Document successfully written!');
-        return true;
-      })
-      .catch(error => {
-        console.error('Error writing document: ', error);
-        return false;
-      }));
+        .doc(event.id)
+        .set(JSON.parse(JSON.stringify(event)))
+        .then(() => {
+          console.log('Document successfully written!');
+          return true;
+        })
+        .catch(error => {
+          console.error('Error writing document: ', error);
+          return false;
+        }));
   }
 
   deleteEvent(eventsType: string, event: Evento): Observable<boolean> {
     return Observable.fromPromise(
-    this.db.collection(eventsType)
-      .doc(event.id)
-      .delete()
-      .then(() => {
-        console.log('Document successfully deleted!');
-        return true;
-      }).catch(error => {
-        console.error('Error removing document: ', error);
-        return false;
-      })
+      this.db.collection(eventsType)
+        .doc(event.id)
+        .delete()
+        .then(() => {
+          console.log('Document successfully deleted!');
+          return true;
+        }).catch(error => {
+          console.error('Error removing document: ', error);
+          return false;
+        })
     );
   }
 
@@ -100,8 +100,8 @@ export class EventsService {
 
   getEventsFromCalendar() {
     this.calendar.events.list({
-      calendarId: 'primary',
-      timeMin: (new Date(new Date().setMonth(new Date().getMonth() - 2))).toISOString(),
+      calendarId: 'pinatabirthdaysevents@gmail.com',
+      timeMin: new Date().toISOString(),
       showDeleted: false,
       singleEvents: true,
       maxResults: 300,
@@ -123,7 +123,7 @@ export class EventsService {
     }
     return new Observable(observer => {
       this.calendar.events.insert({
-        calendarId: 'primary',
+        calendarId: 'pinatabirthdaysevents@gmail.com',
         resource: calendarEvent
       }).execute(response => {
         if (!response.error || response !== false) {
@@ -134,23 +134,25 @@ export class EventsService {
     });
   }
 
-  deleteCalendarEvent(id: string) {
-    this.calendar.events.delete({
-      calendarId: 'primary',
-      eventId: id
-    }).execute(response => {
-      if (!response.error || response !== false) {
-        this.getEventsFromCalendar();
-      }
+  deleteCalendarEvent(id: string): Observable<boolean> {
+    return new Observable(observer => {
+      this.calendar.events.delete({
+        calendarId: 'pinatabirthdaysevents@gmail.com',
+        eventId: id
+      }).execute(response => {
+        if (!response.error || response !== false) {
+          this.getEventsFromCalendar();
+          observer.next(true);
+        } else { observer.next(false); }
+      });
     });
-
   }
 
   updateCalendarEvent(id: string, eventToUpdate: Evento): Observable<boolean> {
     const calendarEvent = this.createCalendarEvent(eventToUpdate);
     return new Observable(observer => {
       this.calendar.events.patch({
-        calendarId: 'primary',
+        calendarId: 'pinatabirthdaysevents@gmail.com',
         eventId: id,
         resource: calendarEvent
       }).execute(response => {
@@ -178,7 +180,7 @@ export class EventsService {
       recurrence: [
         'RRULE:FREQ=DAILY;COUNT=1'
       ],
-      // attendees: eventToAdd.participants,
+      attendees: eventToAdd.participants,
       guestsCanModify: false,
       reminders: {
         useDefault: false,

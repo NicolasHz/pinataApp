@@ -22,5 +22,6 @@ export const calendarInitialState: CalendarEventI = {
       minutes: 10
     }]
   },
-  status: ''
+  status: '',
+  visibility: ''
 };

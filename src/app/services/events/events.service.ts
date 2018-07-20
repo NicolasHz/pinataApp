@@ -187,6 +187,7 @@ export class EventsService {
       ],
       attendees: eventToAdd.participants,
       guestsCanModify: false,
+      visibility: 'private',
       reminders: {
         useDefault: false,
         overrides: [

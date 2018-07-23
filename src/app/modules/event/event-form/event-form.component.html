@@ -92,7 +92,7 @@
                 required
                 id="textarea-description"
                 formControlName="description"
-                [errorMessageResource]="errorMessageResources.description"
+                [errorMessageResource]="errorMessageResources.description()"
                 [label]="'Event description'"
                 [length]="255">
               </textarea>

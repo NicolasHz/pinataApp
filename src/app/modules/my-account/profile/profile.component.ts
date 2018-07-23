@@ -170,7 +170,6 @@ export class ProfileComponent implements OnInit, AfterViewInit, OnDestroy {
             this.userService.addUser(this.user);
           });
       });
-
   }
 
   onFileSelected(event) {

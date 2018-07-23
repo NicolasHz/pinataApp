@@ -5,6 +5,7 @@ import { Evento } from './../../interfaces/evento';
 import { CalendarEventI } from './../../interfaces/calendar-event';
 
 import { UtilsService } from '../utils/utils.service';
+import { HttpClient } from '../../../../node_modules/@angular/common/http';
 import { GoogleAuthService } from 'ng-gapi';
 import * as moment from 'moment';
 
@@ -19,12 +20,14 @@ declare var gapi: any;
 @Injectable()
 export class EventsService {
   private calendar;
+  private sendMailEndpoint = '//us-central1-miseventos-ebcef.cloudfunctions.net/sendMailWhenEventCreated';
   private masterCalendarId = 'pinatabirthdaysevents@gmail.com';
   constructor(
     private store$: Store<fromRoot.State>,
     private googleAuthService: GoogleAuthService,
     private db: AngularFirestore,
     private util: UtilsService,
+    private http: HttpClient
   ) {
     db.firestore.settings({ timestampsInSnapshots: true });
     this.googleAuthService.getAuth()
@@ -119,15 +122,17 @@ export class EventsService {
   }
 
   addEventToCalendar(eventToAdd: Evento, isBirthday = false): Observable<boolean> {
+    let calId = this.masterCalendarId;
     const calendarEvent = this.createCalendarEvent(eventToAdd);
     if (isBirthday) {
+      calId = 'primary';
       calendarEvent.id = this.util.encode32(eventToAdd.id + this.util.makePlusId(2));
     } else {
       calendarEvent.id = this.util.encode32(eventToAdd.id + this.util.makePlusId(5));
     }
     return new Observable(observer => {
       this.calendar.events.insert({
-        calendarId: this.masterCalendarId,
+        calendarId: calId,
         resource: calendarEvent
       }).execute(response => {
         if (!response.error || response !== false) {
@@ -196,5 +201,14 @@ export class EventsService {
         ]
       }
     };
+  }
+
+  sendEmail(to: string[], subject: string, message: string): Observable<any> {
+    let emailsToSend = to[0];
+    if (to.length > 0) {
+      emailsToSend = to.join(', ');
+    }
+    const email = { emailsToSend, subject, message };
+    return this.http.post(this.sendMailEndpoint, JSON.stringify(email));
   }
 }

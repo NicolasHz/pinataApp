@@ -1,7 +1,46 @@
 <div class="feedback row">
-  <div class="col s11 m10 l10 push-m1 push-l1 feedback__wrapper">
-      <div class="feedback__wrapper__title">
-          <h5 class="wow fadeIn">Give us your feedback!!</h5>
-      </div>
-  </div>
+    <div class="col s11 m10 l10 push-m1 push-l1 feedback__wrapper">
+        <form [formGroup]="feedBackForm">
+            <div class="section">
+                <div class="row">
+                    <h5 class="col s12 m11 l11 offset-l1 wow fadeIn">Give us your feedback!!</h5>
+                    <mz-input-container class="col s12 m8 l6 offset-l1">
+                    <input
+                        mz-input mz-validation
+                        required id="input-title"
+                        formControlName="title"
+                        type="text"
+                        [errorMessageResource]="errorMessageResources.title"
+                        [label]="'Title'" />
+                    </mz-input-container>
+                </div>
+                <div class="row">
+                    <mz-textarea-container class="col s12 m8 l8 offset-l1">
+                    <textarea
+                        mz-textarea mz-validation
+                        required
+                        id="textarea-description"
+                        formControlName="message"
+                        [errorMessageResource]="errorMessageResources.message(20, 500)"
+                        [label]="'Message'" [length]="500">
+                    </textarea>
+                    </mz-textarea-container>
+                </div>
+            </div>
+        </form>
+        <div class="section">
+            <div *ngIf="feedBackForm.dirty || feedBackForm.touched" class="row">
+                <div class="col s3 m3 l3 offset-l9 feedback__wrapper__submit">
+                    <button mz-button class="red" 
+                    (click)="cancelForm()" 
+                    (click)="showToast('Canceled!', 'black')" 
+                    type="button">Cancel</button>
+                    <button mz-button
+                    [disabled]="!feedBackForm.valid" 
+                    (click)="submitForm()"
+                    type="submit">Submit</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

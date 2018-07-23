@@ -53,11 +53,21 @@ export const ERROR_MESSAGES_RESOURCES = {
   endHour: {
     required: 'End hour is required.',
   },
-  description: {
-    required: 'You need a description for this event.',
-    minlength: 'Min lenght 20 characters.',
-    maxlength: 'Description cannot be more than 255 characters long.',
-    validString: 'Description can\'t be only white-spaces.'
+  description(minLenght = 20, maxLenght = 255) {
+    return {
+      required: 'You need a description.',
+      minlength: `Min lenght ${minLenght} characters.`,
+      maxlength: `Description cannot be more than ${maxLenght} characters long.`,
+      validString: 'Description can\'t be only white-spaces.'
+    };
+  },
+  message(minLenght = 20, maxLenght = 255) {
+    return {
+      required: 'You need a message.',
+      minlength: `Min lenght ${minLenght} characters.`,
+      maxlength: `Message cannot be more than ${maxLenght} characters long.`,
+      validString: 'Message can\'t be only white-spaces.'
+    };
   },
   image: {
     maxlength: 'This URL cannot be more than 350 characters long.'

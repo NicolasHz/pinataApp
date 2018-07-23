@@ -63,7 +63,7 @@ export class UserEffects {
                 return this.userService
                     .addUser(user)
                     .mergeMap(() => {
-                        this.toastService.show('Profile Updated!', 4000, 'green', () => {
+                        this.toastService.show('Profile Created!', 4000, 'green', () => {
                             this.toastService.show('Now, you should go to your profile and update it!', 4000, 'green', );
                         });
                         const modalData = {
@@ -106,7 +106,6 @@ export class UserEffects {
                 return this.userService
                     .addUser(user)
                     .map(() => {
-                        this.toastService.show('Profile Updated!', 4000, 'green');
                         if (user.dateOfBirth && this.util.isTodayBirthday(user)) {
                             const modalData = {
                                 title: `Happy Birthday!! <br> ${user.fullName}`,
@@ -115,6 +114,7 @@ export class UserEffects {
                             };
                             this.simpleModalService.openModal(modalData);
                         }
+                        this.toastService.show('Profile Updated!', 4000, 'green');
                         return new userActions.UpdateUserSuccess(user);
                     })
                     .catch(err => {

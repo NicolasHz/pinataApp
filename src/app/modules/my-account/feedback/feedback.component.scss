@@ -8,10 +8,10 @@
   background: linear-gradient(160deg, #feac5e, #c779d0, #4bc0c8); // previsional colors
   &__wrapper {
     @extend %form-common-style;
-    &__title {
-      display: flex;
-      justify-content: space-between;
-      margin: 0 0 15px 0;
+    &__submit {
+      button {
+        margin: 0 5px;
+      }
     }
   }
 }

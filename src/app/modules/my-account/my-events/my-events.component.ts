@@ -73,7 +73,7 @@ export class MyEventsComponent implements OnInit, OnDestroy {
       this.store$.select('calendar')
         .subscribe(eventsFromCalendar => {
           this.calendarEvents = Object.keys(eventsFromCalendar)
-          .map(index => eventsFromCalendar[index]);
+            .map(index => eventsFromCalendar[index]);
         })
     );
   }
@@ -117,10 +117,28 @@ export class MyEventsComponent implements OnInit, OnDestroy {
           }
           this.disableButton = false;
         });
-    } else {
+    } else if (eventData.participants.length > 0) {
       this.toastService.show('Please try again!', 4000, 'black');
       this.eventService.getEventsFromCalendar();
       this.disableButton = false;
+    } else {
+      eventData.participants.push(this.user);
+      this.eventService.addEventToCalendar(eventData)
+        .pipe(first())
+        .subscribe(success => {
+          if (success) {
+            this.eventService.updateEvent('events', eventData)
+              .pipe(first())
+              .subscribe(updated => {
+                if (updated && this.util.findCurrentUser(eventData, this.user)) {
+                  this.toastService.show('Joined to event!', 4000, 'green');
+                }
+              });
+          } else {
+            this.toastService.show('Please try again!', 4000, 'black');
+          }
+          this.disableButton = false;
+        });
     }
   }
 
@@ -166,12 +184,28 @@ export class MyEventsComponent implements OnInit, OnDestroy {
     if (response) {
       if (this.selectedEvent.participants.length > 0 && this.util.findCurrentUser(this.selectedEvent, this.user)) {
         this.leaveEvent(this.selectedEvent);
+      } else {
+        const calendarEvent = this.util.findCalendarEvent(this.selectedEvent, this.calendarEvents);
+        if (calendarEvent) {
+          this.eventService.deleteCalendarEvent(calendarEvent.id)
+            .pipe(first())
+            .subscribe(success => {
+              if (success) {
+                this.eventService.deleteEvent('events', this.selectedEvent)
+                  .pipe(first())
+                  .subscribe(deleted => {
+                    deleted ? this.toastService.show('Event Deleted!', 4000, 'green') : this.toastService.show('Please try again', 4000, 'black');
+                  });
+              }
+            });
+        } else {
+          this.eventService.deleteEvent('events', this.selectedEvent)
+            .pipe(first())
+            .subscribe(deleted => {
+              deleted ? this.toastService.show('Event Deleted!', 4000, 'green') : this.toastService.show('Please try again', 4000, 'black');
+            });
+        }
       }
-      this.eventService.deleteEvent('events', this.selectedEvent)
-      .pipe(first())
-      .subscribe(deleted => {
-        deleted ? this.toastService.show('Event Deleted!', 4000, 'green') : this.toastService.show('Please try again', 4000, 'black');
-      });
     } else {
       this.toastService.show('Canceled', 4000, 'red');
     }

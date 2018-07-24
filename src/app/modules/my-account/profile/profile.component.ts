@@ -54,7 +54,6 @@ export class ProfileComponent implements OnInit, AfterViewInit, OnDestroy {
         .subscribe((user: User) => {
           this.user = user;
           this.currentUserImage = this.user.profilePicUrl;
-          // console.log(this.user)
           this.initForms();
         })
     );

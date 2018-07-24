@@ -10,8 +10,11 @@ import { MzToastService } from '../../../../../node_modules/ngx-materialize';
 import { EventsService } from '../../../services/events/events.service';
 
 // Interfaces
+import { User } from './../../../interfaces/user';
 import { Feedback } from '../../../interfaces/feedback';
 
+import { Store } from '@ngrx/store';
+import * as fromRoot from '../../../app.reducer';
 import { Subscription } from '../../../../../node_modules/rxjs';
 import { first } from 'rxjs/operators';
 
@@ -25,13 +28,21 @@ export class FeedbackComponent implements OnInit, OnDestroy {
   public errorMessageResources = ERROR_MESSAGES_RESOURCES;
   public subscriptions: Subscription = new Subscription();
   private masterEmail = 'pinatabirthdaysevents@gmail.com';
+  private user: User;
   constructor(
+    private store: Store<fromRoot.State>,
     private formBuilder: FormBuilder,
     private toastService: MzToastService,
     private eventService: EventsService
   ) { }
 
   ngOnInit() {
+    this.subscriptions.add(
+      this.store.select('user')
+        .subscribe((user: User) => {
+          this.user = user;
+        })
+    );
     this.subscriptions.add(this.eventService.getFromDatabase('pinataEmail')
       .pipe(first())
       .subscribe(response => {
@@ -68,6 +79,7 @@ export class FeedbackComponent implements OnInit, OnDestroy {
 
   submitForm() {
     const feedback: Feedback = Object.assign({}, this.feedBackForm.value);
+    feedback.message = `From: ${this.user.fullName} \n` + `Email: ${this.user.email} \n \n` + feedback.message;
     this.subscriptions.add(
       this.eventService.sendEmail([this.masterEmail], feedback.title, feedback.message)
         .pipe(first())

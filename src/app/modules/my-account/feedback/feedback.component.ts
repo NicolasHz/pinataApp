@@ -30,6 +30,7 @@ export class FeedbackComponent implements OnInit, OnDestroy {
   public subscriptions: Subscription = new Subscription();
   private masterEmail = MASTER_EMAIL_ACCOUNT;
   private user: User;
+  public submited: boolean;
   constructor(
     private store: Store<fromRoot.State>,
     private formBuilder: FormBuilder,
@@ -51,14 +52,11 @@ export class FeedbackComponent implements OnInit, OnDestroy {
           .map(index => response[index])[0].masterAccountEmail;
       })
     );
-    this.initForm();
-  }
-
-  initForm() {
     this.buildFeedbackForm();
   }
 
   buildFeedbackForm() {
+    this.submited = false;
     this.feedBackForm = this.formBuilder.group({
       title: [null, Validators.required],
       message: [
@@ -70,21 +68,37 @@ export class FeedbackComponent implements OnInit, OnDestroy {
           IsEmptyValidator
         ]
       ],
+      opinion: ['like'],
     });
   }
 
-  cancelForm() {
+  resetForm() {
     this.feedBackForm.reset();
-    this.initForm();
+    this.feedBackForm.controls['opinion'].setValue('like');
+    this.submited = false;
+    this.feedBackForm.enable();
   }
 
   submitForm() {
+    this.submited = true;
+    this.feedBackForm.disable();
     const feedback: Feedback = Object.assign({}, this.feedBackForm.value);
-    feedback.message = `From: ${this.user.fullName} \n` + `Email: ${this.user.email} \n \n` + feedback.message;
+    feedback.message = `From: ${this.user.fullName} \n`
+      + `Email: ${this.user.email} \n`
+      + `General opinion: ${feedback.opinion} \n`
+      + `\n`
+      + `Comments:\n${feedback.message}`;
     this.subscriptions.add(
       this.eventService.sendEmail([this.masterEmail], feedback.title, feedback.message)
         .pipe(first())
-        .subscribe(success => console.log(success))
+        .subscribe(response => {
+          if (response.accepted) {
+            this.showToast('Message sended!', 'green');
+            this.resetForm();
+          } else {
+            this.showToast('Please try again!', 'red');
+          }
+        })
     );
   }
 

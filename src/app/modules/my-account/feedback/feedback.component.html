@@ -26,19 +26,51 @@
                     </textarea>
                     </mz-textarea-container>
                 </div>
+                <div class="row feedback__opinion">
+                    <h6 class="col s12 m12 l12 offset-l1 feedback__opinion__header">Did you liked the app?</h6>
+                    <mz-radio-button-container class="col s3 m2 l1 offset-l1">
+                        <input mz-radio-button
+                            id="radio-button-man"
+                            formControlName="opinion"
+                            name="opinion"
+                            type="radio"
+                            value="like"
+                            [label]="'Liked'"
+                            [withGap]="true">
+                    </mz-radio-button-container>
+                    <mz-radio-button-container class="col s3 m2 l1">
+                        <input mz-radio-button
+                            id="radio-button-woman"
+                            formControlName="opinion"
+                            name="opinion"
+                            type="radio"
+                            value="dislike"
+                            [label]="'Disliked'"
+                            [withGap]="true">
+                    </mz-radio-button-container>
+                </div>
             </div>
         </form>
         <div class="section">
             <div *ngIf="feedBackForm.dirty || feedBackForm.touched" class="row">
-                <div class="col s3 m3 l3 offset-l9 feedback__wrapper__submit">
-                    <button mz-button class="red" 
-                    (click)="cancelForm()" 
+                <div class="col s10 m5 l3 offset-s1 offset-m7 offset-l9 feedback__wrapper__submit">
+                    <button mz-button 
+                    [disabled]="submited"
+                    class="red" 
+                    (click)="resetForm()" 
                     (click)="showToast('Canceled!', 'black')" 
                     type="button">Cancel</button>
                     <button mz-button
-                    [disabled]="!feedBackForm.valid" 
+                    [disabled]="!feedBackForm.valid || submited"
                     (click)="submitForm()"
                     type="submit">Submit</button>
+                </div>
+                <div *ngIf="submited">
+                    <mz-progress
+                        class="col s12 m12 l2 offset-l9"
+                        [backgroundClass]="'blue lighten-4'"
+                        [progressClass]="'blue'">
+                    </mz-progress>
                 </div>
             </div>
         </div>

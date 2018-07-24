@@ -15,13 +15,14 @@ import { Store } from '@ngrx/store';
 
 import { Observable } from 'rxjs';
 import { first } from 'rxjs/operators';
+import { MASTER_EMAIL_ACCOUNT, SEND_EMAIL_ENDPOINT } from '../../shared/constants';
 
 declare var gapi: any;
 @Injectable()
 export class EventsService {
   private calendar;
-  private sendMailEndpoint = '//us-central1-miseventos-ebcef.cloudfunctions.net/sendMailWhenEventCreated';
-  private masterCalendarId = 'pinatabirthdaysevents@gmail.com';
+  private sendMailEndpoint = SEND_EMAIL_ENDPOINT;
+  private masterCalendarId = MASTER_EMAIL_ACCOUNT;
   constructor(
     private store$: Store<fromRoot.State>,
     private googleAuthService: GoogleAuthService,

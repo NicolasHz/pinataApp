@@ -17,6 +17,7 @@ import { Store } from '@ngrx/store';
 import * as fromRoot from '../../../app.reducer';
 import { Subscription } from '../../../../../node_modules/rxjs';
 import { first } from 'rxjs/operators';
+import { MASTER_EMAIL_ACCOUNT } from '../../../shared/constants';
 
 @Component({
   selector: 'app-feedback',
@@ -27,7 +28,7 @@ export class FeedbackComponent implements OnInit, OnDestroy {
   public feedBackForm: FormGroup;
   public errorMessageResources = ERROR_MESSAGES_RESOURCES;
   public subscriptions: Subscription = new Subscription();
-  private masterEmail = 'pinatabirthdaysevents@gmail.com';
+  private masterEmail = MASTER_EMAIL_ACCOUNT;
   private user: User;
   constructor(
     private store: Store<fromRoot.State>,

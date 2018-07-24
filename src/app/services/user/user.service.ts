@@ -22,11 +22,12 @@ import { GoogleAuthService } from 'ng-gapi';
 // RxJs
 import { Observable } from 'rxjs';
 import { first } from 'rxjs/operators';
+import { ADD_TO_ACL_ENDPOINT, MASTER_EMAIL_ACCOUNT } from '../../shared/constants';
 
 @Injectable()
 export class UserService {
-  private endpoint = '//us-central1-miseventos-ebcef.cloudfunctions.net/addUserToCalendarAcl';
-  private calendarId = 'pinatabirthdaysevents@gmail.com';
+  private addToAclEndpoint = ADD_TO_ACL_ENDPOINT;
+  private calendarId = MASTER_EMAIL_ACCOUNT;
   private auth;
   constructor(
     private googleAuthService: GoogleAuthService,
@@ -93,6 +94,6 @@ export class UserService {
   }
 
   addUserToCalendarAcl(user: User, calendarId = this.calendarId) {
-    return this.http.get(`${this.endpoint}?calendarId=${calendarId}&email=${user.email}`);
+    return this.http.get(`${this.addToAclEndpoint}?calendarId=${calendarId}&email=${user.email}`);
   }
 }

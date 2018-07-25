@@ -1,23 +1,33 @@
-export const TIME_PICKER_OPTIONS: Pickadate.TimeOptions = {
-    default: 'now', // Set default time: 'now', '1:30AM', '16:30'
-    fromnow: 0,       // set default time to * milliseconds from now (using with default = 'now')
-    twelvehour: false, // Use AM/PM or 24-hour format
-    donetext: 'OK', // text for done-button
-    cleartext: 'Clear', // text for clear-button
-    canceltext: 'Cancel', // Text for cancel-button
-    autoclose: true, // automatic close timepicker
-    ampmclickable: false, // make AM PM clickable
-  };
+export const START_TIME_PICKER_OPTIONS: any = {
+  default: 'now', // Set default time: 'now', '1:30AM', '16:30'
+  fromnow: 0,       // set default time to * milliseconds from now (using with default = 'now')
+  twelvehour: false, // Use AM/PM or 24-hour format
+  donetext: 'OK', // text for done-button
+  cleartext: 'Clear', // text for clear-button
+  canceltext: 'Cancel', // Text for cancel-button
+  autoclose: true, // automatic close timepicker
+  ampmclickable: false, // make AM PM clickable
+};
+export const END_TIME_PICKER_OPTIONS: any = {
+  default: 'now', // Set default time: 'now', '1:30AM', '16:30'
+  fromnow: 0,       // set default time to * milliseconds from now (using with default = 'now')
+  twelvehour: false, // Use AM/PM or 24-hour format
+  donetext: 'OK', // text for done-button
+  cleartext: 'Clear', // text for clear-button
+  canceltext: 'Cancel', // Text for cancel-button
+  autoclose: true, // automatic close timepicker
+  ampmclickable: false, // make AM PM clickable
+};
 export const START_DATE_PICKER_OPTIONS: Pickadate.DateOptions = {
-    clear: 'Clear', // Clear button text
-    close: 'Ok',    // Ok button text
-    today: 'Today', // Today button text
-    closeOnClear: false,
-    closeOnSelect: true,
-    min: new Date(),
-    format: 'dd/mm/yyyy', // Visible date format (defaulted to formatSubmit if provided otherwise 'd mmmm, yyyy')
-    formatSubmit: 'yyyy-mm-dd',   // Return value format (used to set/get value)
-  };
+  clear: 'Clear', // Clear button text
+  close: 'Ok',    // Ok button text
+  today: 'Today', // Today button text
+  closeOnClear: false,
+  closeOnSelect: true,
+  min: new Date(),
+  format: 'dd/mm/yyyy', // Visible date format (defaulted to formatSubmit if provided otherwise 'd mmmm, yyyy')
+  formatSubmit: 'yyyy-mm-dd',   // Return value format (used to set/get value)
+};
 export const END_DATE_PICKER_OPTIONS: Pickadate.DateOptions = {
   clear: 'Clear', // Clear button text
   close: 'Ok',    // Ok button text
@@ -52,6 +62,7 @@ export const ERROR_MESSAGES_RESOURCES = {
   },
   endHour: {
     required: 'End hour is required.',
+    incorrect: 'End hour can\'t be grater than start hour'
   },
   description(minLenght = 20, maxLenght = 255) {
     return {

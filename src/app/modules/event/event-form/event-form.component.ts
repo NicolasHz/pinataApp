@@ -4,7 +4,8 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 // Validators
 import { IsEmptyValidator } from '../../../shared/validators/validators';
 import {
-  TIME_PICKER_OPTIONS,
+  START_TIME_PICKER_OPTIONS,
+  END_TIME_PICKER_OPTIONS,
   MODAL_OPTIONS,
   START_DATE_PICKER_OPTIONS,
   END_DATE_PICKER_OPTIONS,
@@ -39,7 +40,8 @@ export class EventFormComponent extends MzBaseModal implements OnInit {
   @Input() users: User[];
   @Input() calendarEvents;
   public modalOptions = MODAL_OPTIONS;
-  public timepickerOptions = TIME_PICKER_OPTIONS;
+  public startTimepickerOptions = START_TIME_PICKER_OPTIONS;
+  public endTimepickerOptions = END_TIME_PICKER_OPTIONS;
   public startDatepickerOptions = START_DATE_PICKER_OPTIONS;
   public endDatepickerOptions = END_DATE_PICKER_OPTIONS;
   public errorMessageResources = ERROR_MESSAGES_RESOURCES;
@@ -67,6 +69,7 @@ export class EventFormComponent extends MzBaseModal implements OnInit {
   ngOnInit() {
     this.startDatepickerOptions.onOpen = () => this.endDateAvalible = false;
     this.startDatepickerOptions.onClose = () => this.setAvalibleEndDays();
+    this.endTimepickerOptions.afterDone = () => this.validateHours();
     if (this.users) {
       this.autocompleteOptions.data = this.users.reduce((acc, cur) => {
         acc[cur.fullName] = cur.profilePicUrl;
@@ -241,6 +244,16 @@ export class EventFormComponent extends MzBaseModal implements OnInit {
       this.endDateAvalible = true;
     } else {
       this.endDateAvalible = false;
+    }
+  }
+
+  validateHours() {
+    if (this.eventForm.value.end.eventEndHour) {
+      const startTime = moment.duration(this.eventForm.value.start.eventStartHour).asMinutes();
+      const endTime = moment.duration(this.eventForm.value.end.eventEndHour).asMinutes();
+      endTime < startTime ?
+      this.eventForm.get('end.eventEndHour').setErrors({incorrect: true}) :
+      this.eventForm.get('end.eventEndHour').setErrors(null);
     }
   }
 

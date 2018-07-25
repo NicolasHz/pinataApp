@@ -69,6 +69,7 @@ export class EventFormComponent extends MzBaseModal implements OnInit {
   ngOnInit() {
     this.startDatepickerOptions.onOpen = () => this.endDateAvalible = false;
     this.startDatepickerOptions.onClose = () => this.setAvalibleEndDays();
+    this.startTimepickerOptions.afterDone = () => this.validateHours();
     this.endTimepickerOptions.afterDone = () => this.validateHours();
     if (this.users) {
       this.autocompleteOptions.data = this.users.reduce((acc, cur) => {

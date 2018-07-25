@@ -55,16 +55,6 @@ export class HomeComponent implements OnInit, OnDestroy {
           this.birthdayReady = true;
         })
     );
-    // this.subscriptions.add(this.eventService.getFromDatabase('birthdays')
-    // .subscribe(response => {
-    //   this.birthdays = Object.keys(response)
-    //   .map(index => response[index])
-    //   .map(birthday => this.util.digestYearOfBirthday(birthday))
-    //   .filter(event => this.util.deleteOldDatesEvents(event))
-    //   .sort((a, b) => this.util.diferenceOfTimeFromNow(b.start) - this.util.diferenceOfTimeFromNow(a.start))
-    //   .slice(0, 3);
-    //   this.birthdayReady = true;
-    // }));
     this.subscriptions.add(
       this.eventService.getFromDatabase('events')
         .subscribe(response => {

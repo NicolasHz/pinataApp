@@ -27,13 +27,19 @@ export class UtilsService {
     const bodyTop = doc.body.scrollTop;
     const toTop = doc.documentElement.scrollTop;
 
-    if (isExplorer || isFirefox || isOpera) {
+    if (isChrome || isExplorer || isFirefox || isOpera) {
       if (toTop > 50) {
         return true;
       } else if (this.scrolled && toTop < 5) {
         return false;
       }
-    } else if (isChrome || isSafari) {
+    } else if (isSafari) {
+      if (bodyTop > 50) {
+        return true;
+      } else if (this.scrolled && bodyTop < 5) {
+        return false;
+      }
+    } else {
       if (bodyTop > 50) {
         return true;
       } else if (this.scrolled && bodyTop < 5) {

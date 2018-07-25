@@ -11,6 +11,7 @@ export interface User {
     lastTimeSignedIn?: string;
     userSince?: string;
     lastTimeModified?: string;
+    onCalendarAcl?: boolean;
 }
 
 export interface GUser {

@@ -1,7 +1,78 @@
 <div class="feedback row">
-  <div class="col s11 m10 l10 push-m1 push-l1 feedback__wrapper">
-      <div class="feedback__wrapper__title">
-          <h5 class="wow fadeIn">Give us your feedback!!</h5>
-      </div>
-  </div>
+    <div class="col s11 m10 l10 push-m1 push-l1 feedback__wrapper">
+        <form [formGroup]="feedBackForm">
+            <div class="section">
+                <div class="row">
+                    <h5 class="col s12 m11 l11 offset-l1 wow fadeIn">Give us your feedback!!</h5>
+                    <mz-input-container class="col s12 m8 l4 offset-l1">
+                    <input
+                        mz-input mz-validation
+                        required id="input-title"
+                        formControlName="title"
+                        type="text"
+                        [errorMessageResource]="errorMessageResources.title"
+                        [label]="'Title'" />
+                    </mz-input-container>
+                </div>
+                <div class="row">
+                    <mz-textarea-container class="col s12 m8 l8 offset-l1">
+                    <textarea
+                        mz-textarea mz-validation
+                        required
+                        id="textarea-description"
+                        formControlName="message"
+                        [errorMessageResource]="errorMessageResources.message(20, 500)"
+                        [label]="'Message'" [length]="500">
+                    </textarea>
+                    </mz-textarea-container>
+                </div>
+                <div class="row feedback__opinion">
+                    <h6 class="col s12 m12 l12 offset-l1 feedback__opinion__header">Did you liked the app?</h6>
+                    <mz-radio-button-container class="col s3 m2 l1 offset-l1">
+                        <input mz-radio-button
+                            id="radio-button-man"
+                            formControlName="opinion"
+                            name="opinion"
+                            type="radio"
+                            value="like"
+                            [label]="'Liked'"
+                            [withGap]="true">
+                    </mz-radio-button-container>
+                    <mz-radio-button-container class="col s3 m2 l1">
+                        <input mz-radio-button
+                            id="radio-button-woman"
+                            formControlName="opinion"
+                            name="opinion"
+                            type="radio"
+                            value="dislike"
+                            [label]="'Disliked'"
+                            [withGap]="true">
+                    </mz-radio-button-container>
+                </div>
+            </div>
+        </form>
+        <div class="section">
+            <div *ngIf="feedBackForm.dirty || feedBackForm.touched" class="row">
+                <div class="col s10 m5 l3 offset-s1 offset-m7 offset-l9 feedback__wrapper__submit">
+                    <button mz-button 
+                    [disabled]="submited"
+                    class="red" 
+                    (click)="resetForm()" 
+                    (click)="showToast('Canceled!', 'black')" 
+                    type="button">Cancel</button>
+                    <button mz-button
+                    [disabled]="!feedBackForm.valid || submited"
+                    (click)="submitForm()"
+                    type="submit">Submit</button>
+                </div>
+                <div *ngIf="submited">
+                    <mz-progress
+                        class="col s12 m12 l2 offset-l9"
+                        [backgroundClass]="'blue lighten-4'"
+                        [progressClass]="'blue'">
+                    </mz-progress>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

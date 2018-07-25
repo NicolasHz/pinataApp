@@ -58,7 +58,7 @@ const gapiClientConfig: NgGapiClientConfig = {
     HttpClientModule,
     StoreModule.forRoot(reducers),
     StoreDevtoolsModule.instrument({
-      maxAge: 5
+      maxAge: 50
     }),
     EffectsModule.forRoot(effects.effects),
     MzSpinnerModule

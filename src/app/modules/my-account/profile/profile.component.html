@@ -95,7 +95,7 @@
                   type="text"
                   (keyup.enter)="addPreference()"
                   [errorMessageResource]="errorMessageResources.preferences"
-                  [label]="'Preference (ex:\'books\', \'sports\')'" />
+                  [label]="'Preference (ex:\'books\')'" />
               </mz-input-container>
               <div class="col s1">
                 <button mz-button *ngIf="i > 0" [flat]="true" [float]="true" (click)="deletePreference(i)" type="button">
@@ -113,17 +113,17 @@
       </form>
     </div>
     <div *ngIf="generalForm.dirty || generalForm.touched" class="row">
-        <div class="right gif-buttons">
-          <button mz-button class="red" 
-            (click)="cancelForm()" 
-            (click)="showToast('Canceled!', 'black')" 
-            type="button">Cancel</button>
-          <button mz-button
-            [disabled]="!generalForm.valid" 
-            (click)="submitForm()"
-            type="submit">Submit</button>
-        </div>
+      <div class="right">
+        <button mz-button class="red" 
+          (click)="cancelForm()" 
+          (click)="showToast('Canceled!', 'black')" 
+          type="button">Cancel</button>
+        <button mz-button
+          [disabled]="!generalForm.valid" 
+          (click)="submitForm()"
+          type="submit">Submit</button>
       </div>
+    </div>
   </div>
     <div class="col s11 m10 l10 push-m1 push-l1">
       <button mz-button class="profile__log-out right red" (click)="logOutUser()">

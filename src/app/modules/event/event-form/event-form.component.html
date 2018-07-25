@@ -44,7 +44,7 @@
                 formControlName="eventStartHour"
                 [errorMessageResource]="errorMessageResources.startHour"
                 [label]="'Starts at'"
-                [options]="timepickerOptions"
+                [options]="startTimepickerOptions"
                 id="timepicker-startTime"
                 placeholder="Select a start time"
                 type="text">
@@ -79,7 +79,7 @@
                 formControlName="eventEndHour"
                 [errorMessageResource]="errorMessageResources.endHour"
                 [label]="'Ends at'"
-                [options]="timepickerOptions"
+                [options]="endTimepickerOptions"
                 id="timepicker-endTime"
                 placeholder="Select an end time"
                 type="text">
@@ -92,7 +92,7 @@
                 required
                 id="textarea-description"
                 formControlName="description"
-                [errorMessageResource]="errorMessageResources.description"
+                [errorMessageResource]="errorMessageResources.description()"
                 [label]="'Event description'"
                 [length]="255">
               </textarea>
@@ -156,7 +156,6 @@
     <button mz-button mz-modal-close 
       [disabled]="!eventForm.valid" 
       (click)="submitForm()" 
-      (click)="showToast('Event submited!', 'green')" 
       type="submit">Submit</button>
   </mz-modal-footer>
 </mz-modal>

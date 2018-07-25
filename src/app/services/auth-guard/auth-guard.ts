@@ -46,10 +46,14 @@ export class AuthGuardService implements CanActivate {
               this.store$.dispatch(new UserActions.GetUser(gUser));
             }
             result = this.actions$
-              .ofType(UserActions.GET_USER_SUCCESS)
+              .ofType(UserActions.GET_USER_SUCCESS, UserActions.ADD_USER_SUCCESS)
               .map(action => {
+                let successfulLoad = action instanceof UserActions.GetUserSuccess;
                 this.fetching = false;
-                return action instanceof UserActions.GetUserSuccess;
+                if (!successfulLoad) {
+                  successfulLoad = action instanceof UserActions.AddUserSuccess;
+                }
+                return successfulLoad;
               });
           } else {
             result = Observable.of(false);

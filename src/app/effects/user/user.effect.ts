@@ -9,7 +9,6 @@ import { User } from '../../interfaces/user';
 import { MzToastService } from 'ngx-materialize';
 import { SimpleModalService } from '../../shared/simple-modal/simple-modal.service';
 import { UtilsService } from '../../services/utils/utils.service';
-
 @Injectable()
 export class UserEffects {
     constructor(
@@ -50,7 +49,7 @@ export class UserEffects {
                         }
                     })
                     .catch(err => {
-                        console.log('you lazy shit, do the getUser fail action', err);
+                        console.log('you lazy ass, do the getUser fail action', err);
                         return Observable.of(new userActions.GetUserFail());
                     });
             })
@@ -63,8 +62,8 @@ export class UserEffects {
             switchMap(user => {
                 return this.userService
                     .addUser(user)
-                    .map(() => {
-                        this.toastService.show('Profile Updated!', 4000, 'green', () => {
+                    .mergeMap(() => {
+                        this.toastService.show('Profile Created!', 4000, 'green', () => {
                             this.toastService.show('Now, you should go to your profile and update it!', 4000, 'green', );
                         });
                         const modalData = {
@@ -73,12 +72,28 @@ export class UserEffects {
                             image: user.profilePicUrl
                         };
                         this.simpleModalService.openModal(modalData);
-                        return new userActions.AddUserSuccess(user);
+                        return [new userActions.AddUserSuccess(user), new userActions.AddUserToAcl(user)];
                     })
                     .catch(err => {
                         this.toastService.show('Something went wrong please try again', 400, 'red');
-                        console.log('you lazy shit, do the addUser fail action', err);
+                        console.log('you lazy ass, do the addUser fail action', err);
                         return Observable.of(new userActions.AddUserFail());
+                    });
+            })
+        );
+
+    @Effect()
+    addUserToAcl$ = this.actions$.ofType(userActions.ADD_USER_TO_ACL)
+        .map((action: userActions.AddUserToAcl) => action.payload)
+        .pipe(
+            switchMap(user => {
+                return this.userService
+                    .addUserToCalendarAcl(user)
+                    .map(() => {
+                        return new userActions.AddUserToAclSuccess(true);
+                    })
+                    .catch(() => {
+                        return Observable.of(new userActions.AddUserToAclFail(false));
                     });
             })
         );
@@ -91,7 +106,6 @@ export class UserEffects {
                 return this.userService
                     .addUser(user)
                     .map(() => {
-                        this.toastService.show('Profile Updated!', 4000, 'green');
                         if (user.dateOfBirth && this.util.isTodayBirthday(user)) {
                             const modalData = {
                                 title: `Happy Birthday!! <br> ${user.fullName}`,
@@ -100,11 +114,12 @@ export class UserEffects {
                             };
                             this.simpleModalService.openModal(modalData);
                         }
+                        this.toastService.show('Profile Updated!', 4000, 'green');
                         return new userActions.UpdateUserSuccess(user);
                     })
                     .catch(err => {
                         this.toastService.show('Something went wrong please try again', 400, 'red');
-                        console.log('you lazy shit, do the addUser fail action', err);
+                        console.log('you lazy ass, do the addUser fail action', err);
                         return Observable.of(new userActions.UpdateUserFail());
                     });
             })

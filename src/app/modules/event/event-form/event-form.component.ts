@@ -4,11 +4,13 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 // Validators
 import { IsEmptyValidator } from '../../../shared/validators/validators';
 import {
-  TIME_PICKER_OPTIONS,
+  START_TIME_PICKER_OPTIONS,
+  END_TIME_PICKER_OPTIONS,
   MODAL_OPTIONS,
   START_DATE_PICKER_OPTIONS,
   END_DATE_PICKER_OPTIONS,
-  ERROR_MESSAGES_RESOURCES } from '../../../shared/options/date-time-pickers';
+  ERROR_MESSAGES_RESOURCES
+} from '../../../shared/options/date-time-pickers';
 
 // Interfaces
 import { User } from './../../../interfaces/user';
@@ -18,7 +20,8 @@ import * as moment from 'moment';
 // Services
 import {
   MzToastService,
-  MzBaseModal} from 'ngx-materialize';
+  MzBaseModal
+} from 'ngx-materialize';
 import { EventsService } from '../../../services/events/events.service';
 import { GifsService } from '../../../services/gifs/gifs.service';
 import { UtilsService } from '../../../services/utils/utils.service';
@@ -37,7 +40,8 @@ export class EventFormComponent extends MzBaseModal implements OnInit {
   @Input() users: User[];
   @Input() calendarEvents;
   public modalOptions = MODAL_OPTIONS;
-  public timepickerOptions = TIME_PICKER_OPTIONS;
+  public startTimepickerOptions = START_TIME_PICKER_OPTIONS;
+  public endTimepickerOptions = END_TIME_PICKER_OPTIONS;
   public startDatepickerOptions = START_DATE_PICKER_OPTIONS;
   public endDatepickerOptions = END_DATE_PICKER_OPTIONS;
   public errorMessageResources = ERROR_MESSAGES_RESOURCES;
@@ -65,6 +69,8 @@ export class EventFormComponent extends MzBaseModal implements OnInit {
   ngOnInit() {
     this.startDatepickerOptions.onOpen = () => this.endDateAvalible = false;
     this.startDatepickerOptions.onClose = () => this.setAvalibleEndDays();
+    this.startTimepickerOptions.afterDone = () => this.validateHours();
+    this.endTimepickerOptions.afterDone = () => this.validateHours();
     if (this.users) {
       this.autocompleteOptions.data = this.users.reduce((acc, cur) => {
         acc[cur.fullName] = cur.profilePicUrl;
@@ -83,11 +89,11 @@ export class EventFormComponent extends MzBaseModal implements OnInit {
     this.eventForm = this.formBuilder.group({
       title: [null, Validators.required],
       start: this.formBuilder.group({
-        eventStartDay : [null, Validators.required],
+        eventStartDay: [null, Validators.required],
         eventStartHour: [null, Validators.required]
       }),
       end: this.formBuilder.group({
-        eventEndDay : [null, Validators.required],
+        eventEndDay: [null, Validators.required],
         eventEndHour: [null, Validators.required]
       }),
       description: [
@@ -115,11 +121,11 @@ export class EventFormComponent extends MzBaseModal implements OnInit {
     this.eventForm = this.formBuilder.group({
       title: [this.eventData.title, Validators.required],
       start: this.formBuilder.group({
-        eventStartDay : [startDay, Validators.required],
+        eventStartDay: [startDay, Validators.required],
         eventStartHour: [startHour, Validators.required]
       }),
       end: this.formBuilder.group({
-        eventEndDay : [endDay, Validators.required],
+        eventEndDay: [endDay, Validators.required],
         eventEndHour: [endHour, Validators.required]
       }),
       description: [
@@ -151,48 +157,61 @@ export class EventFormComponent extends MzBaseModal implements OnInit {
         start: formattedStart,
         end: formattedEnd,
         createdTime: this.eventData.createdTime,
-        lastEditedTime: new Date(),
+        lastEditedTime: moment(new Date()).format(),
         description: this.eventForm.value.description.trim(),
         image: this.eventForm.value.image,
         creator: this.user,
         participants: this.createParticipants()
       } as Evento;
-      this.eventService.updateEvent('events', this.event);
-      // const calendarEvent = this.util.findCalendarEvent(this.event, this.calendarEvents);
-      // if (calendarEvent) {
-      //   this.eventService.updateCalendarEvent(calendarEvent.id, this.event);
-      // }
+      const calendarEvent = this.util.findCalendarEvent(this.event, this.calendarEvents);
+      if (calendarEvent) {
+        this.eventService.updateCalendarEvent(calendarEvent.id, this.event)
+          .pipe(first())
+          .subscribe(success => {
+            if (success) {
+              this.eventService.updateEvent('events', this.event)
+                .pipe(first())
+                .subscribe(updated => {
+                  if (updated) {
+                    this.toastService.show('Event edited!', 4000, 'green');
+                  }
+                });
+            } else { this.toastService.show('please try again!', 4000, 'black'); }
+          });
+      }
       this.clear();
     } else {
       this.event = {
         title: this.eventForm.value.title,
         start: formattedStart,
         end: formattedEnd,
-        createdTime: new Date(),
+        createdTime: moment(new Date()).format(),
         description: this.eventForm.value.description,
         image: this.eventForm.value.image,
         creator: this.user,
         participants: this.createParticipants()
       } as Evento;
-      if (this.event.participants.length > 0 && !this.util.findCurrentUser(this.event) || this.util.findCurrentUser(this.event)) {
-        if (!this.util.findCurrentUser(this.event)) {
+      if (this.event.participants.length > 0 && !this.util.findCurrentUser(this.event, this.user) || this.util.findCurrentUser(this.event, this.user)) {
+        if (!this.util.findCurrentUser(this.event, this.user)) {
           this.event.participants.push(this.user);
         }
         this.eventService.addEvent('events', this.event)
-        .then( eventId => {
-          this.event.id = eventId;
-          this.eventService.addEventToCalendar(this.event)
-          .pipe(first())
-          .subscribe(success => {
-            if (success) {
-              if (this.util.findCurrentUser(this.event)) {
-                this.toastService.show('Joined to event!', 4000, 'green');
-              }
-            }
+          .then(eventId => {
+            this.toastService.show('Event Created!', 4000, 'green');
+            this.event.id = eventId;
+            this.eventService.addEventToCalendar(this.event)
+              .pipe(first())
+              .subscribe(success => {
+                if (success) {
+                  if (this.util.findCurrentUser(this.event, this.user)) {
+                    this.toastService.show('Joined to event!', 4000, 'green');
+                  }
+                }
+              });
           });
-        });
       } else {
-        this.eventService.addEvent('events', this.event);
+        this.eventService.addEvent('events', this.event)
+          .then(() => this.toastService.show('Event Created!', 4000, 'green'));
       }
       this.clear();
     }
@@ -213,7 +232,7 @@ export class EventFormComponent extends MzBaseModal implements OnInit {
   }
 
   showToast(message: string, color: string) {
-    this.toastService.show(message, 4000, color );
+    this.toastService.show(message, 4000, color);
   }
 
   setAvalibleEndDays() {
@@ -229,11 +248,21 @@ export class EventFormComponent extends MzBaseModal implements OnInit {
     }
   }
 
+  validateHours() {
+    if (this.eventForm.value.end.eventEndHour) {
+      const startTime = moment.duration(this.eventForm.value.start.eventStartHour).asMinutes();
+      const endTime = moment.duration(this.eventForm.value.end.eventEndHour).asMinutes();
+      endTime < startTime ?
+      this.eventForm.get('end.eventEndHour').setErrors({incorrect: true}) :
+      this.eventForm.get('end.eventEndHour').setErrors(null);
+    }
+  }
+
   triggerAdd(participant) {
-    const user = this.users.find( x => x.fullName === participant.tag);
+    const user = this.users.find(x => x.fullName === participant.tag);
     // just to add an image ¯\_(ツ)_/¯
     const updatedParticipants = this.eventForm.value.participants.slice();
-    updatedParticipants[updatedParticipants.findIndex( x => x.tag === participant.tag)] = {tag: participant.tag, image: user.profilePicUrl};
+    updatedParticipants[updatedParticipants.findIndex(x => x.tag === participant.tag)] = { tag: participant.tag, image: user.profilePicUrl };
     this.eventForm.controls['participants'].setValue(updatedParticipants);
     this.participantsChips = this.eventForm.value.participants;
     // just to add an image ¯\_(ツ)_/¯
@@ -250,7 +279,7 @@ export class EventFormComponent extends MzBaseModal implements OnInit {
   createParticipants() {
     const participants = [];
     if (this.eventForm.value.participants.length > 0) {
-      this.eventForm.value.participants.map( participant => {
+      this.eventForm.value.participants.map(participant => {
         participants.push(this.users.find(user => user.fullName === participant.tag));
       });
     }

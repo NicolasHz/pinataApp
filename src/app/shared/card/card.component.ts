@@ -1,3 +1,4 @@
+import { User } from './../../interfaces/user';
 import { Component, OnInit, Input, Output, EventEmitter, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
 import { UtilsService } from '../../services/utils/utils.service';
 import { trigger } from '@angular/animations';
@@ -17,6 +18,7 @@ export class CardComponent implements OnInit, AfterViewInit {
   @Input() eventData = eventInitialState;
   @Input() enableEdit = false;
   @Input() disableButton = false;
+  @Input() user: User;
   @Output() join: EventEmitter<Evento> = new EventEmitter<Evento>();
   @Output() leave: EventEmitter<Evento> = new EventEmitter<Evento>();
   @Output() edit: EventEmitter<Evento> = new EventEmitter<Evento>();
@@ -41,9 +43,9 @@ export class CardComponent implements OnInit, AfterViewInit {
 
   ngOnInit() {
     this.preLoaderImg = this.imgSource[Math.floor(Math.random() * this.imgSource.length)];
-    this.eventAuthor = this.util.isEventCreator(this.eventData);
+    this.eventAuthor = this.util.isEventCreator(this.eventData, this.user);
     this.participants = this.eventData.participants.length;
-    if (this.util.findCurrentUser(this.eventData)) {
+    if (this.util.findCurrentUser(this.eventData, this.user)) {
       this.joined = true;
     }
     if (this.eventData.participants.length > 0) {

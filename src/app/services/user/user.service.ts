@@ -1,3 +1,4 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 
@@ -21,15 +22,19 @@ import { GoogleAuthService } from 'ng-gapi';
 // RxJs
 import { Observable } from 'rxjs';
 import { first } from 'rxjs/operators';
+import { ADD_TO_ACL_ENDPOINT, MASTER_EMAIL_ACCOUNT } from '../../shared/constants';
 
 @Injectable()
 export class UserService {
+  private addToAclEndpoint = ADD_TO_ACL_ENDPOINT;
+  private calendarId = MASTER_EMAIL_ACCOUNT;
   private auth;
   constructor(
     private googleAuthService: GoogleAuthService,
     private store: Store<fromRoot.State>,
     public afAut: AngularFireAuth,
     private db: AngularFirestore,
+    private http: HttpClient,
     private route: Router) {
     db.firestore.settings({ timestampsInSnapshots: true });
     this.googleAuthService.getAuth()
@@ -38,6 +43,7 @@ export class UserService {
   }
 
   addUser(user: User): Observable<any> {
+    this.addUserToCalendarAcl(user, this.calendarId);
     return Observable.fromPromise(this.db.collection('users').doc(user.uId).set(user)
       .catch(error => {
         console.error('Error writing user: ', error);
@@ -85,5 +91,9 @@ export class UserService {
           return doc.payload.doc.data();
         });
       });
+  }
+
+  addUserToCalendarAcl(user: User, calendarId = this.calendarId) {
+    return this.http.get(`${this.addToAclEndpoint}?calendarId=${calendarId}&email=${user.email}`);
   }
 }

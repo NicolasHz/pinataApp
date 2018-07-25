@@ -7,7 +7,7 @@
         h1 {
             font-family: $strawberry_font;
             font-size: 5.2em;
-            background-image:         linear-gradient(130deg,  #F44336, #fc6262); /* Standard syntax; must be last */
+            background-image:linear-gradient(130deg,  #5136f4, #fc6262);
             color:transparent;
             -webkit-background-clip: text;
             background-clip: text;
@@ -16,6 +16,12 @@
 }
 .events {
     @extend %common-layout;
+    &__no-events {
+        filter: grayscale(1) opacity(.3);
+        h5 {
+            color: black;
+        }
+    }
 }
 .birthdays {
     @extend %common-layout;

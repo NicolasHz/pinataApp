@@ -10,15 +10,21 @@ mz-navbar-item  a {
 }
 
 .logo {
+  background: url(/assets/img/glb-no-bg.png) no-repeat center;
+  background-size: contain;
+  width: 46px!important;
   display: flex;
-  max-height:46px;
+  max-height: 46px;
+  height: 46px;
   margin: 6px 0;
   transition: max-height 300ms linear;
 }
 
 .avatar {
   width: 30px;
-  border-radius: 100%;
+  height: 30px;
+  border-radius: 50%;
+  margin-right: 5px;
 }
 
 .waves-effect {
@@ -34,6 +40,7 @@ mz-navbar-item  a {
     display: none;
   }
   .toogle_menu {
+    transition: all 300ms linear;
     display: block!important;
     margin-top: 10px;
     padding: 0;
@@ -60,6 +67,6 @@ mz-navbar-item  a {
     max-height: 32px;
   }
   .toogle_menu {
-    margin-top: 0;
+    margin-top: 3px;
   }
 }

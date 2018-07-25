@@ -16,6 +16,21 @@ mz-modal {
     margin-right: 10px;
 }
 
+.gif-selected {
+    display: inline-block;
+    height: 36px;
+    vertical-align: middle;
+}
+
+.participants {
+    padding: 0;
+}
+
+.hidden {
+    opacity: 0;
+    visibility: hidden;
+}
+
 @media all and (max-width: $app_especific_toggle_menu) {
     .addEvent {
         width: 60px;

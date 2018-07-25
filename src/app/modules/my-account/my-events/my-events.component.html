@@ -1,5 +1,50 @@
-<div class="my-events">
-  <p>
-    my-events works!
-  </p>
+<div class="row my-events">
+  <div class="col s11 m10 l10 push-m1 push-l1 my-events__events">
+    <div class="my-events__title">
+      <h5 *ngIf="view === 'created'" class="wow fadeIn">Events that you created</h5>
+      <h5 *ngIf="view === 'joined'" class="wow fadeIn">Joined events</h5>
+      <mz-switch-container>
+        <input mz-switch
+          id="switch-id"
+          [off]="'Joined'"
+          [on]="'Created'"
+          type="checkbox"
+          (click)="onSwitchEventView()">
+      </mz-switch-container>
+    </div>
+    <div [ngClass]="[eventsReady ? '' : 'hide']">
+      <div class="row">
+        <app-card *ngFor="let event of events"
+            [eventData]="event"
+            [enableEdit]="true"
+            [disableButton]="disableButton"
+            [user]="user"
+            (join)="joinEvent($event)"
+            (leave)="leaveEvent($event)"
+            (edit)="editEvent($event)"
+            (delete)="confirmDelete($event)"
+            class="col s12 m4 l3 wow fadeIn"
+            data-wow-duration="1.4s">
+        </app-card>
+        <div *ngIf="events.length === 0" class="my-events__no-events center">
+          <img src="/assets/img/no-events.gif" class="wow fadeIn" alt="">
+          <h5 *ngIf="view === 'created'" class="wow fadeIn" >You haven't created any events...</h5>
+          <h5 *ngIf="view === 'joined'" class="wow fadeIn" >You haven't joined any events yet...</h5>
+        </div>
+      </div>
+    </div>
+    <div class="section" *ngIf="!eventsReady">
+      <div class="row">
+          <mz-spinner
+              class="col center s12 m12 l12 spinner"
+              [color]="'blue'"
+              [size]="'big'">
+          </mz-spinner>
+      </div>
+    </div>
+  </div>
 </div>
+<app-confirm-modal
+[eventData]="selectedEvent"
+(response)="deleteEvent($event)">
+</app-confirm-modal>

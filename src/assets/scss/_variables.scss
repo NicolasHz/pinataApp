@@ -57,10 +57,32 @@ $pinata_background: linear-gradient(360deg, #ffd86f, #fc6262);
     }
 }
 
+%form-common-style {
+    margin: 10px 15px!important;
+    background-color: white;
+    margin: 10px 0;
+    border-radius: 10px;
+    box-shadow: 5px 8px 17px 0px rgba(0, 0, 0, 0.2), 5px 6px 18px 0px rgba(0, 0, 0, 0.19);
+  }
+
 @keyframes animatedBackground {
     from {
       background-position: 0px 0px; }
   
     to {
       background-position: 100% 0px; } 
-  }
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(0.9);
+    }
+    70% {
+        transform: scale(1);
+        box-shadow: 0 0 0 50px rgba(90, 153, 212, 0);
+    }
+    100% {
+        transform: scale(0.9);
+        box-shadow: 0 0 0 0 rgba(90, 153, 212, 0);
+    }
+}

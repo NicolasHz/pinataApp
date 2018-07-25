@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
-import { MzModalService } from 'ng2-materialize';
+import { MzModalService } from 'ngx-materialize';
 import { Subject } from 'rxjs/Subject';
 
 @Injectable()
 export class ModalService {
-  public modalResponse: Subject<boolean> = new Subject;
+  public modalResponse: Subject<boolean> = new Subject();
   constructor(private modalService: MzModalService) { }
 
   openModal(modalComponent, {eventData, buttonText}) {

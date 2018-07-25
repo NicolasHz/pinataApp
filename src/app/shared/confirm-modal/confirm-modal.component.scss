@@ -2,8 +2,11 @@
 mz-modal{
     /deep/.modal.modal-fixed-footer {
         height: 20%;
-        width: 20%;
+        width: 25%;
         border-radius: 10px;
+        @media all and (max-width: $app_especific_toggle_menu) {
+            width: 30%;
+        }
     }
     /deep/.modal-footer {
         background: white;

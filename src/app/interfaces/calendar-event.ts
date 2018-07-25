@@ -10,6 +10,7 @@ export interface CalendarEventI {
     attendees?: any[];
     reminders: ReminderI;
     status?: string;
+    visibility?: string;
 }
 
 export interface CalTimeI {

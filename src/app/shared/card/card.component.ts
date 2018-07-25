@@ -1,7 +1,7 @@
-import { Component, OnInit, Input, OnDestroy, Output, EventEmitter } from '@angular/core';
-import { EventsService } from '../../services/events/events.service';
+import { User } from './../../interfaces/user';
+import { Component, OnInit, Input, Output, EventEmitter, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
 import { UtilsService } from '../../services/utils/utils.service';
-import { trigger, style, state, animate, transition } from '@angular/animations';
+import { trigger } from '@angular/animations';
 
 import { eventInitialState } from './../../interfaces/evento-initial-state';
 import { Evento } from '../../interfaces/evento';
@@ -14,13 +14,16 @@ import { Evento } from '../../interfaces/evento';
   templateUrl: './card.component.html',
   styleUrls: ['./card.component.scss']
 })
-export class CardComponent implements OnInit {
+export class CardComponent implements OnInit, AfterViewInit {
   @Input() eventData = eventInitialState;
   @Input() enableEdit = false;
+  @Input() disableButton = false;
+  @Input() user: User;
   @Output() join: EventEmitter<Evento> = new EventEmitter<Evento>();
   @Output() leave: EventEmitter<Evento> = new EventEmitter<Evento>();
   @Output() edit: EventEmitter<Evento> = new EventEmitter<Evento>();
   @Output() delete: EventEmitter<Evento> = new EventEmitter<Evento>();
+  @ViewChild('userImage') image: ElementRef;
 
   public actualImgReady = false;
   public optionsOpened = false;
@@ -36,32 +39,32 @@ export class CardComponent implements OnInit {
     '../../assets/img/party2.gif'];
     participantsTooltip = 'Join and be the first!';
 
-  constructor(
-    private eventService: EventsService,
-    private util: UtilsService) { }
+  constructor(private util: UtilsService) { }
 
   ngOnInit() {
     this.preLoaderImg = this.imgSource[Math.floor(Math.random() * this.imgSource.length)];
-    this.eventAuthor = this.util.isEventCreator(this.eventData);
+    this.eventAuthor = this.util.isEventCreator(this.eventData, this.user);
     this.participants = this.eventData.participants.length;
-    if (this.util.findUser(this.eventData)) {
+    if (this.util.findCurrentUser(this.eventData, this.user)) {
       this.joined = true;
     }
     if (this.eventData.participants.length > 0) {
       this.participantsTooltip = '';
-      this.eventData.participants.map((res) => {
+      this.eventData.participants.map(res => {
         const avatar = res.profilePicUrl ? res.profilePicUrl : '';
-        this.participantsTooltip = this.participantsTooltip + `<img src="${avatar}"/>  ` + res.fullName.concat('<br/>');
+        this.participantsTooltip = this.participantsTooltip + `<img class="tooltip-image" src="${avatar}"/>  ` + res.fullName.concat('<br/>');
       });
     }
   }
 
-  toggleClass() {
-    this.showEventTime = !this.showEventTime;
+  ngAfterViewInit() {
+    this.image.nativeElement.onload = () => {
+      this.actualImgReady = true;
+    };
   }
 
-  showImage() {
-    this.actualImgReady = true;
+  toggleClass() {
+    this.showEventTime = !this.showEventTime;
   }
 
   joinEvent() {

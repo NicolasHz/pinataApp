@@ -1,5 +1,5 @@
 <mz-navbar class="row" [ngClass]="[scrolled ? 'scrolled' : '']">
-    <a class="brand-logo col s2 m1 l1 offset-s2 offset-m2 offset-l2" [routerLink]="['/home']"><img class="responsive-img logo" src="../../assets/img/glb-no-bg.png" alt=""></a>
+    <a class="brand-logo logo col s2 m1 l1 offset-s2 offset-m2 offset-l2" [routerLink]="['/home']"></a>
   <mz-navbar-item-container [align]="'right'" class="col s4 offset-s6">
     <mz-navbar-item>
       <a [routerLink]="['/birthdays']" routerLinkActive="active" class="waves-effect">Birthdays</a>
@@ -9,8 +9,8 @@
     </mz-navbar-item>
     <mz-navbar-item>
       <a [routerLink]="['/my-account']" routerLinkActive="active" class="waves-effect">
-        <img [src]="user.profilePicUrl" class="responsive-img avatar" alt="">
-        <span>{{userName}}</span>
+        <img src="{{(user | async).profilePicUrl}}" class="responsive-img avatar" alt="">
+        <span>{{((user| async).fullName) | splice }}</span>
       </a>
     </mz-navbar-item>
   </mz-navbar-item-container>
@@ -35,8 +35,8 @@
   </mz-sidenav-link>
   <mz-sidenav-link>
     <a [routerLink]="['/my-account']" routerLinkActive="active" class="waves-effect">
-      <img [src]="user.profilePicUrl" class="responsive-img avatar" alt="">
-      <span>{{user.fullName}}</span>
+      <img src="{{(user | async).profilePicUrl}}" class="responsive-img avatar" alt="">
+      <span>{{(user| async).fullName}}</span>
     </a>
   </mz-sidenav-link>
   <!-- <mz-sidenav-divider></mz-sidenav-divider>

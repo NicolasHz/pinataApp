@@ -5,8 +5,19 @@
   <mz-modal-content>
     <div class="row user-details" [ngClass]="[calEvent ? '' : 'hidden']">
       <div class="birth-data col s12 m6 l6">
-        <svg *ngIf="showSvg" style="max-height:110px" enable-background="new 0 0 128 128" id="Layer_1" version="1.1" viewBox="0 0 128 128" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><circle cx="64" cy="64" fill="#4B5F83" id="circle" r="64"/><g id="icon"><path d="M64,99h35c0-16-10.4-29-24.6-33.4C80.1,62,84,55.7,84,48.5c0-11-9-20-20-20" fill="#E6E6E6" id="right"/><path d="M64,28.5c-11,0-20,9-20,20c0,7.2,3.9,13.6,9.6,17.1C39.4,70,29,83,29,99h35" fill="#FFFFFF" id="left"/></g></svg>
-        <img class="responsive-img user-pic" src="{{calEvent?.image}}"  alt="">
+        <svg [ngClass]="[showSvg ? '' : 'hidden']" style="max-height:110px" enable-background="new 0 0 128 128" id="Layer_1" version="1.1" viewBox="0 0 128 128" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><circle cx="64" cy="64" fill="#4B5F83" id="circle" r="64"/><g id="icon"><path d="M64,99h35c0-16-10.4-29-24.6-33.4C80.1,62,84,55.7,84,48.5c0-11-9-20-20-20" fill="#E6E6E6" id="right"/><path d="M64,28.5c-11,0-20,9-20,20c0,7.2,3.9,13.6,9.6,17.1C39.4,70,29,83,29,99h35" fill="#FFFFFF" id="left"/></g></svg>
+        <img class="responsive-img user-pic" #userImage [ngClass]="[imageReady ? '' : 'hidden']" [src]="calEvent?.image"  alt="">
+        <div class="preloader-wrapper big active" [ngClass]="[imageReady ? 'hidden' : '']">
+          <div class="spinner-layer spinner-blue-only">
+            <div class="circle-clipper left">
+              <div class="circle"></div>
+            </div><div class="gap-patch">
+              <div class="circle"></div>
+            </div><div class="circle-clipper right">
+              <div class="circle"></div>
+            </div>
+          </div>
+        </div>
         <h5>{{calEvent.start | date:'MMM-dd'}}</h5>
         </div>
       <div class="col s12 m6 l6">

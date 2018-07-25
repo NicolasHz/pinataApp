@@ -1,17 +1,20 @@
 const A = 'abcdefghijklmnopqrstuv0123456789';
 const PAD = '=';
-
-export const ENCODE32 = (s) => {
+// tslint:disable:no-bitwise
+export const ENCODE32 = s => {
     const a = A;
     const pad = PAD;
     const len = s.length;
     let o = '';
-    let w, c, r = 0, sh = 0;
+    let w = 0;
+    let c = 0;
+    let r = 0;
+    let sh = 0;
     for (let i = 0; i < len; i += 5) {
         // mask top 5 bits
         c = s.charCodeAt(i);
         w = 0xf8 & c;
-        o += a.charAt(w >>3);
+        o += a.charAt(w >> 3);
         r = 0x07 & c;
         sh = 2;
 
@@ -68,10 +71,11 @@ export const ENCODE32 = (s) => {
     console.log('padlen:' + padlen + ' ,r:' + r + ' ,sh:' + sh + ', w:' + w);
 };
 
-export const DECODE32 = (s) => {
+export const DECODE32 = s => {
     const len = s.length;
     const apad = A + PAD;
-    let v, x, r = 0, bits = 0, c, o = '';
+    // tslint:disable-next-line:one-variable-per-declaration
+    let v, x, bits = 0, c, o = '';
 
     // s = s.toUpperCase();
 
@@ -98,7 +102,6 @@ export const DECODE32 = (s) => {
     }
     return o;
 };
-
 
 // export const ENCODE32 = (s) => {
 //     const a = this.a;
@@ -197,4 +200,3 @@ export const DECODE32 = (s) => {
 //     }
 //     return o;
 // };
-

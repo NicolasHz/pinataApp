@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
-import { ModuleWithProviders, NgModule } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { MzTooltipModule, MzButtonModule, MzIconMdiModule } from 'ng2-materialize';
+import { MzTooltipModule, MzButtonModule, MzIconMdiModule } from 'ngx-materialize';
 
 // Guards
 import { AuthGuardService } from './services/auth-guard/auth-guard';
@@ -9,6 +9,7 @@ import { AuthGuardService } from './services/auth-guard/auth-guard';
 // Components
 import { LoginComponent } from './modules/login/login.component';
 import { NotFoundComponent } from './modules/not-found/not-found.component';
+import { IsAuthGuard } from './services/isAuth/is-auth.guard';
 
 const appRoutes: Routes = [
   {
@@ -38,7 +39,8 @@ const appRoutes: Routes = [
   },
   {
     path: 'login',
-    component: LoginComponent
+    component: LoginComponent,
+    canActivate: [IsAuthGuard]
   },
   {
     path: '**',

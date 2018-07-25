@@ -4,8 +4,8 @@
             <img src="../../assets/img/pinata-logo.gif" class="responsive-img wow slideInDown" data-wow-duration="1.8s" alt="Pinata" width="280px">
             <h1 class="responsive-img wow fadeIn" data-wow-duration="1.5s">Welcome to Piñata!!</h1>
             <p class="responsive-img wow fadeIn" data-wow-duration="1.5s">
-                Este sitio fue creado para nuclear todos los eventos de Globant Bahia, desde cumpleaños, afters, reuniones.
-                Podras crear tus propios eventos y agendar todo lo que necesites en tu calendar. No te pierdas de nada! Disfruta, Piñata!
+                Este sitio fue creado para nuclear todos los eventos de Globant Bahia, desde cumpleaños, afters, reuniones.<br> 
+                Podras crear tus propios eventos y agendar todo lo que necesites en tu calendar.<br> No te pierdas de nada! Disfruta, Piñata!
             </p>
     </div>
     <div class="birthdays" [ngClass]="[birthdayReady ? '' : 'hide']">
@@ -23,10 +23,18 @@
         <div [ngClass]="[eventsReady ? '' : 'hide']">
             <h5 class="events__upcoming-events">Don't miss these events:</h5>
             <hr>
-            <div class="row event__cards">
+            <div *ngIf="events.length === 0" class="events__no-events center">
+                <img src="/assets/img/no-events.gif" class="wow fadeIn" alt="">
+                <h5>Sorry there are no events yet! go to Events and create one!</h5>
+            </div>
+            <div class="row">
                 <app-card *ngFor="let event of events"
                     [eventData]="event"
-                    class="col s12 m4 l4 wow flipInX"
+                    [disableButton]="disableButton"
+                    [user]="user"
+                    (join)="joinEvent($event)"
+                    (leave)="leaveEvent($event)"
+                    class="col s12 m4 l4 wow fadeIn"
                     data-wow-duration="1.4s">
                 </app-card>
             </div>
@@ -42,4 +50,3 @@
         </div>
     </div>
 </div>
-

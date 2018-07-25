@@ -7,5 +7,5 @@ export function IsEmptyValidator(control: AbstractControl) {
             }
         return { validString: true };
     }
-  return null;
+    return null;
 }

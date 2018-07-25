@@ -1,7 +1,7 @@
 
   <div class="card"
-    (mouseover)="toggleClass($event)"
-    (mouseout)="toggleClass($event)"
+    (mouseover)="toggleClass()"
+    (mouseout)="toggleClass()"
     mz-tooltip 
     [tooltip]="'Creator: ' + eventData.creator.fullName"
     [position]="'top'"
@@ -71,8 +71,8 @@
           </button>
         </div>
       </div>
-      <img class="wow fadeIn" data-wow-duration="1s" [ngClass]="[actualImgReady ? '' : 'hidden']" (load)="showImage()" src="{{ eventData?.image }}" alt="Card Img">
-      <img [src]="preLoaderImg" alt="" *ngIf="!actualImgReady">
+      <img class="wow fadeIn" data-wow-duration="1s" [ngClass]="[actualImgReady ? '' : 'hidden']" #userImage src="{{ eventData?.image }}" alt="Card Img">
+      <img [src]="preLoaderImg" alt="" [ngClass]="[actualImgReady ? 'hidden' : '']">
       <span class="card-title">{{eventData.title}}</span>
     </div>
     <div class="card-content">
@@ -92,8 +92,8 @@
             </i>
             {{participants}}
         </p>
-      <button *ngIf="!joined" mz-button class="green col s4 m5 l4 right wow flipInX" data-wow-duration="1.5s" (click)="joinEvent()" type="button">Join!</button>
-      <button *ngIf="joined" mz-button class="red col s4 m5 l4 right wow flipInX" data-wow-duration="1.5s" (click)="leaveEvent()" type="button">Leave!</button>
+      <button *ngIf="!joined" mz-button class="green col s4 m5 l4 right wow flipInX" data-wow-duration="1.5s" [disabled]="disableButton" (click)="joinEvent()" type="button">Join!</button>
+      <button *ngIf="joined" mz-button class="red col s4 m5 l4 right wow flipInX" data-wow-duration="1.5s" [disabled]="disableButton" (click)="leaveEvent()" type="button">Leave!</button>
     </div>
   </div>
 

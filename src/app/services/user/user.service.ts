@@ -1,88 +1,99 @@
-import { Router } from '@angular/router';
-import { User } from './../../interfaces/user';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
+
+// Firebase
+import { AngularFirestore } from 'angularfire2/firestore';
 import { AngularFireAuth } from 'angularfire2/auth';
 import * as firebase from 'firebase/app';
 
-declare var gapi: any;
+// Interfaces
+import { userInitialState } from './../../interfaces/user-initial-state';
+import { User } from './../../interfaces/user';
+
+// NgRx
+import { Store } from '@ngrx/store';
+import * as fromRoot from '../../app.reducer';
+import * as UserActions from '../../actions/user/user.actions';
+
+// Services
+import { GoogleAuthService } from 'ng-gapi';
+
+// RxJs
+import { Observable } from 'rxjs';
+import { first } from 'rxjs/operators';
+import { ADD_TO_ACL_ENDPOINT, MASTER_EMAIL_ACCOUNT } from '../../shared/constants';
+
 @Injectable()
 export class UserService {
-  private API_KEY = 'AIzaSyDGIy92a4JYf_3TksdWwGdwhaMxx3W7SrQ';
-  private CLIENT_ID = '289697189757-l3muf4hpsin6f3dnt73ka1jvh1ckvnd9.apps.googleusercontent.com';
-  private DISCOVERY_DOCS = ['https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest'];
-  private SCOPE = 'https://www.googleapis.com/auth/calendar';
-  private user: User;
-  public calendarApiClient;
-
+  private addToAclEndpoint = ADD_TO_ACL_ENDPOINT;
+  private calendarId = MASTER_EMAIL_ACCOUNT;
+  private auth;
   constructor(
+    private googleAuthService: GoogleAuthService,
+    private store: Store<fromRoot.State>,
     public afAut: AngularFireAuth,
+    private db: AngularFirestore,
+    private http: HttpClient,
     private route: Router) {
-
-    this.afAut.authState.subscribe( user => {
-      if (!user) {
-        return;
-      }
-      this.user = {
-        email: user.email,
-        fullName: user.displayName,
-        profilePicUrl: user.photoURL,
-        uId: user.uid,
-        isNewUser: user.metadata.creationTime === user.metadata.lastSignInTime
-      };
-      this.route.navigate(['home']);
-    });
-    gapi.load('client:auth2', this.initClient);
+    db.firestore.settings({ timestampsInSnapshots: true });
+    this.googleAuthService.getAuth()
+      .pipe(first())
+      .subscribe(auth => this.auth = auth);
   }
 
-  login(): Promise<boolean> {
-    return gapi.auth2.getAuthInstance().signIn({prompt: 'select_account'})
-    .then((googleUser) => {
-      const credential = firebase.auth.GoogleAuthProvider
-        .credential(googleUser.getAuthResponse().id_token);
-      firebase.auth().signInWithCredential(credential);     // Sign in with credential from the Google user.
-      return gapi.auth2;
-    })
-    .catch(() => false);
+  addUser(user: User): Observable<any> {
+    this.addUserToCalendarAcl(user, this.calendarId);
+    return Observable.fromPromise(this.db.collection('users').doc(user.uId).set(user)
+      .catch(error => {
+        console.error('Error writing user: ', error);
+      }));
   }
 
-  logout(): Promise<boolean> {
-    return gapi.auth2.getAuthInstance().signOut()
-      .then(() => {
-        return this.afAut.auth.signOut()
-        .then(() => {
-          this.user = {
-            email: '',
-            fullName: '',
-            profilePicUrl: '',
-            uId: ''
-          };
-        return true;
+  getUser(googleUser): Observable<any> {
+    return Observable.fromPromise(this.db.collection('users').doc(googleUser.uid).ref.get()
+      .catch(error => {
+        console.log('Error getting user:', error);
+      }));
+  }
+
+  login(): Observable<any> {
+    return Observable.fromPromise(this.auth.signIn({ prompt: 'select_account' })
+      .then(googleUser => {
+        const credential = firebase.auth.GoogleAuthProvider
+          .credential(googleUser.getAuthResponse().id_token);
+        return firebase.auth().signInWithCredential(credential).then(() => {
+          this.route.navigate(['/home']);
+          return true;
+        });   // Sign in with credential from the Google user.
       })
-      .catch(
-        error => false
-      );
+      .catch(r => r.error)
+    );
+  }
+
+  logout() {
+    this.auth.signOut().then(() => {
+      this.afAut.auth.signOut()
+        .then(() => {
+          this.store.dispatch(new UserActions.GetUserSuccess(userInitialState));
+          this.route.navigate(['/login']);
+        })
+        .catch(r => console.log('something wrong log out', r));
     });
   }
 
-  getUser() {
-    return this.user;
+  getUsers() {
+    return this.db
+      .collection('users')
+      .snapshotChanges()
+      .map(docArray => {
+        return docArray.map(doc => {
+          return doc.payload.doc.data();
+        });
+      });
   }
 
-  // Calendar interaction
-  initClient = (): Promise<any> => {
-    return gapi.client.init({
-      apiKey: this.API_KEY,
-      clientId: this.CLIENT_ID,
-      discoveryDocs: this.DISCOVERY_DOCS,
-      scope: this.SCOPE
-    }).then(() => {
-      this.calendarApiClient = gapi.auth2.getAuthInstance();
-    })
-    .catch(() => console.log('Something Wrong with calendar Api'));
-  }
-
-  getCalendarApi(): Promise<any> {
-    return this.calendarApiClient;
+  addUserToCalendarAcl(user: User, calendarId = this.calendarId) {
+    return this.http.get(`${this.addToAclEndpoint}?calendarId=${calendarId}&email=${user.email}`);
   }
 }
-

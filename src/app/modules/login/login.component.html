@@ -1,13 +1,14 @@
 <div class="login">
   <div class="login__welcome">
     <img
-      src="../../assets/img/pinata-logo.gif"
+      src="/assets/img/pinata-logo.gif"
       class="responsive-img wow tada animated"
       alt="Cake-boy"
       width="350px">
     <h1>Welcome to Piñata!!</h1>
     <div class="login__button-login">
       <button
+        [disabled]="isLoading"
         mz-button
         mz-tooltip
         [large]="true"
@@ -19,26 +20,27 @@
         (click)="logInUser()"
         (mouseover)="changeIcon()"
         (mouseout)="changeIcon()">
-        <i *ngIf="!login"
-          [@anim]
-          mz-icon-mdi
-          [align]="'left'"
-          [icon]="'login'"
-          [size]="'24px'"
-          class="wow fadeIn">
-        </i>
-        <i *ngIf="login"
-          [@anim]
-          mz-icon-mdi
-          [align]="'left'"
-          [icon]="'google'"
-          [size]="'24px'"
-          class="wow fadeIn">
-        </i>
+        <div *ngIf="!login"
+        [@anim]>
+          <i mz-icon-mdi
+            [align]="'left'"
+            [icon]="'login'"
+            [size]="'24px'"
+            class="wow fadeIn">
+          </i>
+        </div>
+        <div *ngIf="login"
+        [@anim]>
+          <i mz-icon-mdi
+            [align]="'left'"
+            [icon]="'google'"
+            [size]="'24px'"
+            class="wow fadeIn">
+          </i>
+        </div>
         Log in</button>
       </div>
     <p *ngIf="!allow" style="color: #5cb85c">Please let us access you calendar for a better experiencie</p>
   </div>
 </div>
-
 

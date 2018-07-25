@@ -1,5 +1,4 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import {
     MzInputModule,
     MzCheckboxModule,
@@ -17,12 +16,13 @@ import {
     MzButtonModule,
     MzModalModule,
     MzTooltipModule,
-    MzSpinnerModule,
     MzToastModule,
     MzProgressModule,
     MzTabModule,
-    MzFeatureDiscoveryModule
-} from 'ng2-materialize';
+    MzFeatureDiscoveryModule,
+    MzSwitchModule,
+    MzChipModule
+} from 'ngx-materialize';
 
 @NgModule({
     imports: [
@@ -42,11 +42,12 @@ import {
         MzButtonModule,
         MzModalModule,
         MzTooltipModule,
-        MzSpinnerModule,
         MzToastModule,
         MzProgressModule,
         MzTabModule,
-        MzFeatureDiscoveryModule
+        MzFeatureDiscoveryModule,
+        MzSwitchModule,
+        MzChipModule
     ],
     exports: [
         MzInputModule,
@@ -65,11 +66,12 @@ import {
         MzButtonModule,
         MzModalModule,
         MzTooltipModule,
-        MzSpinnerModule,
         MzToastModule,
         MzProgressModule,
         MzTabModule,
-        MzFeatureDiscoveryModule
+        MzFeatureDiscoveryModule,
+        MzSwitchModule,
+        MzChipModule
     ]
 })
 export class MaterialModule { }

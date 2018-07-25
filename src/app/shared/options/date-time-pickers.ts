@@ -62,7 +62,7 @@ export const ERROR_MESSAGES_RESOURCES = {
   },
   endHour: {
     required: 'End hour is required.',
-    incorrect: 'End hour can\'t be grater than start hour'
+    incorrect: 'End hour can\'t be lesser than start hour'
   },
   description(minLenght = 20, maxLenght = 255) {
     return {
@@ -106,7 +106,7 @@ export const DATE_OF_BIRTH_PICKER_OPTIONS: Pickadate.DateOptions = {
   closeOnClear: false,
   closeOnSelect: true,
   max: legalAge,
-  selectYears: 20,
+  selectYears: 40,
   format: 'dd/mm/yyyy', // Visible date format (defaulted to formatSubmit if provided otherwise 'd mmmm, yyyy')
   formatSubmit: 'yyyy-mm-dd',   // Return value format (used to set/get value)
 };

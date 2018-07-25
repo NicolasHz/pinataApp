@@ -1,5 +1,5 @@
 import { DOCUMENT } from '@angular/platform-browser';
-import { Component, OnInit, Inject, HostListener } from '@angular/core';
+import { Component, Inject, HostListener } from '@angular/core';
 import { UtilsService } from '../../services/utils/utils.service';
 
 @Component({
@@ -7,7 +7,7 @@ import { UtilsService } from '../../services/utils/utils.service';
   templateUrl: './my-account.component.html',
   styleUrls: ['./my-account.component.scss']
 })
-export class MyAccountComponent implements OnInit {
+export class MyAccountComponent {
   public scrolled;
 
   constructor(
@@ -17,10 +17,6 @@ export class MyAccountComponent implements OnInit {
   @HostListener('window:scroll', [])
   onWindowScroll() {
     this.scrolled = this.util.scrolled(this.doc);
-  }
-  ngOnInit() {
-  }
-  callbackFunction() {
   }
 
 }

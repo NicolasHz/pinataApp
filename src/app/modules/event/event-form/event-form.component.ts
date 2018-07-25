@@ -197,13 +197,13 @@ export class EventFormComponent extends MzBaseModal implements OnInit {
         }
         this.eventService.addEvent('events', this.event)
           .then(eventId => {
+            this.toastService.show('Event Created!', 4000, 'green');
             this.event.id = eventId;
             this.eventService.addEventToCalendar(this.event)
               .pipe(first())
               .subscribe(success => {
                 if (success) {
                   if (this.util.findCurrentUser(this.event, this.user)) {
-                    this.toastService.show('Event Created!', 4000, 'green');
                     this.toastService.show('Joined to event!', 4000, 'green');
                   }
                 }
